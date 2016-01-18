@@ -1,17 +1,18 @@
 # mySIMBL
 
-mySIMBL is the successor to the application EasySIMBL. It is designed to make managing SIMBL plugins easy and robust on OS X versions 10.9 to 10.11.
+`mySIMBL` is the successor to the application [EasySIMBL](https://github.com/norio-nomura/EasySIMBL). It is designed to make managing [SIMBL plugins](https://en.wikipedia.org/wiki/SIMBL#Plugins) easy on OS X versions 10.9 and above.
 
-This appication uses the older version of SIMBL.osax (0.9.9) since EasySIMBL.osax no longer works on OS X 10.9+ and the original developer does not seem like they are going to update their application or script.
+This appication uses the [older version of SIMBL.osax (0.9.9)](http://www.culater.net/software/SIMBL/SIMBL.php) since EasySIMBL.osax no longer works on OS X 10.9.5 and above. The EasySIMBL developer does not seem like they are going to update their application or script.
 
 ![Preview](mySIMBL.png)
 
 # Installation
 
-* Download the latest release of mySIMBL
-* Open mySIMBL
-    * You may be required to install SIMBL, mySIMBL will do this for you
-    * You may be required to disable System Integrity Protection, mySIMBL will inform you but cannot automate this process
+* Download the latest release of [mySIMBL](https://github.com/w0lfschild/mySIMBL/releases/latest)
+* Extract and open `mySIMBL.app`
+    * You may be required to install SIMBL, `mySIMBL` will do this for you
+    * You may be required to disable System Integrity Protection, `mySIMBL` will inform you but cannot automate this process
+* Add plugins to the plugins tab to manage them
 
 # Current Funtions
 
