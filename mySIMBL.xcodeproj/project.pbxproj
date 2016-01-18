@@ -1,0 +1,471 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FB09A4C51C4B26AD0072C553 /* INAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FB09A4BA1C4B26AD0072C553 /* INAppStoreWindow.m */; };
+		FB09A4C61C4B26AD0072C553 /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FB09A4BD1C4B26AD0072C553 /* INWindowButton.m */; };
+		FB09A4C71C4B26AD0072C553 /* WAYAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FB09A4C11C4B26AD0072C553 /* WAYAppStoreWindow.m */; };
+		FB09A4C81C4B26AD0072C553 /* WAYWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FB09A4C41C4B26AD0072C553 /* WAYWindow.m */; };
+		FB09A4F51C4B5FEF0072C553 /* Changelog.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4F41C4B5FEF0072C553 /* Changelog.rtf */; };
+		FB09A4F71C4B64F80072C553 /* webicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4F61C4B64F80072C553 /* webicon.png */; };
+		FB09A4F91C4B6D830072C553 /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4F81C4B6D830072C553 /* donate.png */; };
+		FB09A4FB1C4B85250072C553 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4FA1C4B85250072C553 /* icon.icns */; };
+		FB57D2F31C4BAFB20077F91C /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB5F44DE1C43A5AF00DE80B4 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FB57D2F51C4BB0C00077F91C /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5F44DE1C43A5AF00DE80B4 /* Sparkle.framework */; };
+		FB5F44B81C41EA4000DE80B4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F44B71C41EA4000DE80B4 /* AppDelegate.m */; };
+		FB5F44BB1C41EA4000DE80B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F44BA1C41EA4000DE80B4 /* main.m */; };
+		FB5F44BD1C41EA4000DE80B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB5F44BC1C41EA4000DE80B4 /* Assets.xcassets */; };
+		FB5F44C01C41EA4000DE80B4 /* Appliaction.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB5F44BE1C41EA4000DE80B4 /* Appliaction.xib */; };
+		FB5F44E61C44BFF100DE80B4 /* SCEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F44E41C44BFF100DE80B4 /* SCEvent.m */; };
+		FB5F44E71C44BFF100DE80B4 /* SCEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F44E51C44BFF100DE80B4 /* SCEvents.m */; };
+		FBC54D6C1C4C31D70021517C /* heart2.png in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6B1C4C31D70021517C /* heart2.png */; };
+		FBC54D6F1C4C33030021517C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6D1C4C33030021517C /* Credits.rtf */; };
+		FBC54D701C4C33030021517C /* EULA.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6E1C4C33030021517C /* EULA.rtf */; };
+		FBC54D8B1C4C454E0021517C /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC54D8A1C4C454E0021517C /* PFMoveApplication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FB57D2F21C4BAF8B0077F91C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FB57D2F31C4BAFB20077F91C /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FB09A4B91C4B26AD0072C553 /* INAppStoreWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAppStoreWindow.h; sourceTree = "<group>"; };
+		FB09A4BA1C4B26AD0072C553 /* INAppStoreWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAppStoreWindow.m; sourceTree = "<group>"; };
+		FB09A4BB1C4B26AD0072C553 /* INAppStoreWindowCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAppStoreWindowCompatibility.h; sourceTree = "<group>"; };
+		FB09A4BC1C4B26AD0072C553 /* INWindowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INWindowButton.h; sourceTree = "<group>"; };
+		FB09A4BD1C4B26AD0072C553 /* INWindowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INWindowButton.m; sourceTree = "<group>"; };
+		FB09A4C01C4B26AD0072C553 /* WAYAppStoreWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYAppStoreWindow.h; sourceTree = "<group>"; };
+		FB09A4C11C4B26AD0072C553 /* WAYAppStoreWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYAppStoreWindow.m; sourceTree = "<group>"; };
+		FB09A4C31C4B26AD0072C553 /* WAYWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAYWindow.h; sourceTree = "<group>"; };
+		FB09A4C41C4B26AD0072C553 /* WAYWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAYWindow.m; sourceTree = "<group>"; };
+		FB09A4F41C4B5FEF0072C553 /* Changelog.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Changelog.rtf; sourceTree = "<group>"; };
+		FB09A4F61C4B64F80072C553 /* webicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = webicon.png; sourceTree = "<group>"; };
+		FB09A4F81C4B6D830072C553 /* donate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donate.png; sourceTree = "<group>"; };
+		FB09A4FA1C4B85250072C553 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		FB5F44B31C41EA4000DE80B4 /* mySIMBL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mySIMBL.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB5F44B61C41EA4000DE80B4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		FB5F44B71C41EA4000DE80B4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		FB5F44BA1C41EA4000DE80B4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FB5F44BC1C41EA4000DE80B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FB5F44BF1C41EA4000DE80B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Appliaction.xib; sourceTree = "<group>"; };
+		FB5F44C11C41EA4000DE80B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FB5F44DE1C43A5AF00DE80B4 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = mySIMBL/Sparkle.framework; sourceTree = "<group>"; };
+		FB5F44E01C44BFF100DE80B4 /* SCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCConstants.h; sourceTree = "<group>"; };
+		FB5F44E11C44BFF100DE80B4 /* SCEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEvent.h; sourceTree = "<group>"; };
+		FB5F44E21C44BFF100DE80B4 /* SCEventListenerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEventListenerProtocol.h; sourceTree = "<group>"; };
+		FB5F44E31C44BFF100DE80B4 /* SCEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEvents.h; sourceTree = "<group>"; };
+		FB5F44E41C44BFF100DE80B4 /* SCEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCEvent.m; sourceTree = "<group>"; };
+		FB5F44E51C44BFF100DE80B4 /* SCEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCEvents.m; sourceTree = "<group>"; };
+		FBC54D6B1C4C31D70021517C /* heart2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart2.png; sourceTree = "<group>"; };
+		FBC54D6D1C4C33030021517C /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		FBC54D6E1C4C33030021517C /* EULA.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = EULA.rtf; sourceTree = "<group>"; };
+		FBC54D891C4C454E0021517C /* PFMoveApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFMoveApplication.h; sourceTree = "<group>"; };
+		FBC54D8A1C4C454E0021517C /* PFMoveApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFMoveApplication.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FB5F44B01C41EA4000DE80B4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB57D2F51C4BB0C00077F91C /* Sparkle.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FB09A4B71C4B26AD0072C553 /* INAppStoreWindow */ = {
+			isa = PBXGroup;
+			children = (
+				FB09A4B91C4B26AD0072C553 /* INAppStoreWindow.h */,
+				FB09A4BA1C4B26AD0072C553 /* INAppStoreWindow.m */,
+				FB09A4BB1C4B26AD0072C553 /* INAppStoreWindowCompatibility.h */,
+				FB09A4BC1C4B26AD0072C553 /* INWindowButton.h */,
+				FB09A4BD1C4B26AD0072C553 /* INWindowButton.m */,
+			);
+			path = INAppStoreWindow;
+			sourceTree = "<group>";
+		};
+		FB09A4BF1C4B26AD0072C553 /* WAYAppStoreWindow */ = {
+			isa = PBXGroup;
+			children = (
+				FB09A4C01C4B26AD0072C553 /* WAYAppStoreWindow.h */,
+				FB09A4C11C4B26AD0072C553 /* WAYAppStoreWindow.m */,
+			);
+			path = WAYAppStoreWindow;
+			sourceTree = "<group>";
+		};
+		FB09A4C21C4B26AD0072C553 /* WAYWindow */ = {
+			isa = PBXGroup;
+			children = (
+				FB09A4C31C4B26AD0072C553 /* WAYWindow.h */,
+				FB09A4C41C4B26AD0072C553 /* WAYWindow.m */,
+			);
+			path = WAYWindow;
+			sourceTree = "<group>";
+		};
+		FB09A4C91C4B26C10072C553 /* WAYAppStoreWindow */ = {
+			isa = PBXGroup;
+			children = (
+				FB09A4B71C4B26AD0072C553 /* INAppStoreWindow */,
+				FB09A4BF1C4B26AD0072C553 /* WAYAppStoreWindow */,
+				FB09A4C21C4B26AD0072C553 /* WAYWindow */,
+			);
+			name = WAYAppStoreWindow;
+			sourceTree = "<group>";
+		};
+		FB57D2F01C4BAD8C0077F91C /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Scripts;
+			sourceTree = "<group>";
+		};
+		FB5F44AA1C41EA4000DE80B4 = {
+			isa = PBXGroup;
+			children = (
+				FB5F44DE1C43A5AF00DE80B4 /* Sparkle.framework */,
+				FB5F44B51C41EA4000DE80B4 /* mySIMBL */,
+				FB5F44B41C41EA4000DE80B4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FB5F44B41C41EA4000DE80B4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FB5F44B31C41EA4000DE80B4 /* mySIMBL.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FB5F44B51C41EA4000DE80B4 /* mySIMBL */ = {
+			isa = PBXGroup;
+			children = (
+				FBC54D881C4C452F0021517C /* LetsMove */,
+				FB09A4C91C4B26C10072C553 /* WAYAppStoreWindow */,
+				FB5F44DD1C439D9900DE80B4 /* SCEvent */,
+				FB57D2F01C4BAD8C0077F91C /* Scripts */,
+				FB5F44D41C4380BB00DE80B4 /* Resource */,
+				FB5F44BA1C41EA4000DE80B4 /* main.m */,
+				FB5F44B61C41EA4000DE80B4 /* AppDelegate.h */,
+				FB5F44B71C41EA4000DE80B4 /* AppDelegate.m */,
+				FB5F44BE1C41EA4000DE80B4 /* Appliaction.xib */,
+				FB5F44BC1C41EA4000DE80B4 /* Assets.xcassets */,
+			);
+			path = mySIMBL;
+			sourceTree = "<group>";
+		};
+		FB5F44D41C4380BB00DE80B4 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				FB09A4FA1C4B85250072C553 /* icon.icns */,
+				FB09A4F61C4B64F80072C553 /* webicon.png */,
+				FB09A4F81C4B6D830072C553 /* donate.png */,
+				FBC54D6B1C4C31D70021517C /* heart2.png */,
+				FB09A4F41C4B5FEF0072C553 /* Changelog.rtf */,
+				FBC54D6D1C4C33030021517C /* Credits.rtf */,
+				FBC54D6E1C4C33030021517C /* EULA.rtf */,
+				FB5F44C11C41EA4000DE80B4 /* Info.plist */,
+			);
+			name = Resource;
+			sourceTree = "<group>";
+		};
+		FB5F44DD1C439D9900DE80B4 /* SCEvent */ = {
+			isa = PBXGroup;
+			children = (
+				FB5F44E01C44BFF100DE80B4 /* SCConstants.h */,
+				FB5F44E11C44BFF100DE80B4 /* SCEvent.h */,
+				FB5F44E21C44BFF100DE80B4 /* SCEventListenerProtocol.h */,
+				FB5F44E31C44BFF100DE80B4 /* SCEvents.h */,
+				FB5F44E41C44BFF100DE80B4 /* SCEvent.m */,
+				FB5F44E51C44BFF100DE80B4 /* SCEvents.m */,
+			);
+			name = SCEvent;
+			sourceTree = "<group>";
+		};
+		FBC54D881C4C452F0021517C /* LetsMove */ = {
+			isa = PBXGroup;
+			children = (
+				FBC54D891C4C454E0021517C /* PFMoveApplication.h */,
+				FBC54D8A1C4C454E0021517C /* PFMoveApplication.m */,
+			);
+			name = LetsMove;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FB5F44B21C41EA4000DE80B4 /* mySIMBL */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FB5F44C41C41EA4000DE80B4 /* Build configuration list for PBXNativeTarget "mySIMBL" */;
+			buildPhases = (
+				FB5F44AF1C41EA4000DE80B4 /* Sources */,
+				FB5F44B01C41EA4000DE80B4 /* Frameworks */,
+				FB5F44B11C41EA4000DE80B4 /* Resources */,
+				FB57D2F21C4BAF8B0077F91C /* CopyFiles */,
+				FB09A4F31C4B5B920072C553 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = mySIMBL;
+			productName = mySIMBL;
+			productReference = FB5F44B31C41EA4000DE80B4 /* mySIMBL.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FB5F44AB1C41EA4000DE80B4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Wolfgang Baird";
+				TargetAttributes = {
+					FB5F44B21C41EA4000DE80B4 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = FB5F44AE1C41EA4000DE80B4 /* Build configuration list for PBXProject "mySIMBL" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FB5F44AA1C41EA4000DE80B4;
+			productRefGroup = FB5F44B41C41EA4000DE80B4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FB5F44B21C41EA4000DE80B4 /* mySIMBL */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FB5F44B11C41EA4000DE80B4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB09A4F71C4B64F80072C553 /* webicon.png in Resources */,
+				FB09A4FB1C4B85250072C553 /* icon.icns in Resources */,
+				FB5F44BD1C41EA4000DE80B4 /* Assets.xcassets in Resources */,
+				FBC54D6F1C4C33030021517C /* Credits.rtf in Resources */,
+				FB09A4F51C4B5FEF0072C553 /* Changelog.rtf in Resources */,
+				FB5F44C01C41EA4000DE80B4 /* Appliaction.xib in Resources */,
+				FB09A4F91C4B6D830072C553 /* donate.png in Resources */,
+				FBC54D6C1C4C31D70021517C /* heart2.png in Resources */,
+				FBC54D701C4C33030021517C /* EULA.rtf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FB09A4F31C4B5B920072C553 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -rf /Users/w0lf/Library/Developer/Xcode/DerivedData/mySIMBL-esenprirbnufkediacexxqbwxkfk/Build/Products/Debug/mySIMBL.app /Applications";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FB5F44AF1C41EA4000DE80B4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB09A4C61C4B26AD0072C553 /* INWindowButton.m in Sources */,
+				FB09A4C51C4B26AD0072C553 /* INAppStoreWindow.m in Sources */,
+				FBC54D8B1C4C454E0021517C /* PFMoveApplication.m in Sources */,
+				FB5F44E71C44BFF100DE80B4 /* SCEvents.m in Sources */,
+				FB09A4C71C4B26AD0072C553 /* WAYAppStoreWindow.m in Sources */,
+				FB5F44BB1C41EA4000DE80B4 /* main.m in Sources */,
+				FB5F44B81C41EA4000DE80B4 /* AppDelegate.m in Sources */,
+				FB5F44E61C44BFF100DE80B4 /* SCEvent.m in Sources */,
+				FB09A4C81C4B26AD0072C553 /* WAYWindow.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FB5F44BE1C41EA4000DE80B4 /* Appliaction.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FB5F44BF1C41EA4000DE80B4 /* Base */,
+			);
+			name = Appliaction.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FB5F44C21C41EA4000DE80B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		FB5F44C31C41EA4000DE80B4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		FB5F44C51C41EA4000DE80B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/mySIMBL",
+				);
+				INFOPLIST_FILE = mySIMBL/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = org.w0lf.mySIMBL;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FB5F44C61C41EA4000DE80B4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/mySIMBL",
+				);
+				INFOPLIST_FILE = mySIMBL/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = org.w0lf.mySIMBL;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FB5F44AE1C41EA4000DE80B4 /* Build configuration list for PBXProject "mySIMBL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB5F44C21C41EA4000DE80B4 /* Debug */,
+				FB5F44C31C41EA4000DE80B4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FB5F44C41C41EA4000DE80B4 /* Build configuration list for PBXNativeTarget "mySIMBL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB5F44C51C41EA4000DE80B4 /* Debug */,
+				FB5F44C61C41EA4000DE80B4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FB5F44AB1C41EA4000DE80B4 /* Project object */;
+}
