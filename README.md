@@ -2,7 +2,7 @@
 
 `mySIMBL` is the successor to the application [EasySIMBL](https://github.com/norio-nomura/EasySIMBL). It is designed to make managing [SIMBL plugins](https://en.wikipedia.org/wiki/SIMBL#Plugins) easy on OS X versions 10.9 and above.
 
-This appication uses the [older version of SIMBL.osax (0.9.9)](http://www.culater.net/software/SIMBL/SIMBL.php) since EasySIMBL.osax no longer works on OS X 10.9.5 and above. The EasySIMBL developer does not seem like they are going to update their application or script.
+This appication uses the [older version of SIMBL.osax (0.9.9)](http://www.culater.net/software/SIMBL/SIMBL.php) since EasySIMBL.osax no longer works on [OS X 10.9.5 and above](https://support.apple.com/en-us/HT205375). The EasySIMBL developer does not seem like they are going to update their application or script.
 
 ![Preview](mySIMBL.png)
 
