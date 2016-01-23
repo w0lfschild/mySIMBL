@@ -14,7 +14,7 @@ This appication uses the [older version of SIMBL.osax (0.9.9)](http://www.culate
     * You may be required to disable System Integrity Protection, `mySIMBL` will inform you but cannot automate this process
 * Add plugins to the plugins tab to manage them
 
-# Current Funtions
+# Current Functions
 
 * System Integrity Protection warning
 * Offers to move self to /Applications
