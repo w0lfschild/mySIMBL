@@ -292,7 +292,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -rf /Users/w0lf/Library/Developer/Xcode/DerivedData/mySIMBL-esenprirbnufkediacexxqbwxkfk/Build/Products/Debug/mySIMBL.app /Applications";
+			shellScript = "cp -rf ~/Library/Developer/Xcode/DerivedData/mySIMBL-*/Build/Products/Debug/mySIMBL.app /Applications";
 		};
 /* End PBXShellScriptBuildPhase section */
 
