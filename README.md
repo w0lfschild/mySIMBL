@@ -4,7 +4,7 @@ mySIMBL is a successor to the application EasySIMBL. It is designed to make mana
 
 This appication uses the older version of SIMBL.osax (0.9.9) since EasySIMBL.osax no longer works on OS X 10.9+ and the original developer does not seem like they are going to update their application or script.
 
-![Preview](mySIMBL.png)
+![Preview](preview.png)
 
 # Installation
 
