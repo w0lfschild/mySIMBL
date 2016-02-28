@@ -23,14 +23,14 @@ This appication uses the older version of SIMBL.osax (0.9.9) since EasySIMBL.osa
 * Delete bundle (Trash can)
 * Show bundle in Finder (Magnifying Glass)
 * Toggle bundles between (Colored Circle Icon)
-    ⁃	/Library/Application Support/SIMBL/Plugins
-    ⁃	/Library/Application Support/SIMBL/Plugins (Disabled)
-    ⁃	~/Library/Application Support/SIMBL/Plugins
+    *	/Library/Application Support/SIMBL/Plugins
+    *	/Library/Application Support/SIMBL/Plugins (Disabled)
+    *	~/Library/Application Support/SIMBL/Plugins
 * Bundles will display custom icon if located in <bundle>/Contents/icon.icns
-    ⁃	Otherwise bundles display default bundle icon
+    *	Otherwise bundles display default bundle icon
 * Show bundle developer page (Globe Icon)
-    ⁃	Must have url included in <bundle>/Contents/Info.plist
-    ⁃	plist value is string 'DevURL'
+    *	Must have url included in <bundle>/Contents/Info.plist
+    *	plist value is string 'DevURL'
 * Watch for changes to
-    ⁃	/Library/Application Support/SIMBL/Plugins
-    ⁃	~/Library/Application Support/SIMBL/Plugins
+    *	/Library/Application Support/SIMBL/Plugins
+    *	~/Library/Application Support/SIMBL/Plugins
