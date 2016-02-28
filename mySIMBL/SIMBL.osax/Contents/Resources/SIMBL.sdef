@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
+<dictionary title="SIMBL Terminology">
+	<suite name="SIMBL Suite" code="SIMe" description="Load SIMBL">
+		<command name="inject SIMBL into Leopard" code="SIMeleop" description="Inject SIMBL into the receiving application. (Leopard only)"/>
+		<command name="inject SIMBL into Snow Leopard" code="SIMeload" description="Inject SIMBL into the receiving application."/>
+	</suite>
+</dictionary>

@@ -7,20 +7,6 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "NO"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FB0CF69A1C61D1E8002CF3DE"
-               BuildableName = "SIMBLHelper.app"
-               BlueprintName = "SIMBLHelper"
-               ReferencedContainer = "container:mySIMBL.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
@@ -28,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FB5F44B21C41EA4000DE80B4"
-               BuildableName = "mySIMBL.app"
-               BlueprintName = "mySIMBL"
+               BlueprintIdentifier = "FB0CF69A1C61D1E8002CF3DE"
+               BuildableName = "SIMBLHelper.app"
+               BlueprintName = "SIMBLHelper"
                ReferencedContainer = "container:mySIMBL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FB5F44B21C41EA4000DE80B4"
-            BuildableName = "mySIMBL.app"
-            BlueprintName = "mySIMBL"
+            BlueprintIdentifier = "FB0CF69A1C61D1E8002CF3DE"
+            BuildableName = "SIMBLHelper.app"
+            BlueprintName = "SIMBLHelper"
             ReferencedContainer = "container:mySIMBL.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -69,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FB5F44B21C41EA4000DE80B4"
-            BuildableName = "mySIMBL.app"
-            BlueprintName = "mySIMBL"
+            BlueprintIdentifier = "FB0CF69A1C61D1E8002CF3DE"
+            BuildableName = "SIMBLHelper.app"
+            BlueprintName = "SIMBLHelper"
             ReferencedContainer = "container:mySIMBL.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -88,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FB5F44B21C41EA4000DE80B4"
-            BuildableName = "mySIMBL.app"
-            BlueprintName = "mySIMBL"
+            BlueprintIdentifier = "FB0CF69A1C61D1E8002CF3DE"
+            BuildableName = "SIMBLHelper.app"
+            BlueprintName = "SIMBLHelper"
             ReferencedContainer = "container:mySIMBL.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

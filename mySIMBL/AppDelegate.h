@@ -8,6 +8,7 @@
 
 @import Foundation;
 @import AppKit;
+@import Sparkle;
 #import "SCEvent.h"
 #import "SCEvents.h"
 #import "WAYAppStoreWindow.h"
@@ -22,6 +23,14 @@
 - (void)setupEventListener;
 - (void)installBundles:(NSArray*)pathArray;
 
+@end
+
+@interface NSToolTipManager : NSObject
+{
+    double toolTipDelay;
+}
++ (id)sharedToolTipManager;
+- (void)setInitialToolTipDelay:(double)arg1;
 @end
 
 @interface CustomTableCell : NSTableCellView <NSTableViewDataSource, NSTableViewDelegate>

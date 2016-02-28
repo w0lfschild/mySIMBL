@@ -8,8 +8,9 @@
 
 #import "AppDelegate.h"
 
-static NSString *SCEventsDownloadsDirectory = @"Downloads";
+NSMutableDictionary *myPreferences;
 NSMutableArray *tableArray;
+NSMutableArray *confirmDelete;
 
 @interface AppDelegate ()
 
@@ -24,16 +25,28 @@ NSMutableArray *tableArray;
 @property (nonatomic, strong) IBOutlet NSView *tabPreferences;
 @property (nonatomic, strong) IBOutlet NSView *tabSIP;
 
-@property (nonatomic, strong) IBOutlet NSButton *viewTab0;
-@property (nonatomic, strong) IBOutlet NSButton *viewTab1;
-@property (nonatomic, strong) IBOutlet NSButton *viewTab2;
-@property (nonatomic, strong) IBOutlet NSButton *viewTab3;
-
+@property (nonatomic, strong) IBOutlet NSButton *viewPlugins;
+@property (nonatomic, strong) IBOutlet NSButton *viewPreferences;
+@property (nonatomic, strong) IBOutlet NSButton *viewAbout;
 @property (nonatomic, strong) IBOutlet NSButton *showCredits;
 @property (nonatomic, strong) IBOutlet NSButton *showChanges;
 @property (nonatomic, strong) IBOutlet NSButton *showEULA;
-
 @property (nonatomic, strong) IBOutlet NSButton *donateButton;
+@property (nonatomic, strong) IBOutlet NSButton *gitButton;
+@property (nonatomic, strong) IBOutlet NSButton *emailButton;
+@property (nonatomic, strong) IBOutlet NSButton *webButton;
+@property (nonatomic, strong) IBOutlet NSButton *translateButton;
+
+@property (nonatomic, strong) IBOutlet NSPopUpButton    *SIMBLLogging;
+
+// App preferences
+@property (nonatomic, strong) IBOutlet NSButton         *prefVibrant;
+@property (nonatomic, strong) IBOutlet NSButton         *prefTips;
+@property (nonatomic, strong) IBOutlet NSButton         *prefDonate;
+@property (nonatomic, strong) IBOutlet NSButton         *prefWindow;
+
+@property (nonatomic, strong) IBOutlet NSPopUpButton    *prefUpdateAuto;
+@property (nonatomic, strong) IBOutlet NSPopUpButton    *prefUpdateInterval;
 
 @property IBOutlet NSTextView *changeLog;
 
@@ -41,9 +54,9 @@ NSMutableArray *tableArray;
 
 @interface CustomTableCell ()
 
+@property (nonatomic, strong) IBOutlet NSButton*     pluginDelete;
 @property (nonatomic, strong) IBOutlet NSButton*     pluginWeb;
 @property (nonatomic, strong) IBOutlet NSButton*     pluginStatus;
-@property (nonatomic, strong) IBOutlet NSButton*     pluginBlackList;
 @property (nonatomic, strong) IBOutlet NSTextField*  pluginName;
 @property (nonatomic, strong) IBOutlet NSTextField*  pluginDescription;
 @property (nonatomic, strong) IBOutlet NSImageView*  pluginImage;
@@ -62,9 +75,15 @@ NSMutableArray *tableArray;
     [self installBundles:filenames];
 }
 
+// App opened
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
+    myPreferences = [self getmyPrefs];
+    
     [self setupWindow];
+    [self setupPrefstab];
     [self readPlugins];
+    [self addLoginItem];
+    [self launchHelper];
     
     // Setup plugin table
     [_tblView setHeaderView:nil];
@@ -82,6 +101,112 @@ NSMutableArray *tableArray;
     // Insert code here to tear down your application
 }
 
+- (NSString*) runCommand:(NSString*)commandToRun {
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/bin/sh"];
+    
+    NSArray *arguments = [NSArray arrayWithObjects:
+                          @"-c" ,
+                          [NSString stringWithFormat:@"%@", commandToRun],
+                          nil];
+    //    NSLog(@"run command:%@", commandToRun);
+    [task setArguments:arguments];
+    
+    NSPipe *pipe = [NSPipe pipe];
+    [task setStandardOutput:pipe];
+    
+    NSFileHandle *file = [pipe fileHandleForReading];
+    
+    [task launch];
+    
+    NSData *data = [file readDataToEndOfFile];
+    
+    NSString *output = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return output;
+}
+
+- (void) runScript:(NSString*)scriptName {
+    NSTask *task;
+    task = [[NSTask alloc] init];
+    [task setLaunchPath: @"/bin/bash"];
+    
+    NSArray *arguments;
+    NSLog(@"shell script path: %@",scriptName);
+    arguments = [NSArray arrayWithObjects:scriptName, nil];
+    [task setArguments: arguments];
+    
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput: pipe];
+    
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    
+    [task launch];
+    
+    NSData *data;
+    data = [file readDataToEndOfFile];
+    
+    NSString *string;
+    string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+    NSLog (@"script returned:\n%@", string);
+}
+
+- (BOOL) runProcessAsAdministrator:(NSString*)scriptPath
+                     withArguments:(NSArray *)arguments
+                            output:(NSString **)output
+                  errorDescription:(NSString **)errorDescription {
+    
+    NSString * allArgs = [arguments componentsJoinedByString:@" "];
+    NSString * fullScript = [NSString stringWithFormat:@"'%@' %@", scriptPath, allArgs];
+    
+    NSDictionary *errorInfo = [NSDictionary new];
+    NSString *script =  [NSString stringWithFormat:@"do shell script \"%@\" with administrator privileges", fullScript];
+    
+    NSAppleScript *appleScript = [[NSAppleScript new] initWithSource:script];
+    NSAppleEventDescriptor * eventResult = [appleScript executeAndReturnError:&errorInfo];
+    
+    // Check errorInfo
+    if (! eventResult)
+    {
+        // Describe common errors
+        *errorDescription = nil;
+        if ([errorInfo valueForKey:NSAppleScriptErrorNumber])
+        {
+            NSNumber * errorNumber = (NSNumber *)[errorInfo valueForKey:NSAppleScriptErrorNumber];
+            if ([errorNumber intValue] == -128)
+                *errorDescription = @"The administrator password is required to do this.";
+        }
+        
+        // Set error message from provided message
+        if (*errorDescription == nil)
+        {
+            if ([errorInfo valueForKey:NSAppleScriptErrorMessage])
+                *errorDescription =  (NSString *)[errorInfo valueForKey:NSAppleScriptErrorMessage];
+        }
+        
+        return NO;
+    }
+    else
+    {
+        // Set output to the AppleScript's output
+        *output = [eventResult stringValue];
+        
+        return YES;
+    }
+}
+
+- (NSMutableDictionary *)getmyPrefs {
+    return [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
+//    return [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] persistentDomainForName:@"org.w0lf.mySIMBL"]];
+//    return [NSMutableDictionary dictionaryWithContentsOfFile:plist_Dock];
+}
+
+- (IBAction)changeSIMBLLogging:(id)sender {
+    NSString *logLevel = [NSString stringWithFormat:@"defaults write net.culater.SIMBL SIMBLLogLevel -int %ld", [_SIMBLLogging indexOfSelectedItem]];
+    logLevel = [self runCommand:logLevel];
+}
+
 - (void)setupWindow {
     if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion < 10)
     {
@@ -92,31 +217,29 @@ NSMutableArray *tableArray;
         [_window setTitlebarAppearsTransparent:true];
     }
     
-//    if ([[prefCD valueForKey:@"blurView"] boolValue])
-//    {
+    if ([[myPreferences valueForKey:@"prefVibrant"] boolValue])
+    {
         Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
         if (vibrantClass)
         {
             NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
             [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
             [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-//            [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
-            [_tabAbout addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
+            [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
         }
-//    }
+    }
     
     [_window setBackgroundColor:[NSColor whiteColor]];
     [_window setMovableByWindowBackground:YES];
     
     // Setup tab view
-    [self selectView:_viewTab0];
+    [self selectView:_viewPlugins];
     [[_tabView tabViewItemAtIndex:0] setView:_tabPlugins];
     
     NSTabViewItem* tabItem1 = [_tabView tabViewItemAtIndex:1];
     [tabItem1 setView:_tabSIMBLInstalled];
     if (![[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/ScriptingAdditions/SIMBL.osax"])
     {
-        [self selectView:_viewTab1];
         if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion >= 11)
         {
             // Rootless check
@@ -140,10 +263,170 @@ NSMutableArray *tableArray;
         }
     }
     
-    [[_tabView tabViewItemAtIndex:2] setView:_tabPreferences];
-    [[_tabView tabViewItemAtIndex:3] setView:_tabAbout];
+    [[_tabView tabViewItemAtIndex:1] setView:_tabPreferences];
+    [[_tabView tabViewItemAtIndex:2] setView:_tabAbout];
     
     [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
+}
+
+- (IBAction)toggleVibrancy:(id)sender {
+    NSButton *btn = sender;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefVibrant"];
+    Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
+    if (vibrantClass)
+    {
+        if ([btn state])
+        {
+            NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
+            [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
+            [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
+            if (![[_window.contentView subviews] containsObject:vibrant])
+                [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
+        } else {
+            for (NSVisualEffectView *v in (NSMutableArray *)[_window.contentView subviews])
+                if ([v class] == vibrantClass) {
+                    [v removeFromSuperview];
+                    break;
+                }
+        }
+    }
+}
+
+- (IBAction)toggleTips:(id)sender {
+    NSButton *btn = sender;
+//    [myPreferences setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefTips"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefTips"];
+    NSToolTipManager *test = [NSToolTipManager sharedToolTipManager];
+    if ([btn state])
+        [test setInitialToolTipDelay:0.1];
+    else
+        [test setInitialToolTipDelay:2];
+}
+
+- (IBAction)toggleSaveWindow:(id)sender {
+    NSButton *btn = sender;
+//    [myPreferences setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefWindow"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefWindow"];
+    if ([btn state])
+    {
+        [[_window windowController] setShouldCascadeWindows:NO];      // Tell the controller to not cascade its windows.
+        [_window setFrameAutosaveName:[_window representedFilename]];
+    } else {
+        [_window setFrameAutosaveName:@""];
+    }
+}
+
+- (IBAction)toggleDonateButton:(id)sender {
+    NSButton *btn = sender;
+//    [myPreferences setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefDonate"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefDonate"];
+    if ([btn state])
+    {
+        [NSAnimationContext beginGrouping];
+        [[NSAnimationContext currentContext] setDuration:1.0];
+        [[_donateButton animator] setAlphaValue:0];
+        [[_donateButton animator] setHidden:true];
+        [NSAnimationContext endGrouping];
+    } else {
+        [NSAnimationContext beginGrouping];
+        [[NSAnimationContext currentContext] setDuration:1.0];
+        [[_donateButton animator] setAlphaValue:1];
+        [[_donateButton animator] setHidden:false];
+        [NSAnimationContext endGrouping];
+    }
+}
+
+- (void)addLoginItem {
+    dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(myQueue, ^{
+        NSMutableDictionary *SIMBLPrefs = [NSMutableDictionary dictionaryWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/net.culater.SIMBL_Agent.plist"]];
+        [SIMBLPrefs setObject:[NSArray arrayWithObjects:@"com.skype.skype", @"com.FilterForge.FilterForge4", @"com.apple.logic10", nil] forKey:@"SIMBLApplicationIdentifierBlacklist"];
+        [SIMBLPrefs writeToFile:[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/net.culater.SIMBL_Agent.plist"] atomically:YES];
+        
+        // Lets stick to the classics. Same method as cDock uses...
+        NSString *nullString;
+        NSString *loginAgent = [[NSBundle mainBundle] pathForResource:@"SIMBLHelper" ofType:@"app"];
+        nullString = [self runCommand:@"osascript -e \"tell application \\\"System Events\\\" to delete login items \\\"SIMBLHelper\\\"\""];
+        nullString = [self runCommand:[NSString stringWithFormat:@"osascript -e \"tell application \\\"System Events\\\" to make new login item at end of login items with properties {path:\\\"%@\\\", hidden:false}\"", loginAgent]];
+    });
+}
+
+- (void)launchHelper {
+    system("killall SIMBLHelper");
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"SIMBLHelper" ofType:@"app"];
+    [[NSWorkspace sharedWorkspace] launchApplication:path];
+}
+
+- (void)setupPrefstab {
+    NSString *res = [self runCommand:@"defaults read net.culater.SIMBL SIMBLLogLevel"];
+    [_SIMBLLogging selectItemAtIndex:[res integerValue]];
+    
+    [_prefDonate setState:[[myPreferences objectForKey:@"prefDonate"] boolValue]];
+    [_prefTips setState:[[myPreferences objectForKey:@"prefTips"] boolValue]];
+    [_prefVibrant setState:[[myPreferences objectForKey:@"prefVibrant"] boolValue]];
+    [_prefWindow setState:[[myPreferences objectForKey:@"prefWindow"] boolValue]];
+    
+    if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion < 10)
+        [_prefVibrant setEnabled:false];
+    
+    if ([[myPreferences objectForKey:@"prefWindow"] boolValue])
+        [_window setFrameAutosaveName:@"MainWindow"];
+    
+    if ([[myPreferences objectForKey:@"prefTips"] boolValue])
+    {
+        NSToolTipManager *test = [NSToolTipManager sharedToolTipManager];
+        [test setInitialToolTipDelay:0.1];
+    }
+    
+    [_donateButton setHidden:[[myPreferences objectForKey:@"prefDonate"] boolValue]];
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SUAutomaticallyUpdate"]) {
+        [_prefUpdateAuto selectItemAtIndex:2];
+    } else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SUEnableAutomaticChecks"]) {
+        [_prefUpdateAuto selectItemAtIndex:1];
+    } else {
+        [_prefUpdateAuto selectItemAtIndex:0];
+    }
+    
+//    [_prefUpdateAuto selectItemAtIndex:[[myPreferences objectForKey:@"prefUpdateAuto"] integerValue]];
+    [_prefUpdateInterval selectItemAtIndex:[[myPreferences objectForKey:@"prefUpdateInterval"] integerValue]];
+    
+    [[_gitButton cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
+//    [[_translateButton cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
+    [[_webButton cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
+    [[_emailButton cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
+    
+    [_gitButton setAction:@selector(visitGithub)];
+//    [_translateButton setAction:@selector(translate)];
+    [_webButton setAction:@selector(visitWebsite)];
+    [_emailButton setAction:@selector(sendEmail)];
+}
+
+- (IBAction)inject:(id)sender {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self runScript:[[NSBundle mainBundle] pathForResource:@"injectPROC" ofType:@"sh"]];
+    });
+}
+
+- (void)donate {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://goo.gl/DSyEFR"]];
+}
+
+- (void)translate {
+    NSString *myURL = [[NSBundle mainBundle] pathForResource:@"MyApp" ofType:@"strings"];
+    [[NSWorkspace sharedWorkspace] openFile:myURL];
+}
+
+- (void)sendEmail {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"mailto:aguywithlonghair@gmail.com"]];
+}
+
+- (void)visitGithub {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/w0lfschild"]];
+}
+
+- (void)visitWebsite {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://w0lfschild.github.io/app_SIMBL.html"]];
 }
 
 - (void)setupEventListener {
@@ -229,28 +512,40 @@ NSMutableArray *tableArray;
 
 - (void)readPlugins {
     tableArray = [[NSMutableArray alloc] init];
+    confirmDelete = [[NSMutableArray alloc] init];
     NSMutableDictionary *myDict = [[NSMutableDictionary alloc] init];
     
     NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
     NSArray* usrDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
+    
     NSString* libSupport = [[libDomain objectAtIndex:0] path];
     NSString* usrSupport = [[usrDomain objectAtIndex:0] path];
+    
     NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
     NSString* libPathDIS = [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)", libSupport];
+    
     NSString* usrPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", usrSupport];
     NSString* usrPathDIS = [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)", usrSupport];
     
+    NSString* OpeePath = [NSString stringWithFormat:@"/Library/Opee/Extensions"];
+    
     [self readFolder:libPathENB :myDict];
     [self readFolder:libPathDIS :myDict];
+    
     [self readFolder:usrPathENB :myDict];
     [self readFolder:usrPathDIS :myDict];
+    
+    [self readFolder:OpeePath :myDict];
     
     NSArray *keys = [myDict allKeys];
     NSArray *sortedKeys = [keys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 //    sortedKeys = [[sortedKeys reverseObjectEnumerator] allObjects];
     
     for (NSString *app in sortedKeys)
+    {
         [tableArray addObject:[myDict valueForKey:app]];
+        [confirmDelete addObject:[NSNumber numberWithBool:false]];
+    }
 
     [[self tblView] reloadData];
 }
@@ -284,6 +579,28 @@ NSMutableArray *tableArray;
     //    NSLog(@"%@", error);
 }
 
+- (IBAction)showAbout:(id)sender {
+    NSArray *tabs = [NSArray arrayWithObjects:_viewPlugins, _viewPreferences, _viewAbout, nil];
+    [_tabView selectTabViewItemAtIndex:2];
+    for (NSButton *g in tabs) {
+        if (![g isEqualTo:_viewAbout])
+            [g setState:NSOffState];
+        else
+            [g setState:NSOnState];
+    }
+}
+
+- (IBAction)showPrefs:(id)sender {
+    NSArray *tabs = [NSArray arrayWithObjects:_viewPlugins, _viewPreferences, _viewAbout, nil];
+    [_tabView selectTabViewItemAtIndex:1];
+    for (NSButton *g in tabs) {
+        if (![g isEqualTo:_viewPreferences])
+            [g setState:NSOffState];
+        else
+            [g setState:NSOnState];
+    }
+}
+
 - (IBAction)pluginWebpage:(id)sender {
     long selected = [_tblView rowForView:sender];
     NSDictionary* obj = [tableArray objectAtIndex:selected];
@@ -300,6 +617,21 @@ NSMutableArray *tableArray;
     long selected = [_tblView rowForView:sender];
     NSDictionary* obj = [tableArray objectAtIndex:selected];
     NSLog(@"%@", [obj valueForKey:@"name"]);
+}
+
+- (IBAction)deletePlugin:(id)sender {
+    long selected = [_tblView rowForView:sender];
+    if ([[confirmDelete objectAtIndex:selected] boolValue])
+    {
+        NSDictionary* obj = [tableArray objectAtIndex:selected];
+        NSString* path = [obj objectForKey:@"path"];
+        NSURL* url = [NSURL fileURLWithPath:path];
+        NSURL* trash;
+        NSError* error;
+        [[NSFileManager defaultManager] trashItemAtURL:url resultingItemURL:&trash error:&error];
+    }
+    [self  readPlugins];
+    [confirmDelete setObject:[NSNumber numberWithBool:true] atIndexedSubscript:selected];
 }
 
 - (IBAction)togglePlugin:(id)sender {
@@ -369,7 +701,7 @@ NSMutableArray *tableArray;
 }
 
 - (IBAction)selectView:(id)sender {
-    NSArray *tabs = [NSArray arrayWithObjects:_viewTab0, _viewTab1, _viewTab2, _viewTab3, nil];
+    NSArray *tabs = [NSArray arrayWithObjects:_viewPlugins, _viewPreferences, _viewAbout, nil];
     if ([tabs containsObject:sender])
         [_tabView selectTabViewItemAtIndex:[tabs indexOfObject:sender]];
     for (NSButton *g in tabs) {
@@ -451,11 +783,16 @@ NSMutableArray *tableArray;
     
     result.pluginDescription.stringValue = [item objectForKey:@"description"];
     
-    [result.pluginBlackList setEnabled:true];
-    NSNumber* n = [info objectForKey:@"SupportsBlackList"];
-    BOOL value = [n boolValue];
-    if (!value)
-        [result.pluginBlackList setEnabled:false];
+    if ([[confirmDelete objectAtIndex:row] boolValue])
+        [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashFull"]];
+    else
+        [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashEmpty"]];
+    
+//    [result.pluginBlackList setEnabled:true];
+//    NSNumber* n = [info objectForKey:@"SupportsBlackList"];
+//    BOOL value = [n boolValue];
+//    if (!value)
+//        [result.pluginBlackList setEnabled:false];
 
     if (icon) {
         result.pluginImage.image = icon;
