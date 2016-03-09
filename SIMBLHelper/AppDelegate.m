@@ -109,13 +109,11 @@
     {
         [myUpdater setAutomaticallyChecksForUpdates:true];
         [myUpdater setAutomaticallyDownloadsUpdates:true];
+        [myUpdater setUpdateCheckInterval:86400];
     }
     
     if ([[GUIDefaults objectForKey:@"SUEnableAutomaticChecks"] boolValue])
-    {
         [myUpdater checkForUpdatesInBackground];
-//        [myUpdater setUpdateCheckInterval:86400];
-    }
 }
 
 - (void)checkSIMBL {

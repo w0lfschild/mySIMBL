@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "mySIMBL/AppDelegate.m"
-            timestampString = "478335889.189015"
+            timestampString = "479191766.673981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "478"
-            endingLineNumber = "478"
+            startingLineNumber = "514"
+            endingLineNumber = "514"
             landmarkName = "-readFolder::"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "mySIMBL/AppDelegate.m"
-            timestampString = "478335889.189015"
+            timestampString = "479191766.673981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "463"
-            endingLineNumber = "463"
+            startingLineNumber = "499"
+            endingLineNumber = "499"
             landmarkName = "-readFolder::"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "mySIMBL/AppDelegate.m"
-            timestampString = "478335889.189015"
+            timestampString = "479191766.673981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "572"
-            endingLineNumber = "572"
+            startingLineNumber = "608"
+            endingLineNumber = "608"
             landmarkName = "-replaceFile::"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "mySIMBL/AppDelegate.m"
-            timestampString = "478335889.189015"
+            timestampString = "479191766.673981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "-setupWindow"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "mySIMBL/AppDelegate.m"
-            timestampString = "478335889.189015"
+            timestampString = "479191766.673981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "319"
-            endingLineNumber = "319"
+            startingLineNumber = "354"
+            endingLineNumber = "354"
             landmarkName = "-toggleDonateButton:"
             landmarkType = "5">
          </BreakpointContent>

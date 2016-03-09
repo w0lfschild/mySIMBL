@@ -18,15 +18,23 @@ NSMutableArray *confirmDelete;
 @property (nonatomic, strong) IBOutlet NSTableView *tblView;
 @property (nonatomic, strong) IBOutlet NSTabView *tabView;
 
+@property (nonatomic, strong) IBOutlet NSTextField *appName;
+@property (nonatomic, strong) IBOutlet NSTextField *appVersion;
+@property (nonatomic, strong) IBOutlet NSTextField *appCopyright;
+
 @property (nonatomic, strong) IBOutlet NSView *tabAbout;
 @property (nonatomic, strong) IBOutlet NSView *tabPlugins;
 @property (nonatomic, strong) IBOutlet NSView *tabSIMBL;
 @property (nonatomic, strong) IBOutlet NSView *tabSIMBLInstalled;
 @property (nonatomic, strong) IBOutlet NSView *tabPreferences;
 @property (nonatomic, strong) IBOutlet NSView *tabSIP;
+@property (nonatomic, strong) IBOutlet NSView *tabSources;
+@property (nonatomic, strong) IBOutlet NSView *tabDiscover;
 
 @property (nonatomic, strong) IBOutlet NSButton *viewPlugins;
 @property (nonatomic, strong) IBOutlet NSButton *viewPreferences;
+@property (nonatomic, strong) IBOutlet NSButton *viewSources;
+@property (nonatomic, strong) IBOutlet NSButton *viewDiscover;
 @property (nonatomic, strong) IBOutlet NSButton *viewAbout;
 @property (nonatomic, strong) IBOutlet NSButton *showCredits;
 @property (nonatomic, strong) IBOutlet NSButton *showChanges;
@@ -87,7 +95,7 @@ NSMutableArray *confirmDelete;
     
     // Setup plugin table
     [_tblView setHeaderView:nil];
-    [_tblView setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleNone];
+//    [_tblView setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleNone];
     [_tblView registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
     
     [_donateButton setImage:[NSImage imageNamed:@"heart2.png"]];
@@ -202,6 +210,27 @@ NSMutableArray *confirmDelete;
 //    return [NSMutableDictionary dictionaryWithContentsOfFile:plist_Dock];
 }
 
+- (IBAction)changeAutoUpdates:(id)sender {
+    int selected = (int)[(NSPopUpButton*)sender indexOfSelectedItem];
+    if (selected == 0)
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"SUEnableAutomaticChecks"];
+    if (selected == 1)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"SUEnableAutomaticChecks"];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"SUAutomaticallyUpdate"];
+    }
+    if (selected == 2)
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"SUEnableAutomaticChecks"];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"SUAutomaticallyUpdate"];
+    }
+}
+
+- (IBAction)changeUpdateFrequency:(id)sender {
+    int selected = (int)[(NSPopUpButton*)sender selectedTag];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:selected] forKey:@"SUScheduledCheckInterval"];
+}
+
 - (IBAction)changeSIMBLLogging:(id)sender {
     NSString *logLevel = [NSString stringWithFormat:@"defaults write net.culater.SIMBL SIMBLLogLevel -int %ld", [_SIMBLLogging indexOfSelectedItem]];
     logLevel = [self runCommand:logLevel];
@@ -235,6 +264,10 @@ NSMutableArray *confirmDelete;
     // Setup tab view
     [self selectView:_viewPlugins];
     [[_tabView tabViewItemAtIndex:0] setView:_tabPlugins];
+    [[_tabView tabViewItemAtIndex:1] setView:_tabDiscover];
+    [[_tabView tabViewItemAtIndex:2] setView:_tabSources];
+    [[_tabView tabViewItemAtIndex:3] setView:_tabPreferences];
+    [[_tabView tabViewItemAtIndex:4] setView:_tabAbout];
     
     NSTabViewItem* tabItem1 = [_tabView tabViewItemAtIndex:1];
     [tabItem1 setView:_tabSIMBLInstalled];
@@ -263,8 +296,10 @@ NSMutableArray *confirmDelete;
         }
     }
     
-    [[_tabView tabViewItemAtIndex:1] setView:_tabPreferences];
-    [[_tabView tabViewItemAtIndex:2] setView:_tabAbout];
+    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
+    [_appName setStringValue:[infoDict objectForKey:@"CFBundleExecutable"]];
+    [_appVersion setStringValue:[NSString stringWithFormat:@"Version %@ (%@)", [infoDict objectForKey:@"CFBundleShortVersionString"], [infoDict objectForKey:@"CFBundleVersion"]]];
+    [_appCopyright setStringValue:@"Copyright © 2015 Wolfgang Baird"];
     
     [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
 }
@@ -382,14 +417,15 @@ NSMutableArray *confirmDelete;
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SUAutomaticallyUpdate"]) {
         [_prefUpdateAuto selectItemAtIndex:2];
+        SUUpdater *myUpdater = [SUUpdater alloc];
+        [myUpdater checkForUpdatesInBackground];
     } else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SUEnableAutomaticChecks"]) {
         [_prefUpdateAuto selectItemAtIndex:1];
     } else {
         [_prefUpdateAuto selectItemAtIndex:0];
     }
     
-//    [_prefUpdateAuto selectItemAtIndex:[[myPreferences objectForKey:@"prefUpdateAuto"] integerValue]];
-    [_prefUpdateInterval selectItemAtIndex:[[myPreferences objectForKey:@"prefUpdateInterval"] integerValue]];
+    [_prefUpdateInterval selectItemWithTag:[[myPreferences objectForKey:@"SUScheduledCheckInterval"] integerValue]];
     
     [[_gitButton cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
 //    [[_translateButton cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
@@ -580,8 +616,8 @@ NSMutableArray *confirmDelete;
 }
 
 - (IBAction)showAbout:(id)sender {
-    NSArray *tabs = [NSArray arrayWithObjects:_viewPlugins, _viewPreferences, _viewAbout, nil];
-    [_tabView selectTabViewItemAtIndex:2];
+    NSArray *tabs = [NSArray arrayWithObjects:_viewPlugins, _viewDiscover, _viewSources, _viewPreferences, _viewAbout, nil];
+    [_tabView selectTabViewItemAtIndex:4];
     for (NSButton *g in tabs) {
         if (![g isEqualTo:_viewAbout])
             [g setState:NSOffState];
@@ -591,8 +627,8 @@ NSMutableArray *confirmDelete;
 }
 
 - (IBAction)showPrefs:(id)sender {
-    NSArray *tabs = [NSArray arrayWithObjects:_viewPlugins, _viewPreferences, _viewAbout, nil];
-    [_tabView selectTabViewItemAtIndex:1];
+    NSArray *tabs = [NSArray arrayWithObjects:_viewPlugins, _viewDiscover, _viewSources, _viewPreferences, _viewAbout, nil];
+    [_tabView selectTabViewItemAtIndex:3];
     for (NSButton *g in tabs) {
         if (![g isEqualTo:_viewPreferences])
             [g setState:NSOffState];
@@ -701,7 +737,7 @@ NSMutableArray *confirmDelete;
 }
 
 - (IBAction)selectView:(id)sender {
-    NSArray *tabs = [NSArray arrayWithObjects:_viewPlugins, _viewPreferences, _viewAbout, nil];
+    NSArray *tabs = [NSArray arrayWithObjects:_viewPlugins, _viewDiscover, _viewSources, _viewPreferences, _viewAbout, nil];
     if ([tabs containsObject:sender])
         [_tabView selectTabViewItemAtIndex:[tabs indexOfObject:sender]];
     for (NSButton *g in tabs) {
@@ -797,6 +833,7 @@ NSMutableArray *confirmDelete;
     if (icon) {
         result.pluginImage.image = icon;
     } else {
+//        result.pluginImage.image = [NSImage imageNamed:@"brick.png"];
         result.pluginImage.image = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/KEXT.icns"];
     }
     
@@ -804,9 +841,13 @@ NSMutableArray *confirmDelete;
     [[result.pluginWeb cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
     
     [result.pluginWeb setEnabled:true];
+    [result.pluginWeb setHidden:false];
     NSString* webURL = [info objectForKey:@"DevURL"];
-    if (![webURL length])
+    if (![webURL length]) {
         [result.pluginWeb setEnabled:false];
+        [result.pluginWeb setHidden:true];
+    }
+    
     
     // Return the result
     return result;
