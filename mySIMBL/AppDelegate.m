@@ -31,7 +31,7 @@ NSArray *sourceItems;
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
     myDelegate = self;
     
-    tabs = [NSArray arrayWithObjects:_viewPlugins, _viewDiscover, _viewSources, _viewPreferences, _viewAbout, nil];
+    tabs = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewPreferences, _viewAbout, nil];
     sourceItems = [NSArray arrayWithObjects:_sourcesURLS, _sourcesPlugins, _sourcesBundle, nil];
     [_sourcesPush setEnabled:true];
     [_sourcesPop setEnabled:false];
@@ -208,10 +208,9 @@ NSArray *sourceItems;
     }
     
     [[_tabView tabViewItemAtIndex:0] setView:_tabPlugins];
-    [[_tabView tabViewItemAtIndex:1] setView:_tabDiscover];
-    [[_tabView tabViewItemAtIndex:2] setView:_tabSources];
-    [[_tabView tabViewItemAtIndex:3] setView:_tabPreferences];
-    [[_tabView tabViewItemAtIndex:4] setView:_tabAbout];
+    [[_tabView tabViewItemAtIndex:1] setView:_tabSources];
+    [[_tabView tabViewItemAtIndex:2] setView:_tabPreferences];
+    [[_tabView tabViewItemAtIndex:3] setView:_tabAbout];
     
     NSTabViewItem* tabItem1 = [_tabView tabViewItemAtIndex:0];
     if (![[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/ScriptingAdditions/SIMBL.osax"])
@@ -470,7 +469,7 @@ NSArray *sourceItems;
 }
 
 - (IBAction)showAbout:(id)sender {
-    [_tabView selectTabViewItemAtIndex:4];
+    [_tabView selectTabViewItemAtIndex:3];
     for (NSButton *g in tabs) {
         if (![g isEqualTo:_viewAbout])
             g.layer.backgroundColor = [NSColor clearColor].CGColor;
@@ -480,7 +479,7 @@ NSArray *sourceItems;
 }
 
 - (IBAction)showPrefs:(id)sender {
-    [_tabView selectTabViewItemAtIndex:3];
+    [_tabView selectTabViewItemAtIndex:2];
     for (NSButton *g in tabs) {
         if (![g isEqualTo:_viewPreferences])
             g.layer.backgroundColor = [NSColor clearColor].CGColor;
@@ -625,6 +624,10 @@ NSArray *sourceItems;
     [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
     [myPreferences setObject:newArray forKey:@"sources"];
     [_srcWin close];
+    [_sourcesAllTable reloadData];
+}
+
+- (IBAction)refreshSources:(id)sender {
     [_sourcesAllTable reloadData];
 }
 

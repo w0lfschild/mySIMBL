@@ -45,11 +45,18 @@ extern long selectedRow;
 {
     [self setWantsLayer:YES];
     self.layer.masksToBounds = YES;
-    self.layer.borderWidth = 1.0f;
-    [self.layer setBorderColor:[NSColor grayColor].CGColor];
+//    self.layer.borderWidth = 1.0f;
+//    [self.layer setBorderColor:[NSColor grayColor].CGColor];
     
     NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages.plist", repoPackages]];
     NSArray *allPlugins = [[NSArray alloc] initWithContentsOfURL:dicURL];
+    
+    NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
+    NSArray *sortedArray = [allPlugins sortedArrayUsingDescriptors:sortDescriptors];
+    
+    allPlugins = sortedArray;
+    
     item = [[NSMutableDictionary alloc] initWithDictionary:[allPlugins objectAtIndex:selectedRow]];
     
     NSString* newString;
@@ -57,37 +64,43 @@ extern long selectedRow;
     newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"name"]];
     self.bundleName.stringValue = newString;
     
-    newString = [NSString stringWithFormat:@"Version : %@", [item objectForKey:@"version"]];
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"version"]];
     self.bundleVersion.stringValue = newString;
     
-    newString = [NSString stringWithFormat:@"Size : %@", [item objectForKey:@"size"]];
-    self.bundleSize.stringValue = newString;
+//    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"size"]];
+    long long bundlesize = [[item objectForKey:@"size"] integerValue];
+//    [NSByteCountFormatter stringFromByteCount:bundlesize countStyle:NSByteCountFormatterCountStyleFile];
+    self.bundleSize.stringValue = [NSByteCountFormatter stringFromByteCount:bundlesize countStyle:NSByteCountFormatterCountStyleFile];
     
-    newString = [NSString stringWithFormat:@"Description : %@", [item objectForKey:@"description"]];
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"description"]];
     self.bundleDescription.stringValue = newString;
     self.bundleDescription.toolTip = newString;
     
-    newString = [NSString stringWithFormat:@"Bundle ID : %@", [item objectForKey:@"package"]];
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"package"]];
     self.bundleID.stringValue = newString;
     
-    newString = [NSString stringWithFormat:@"Target : %@", [item objectForKey:@"apps"]];
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"apps"]];
     self.bundleTarget.stringValue = newString;
     
-    newString = [NSString stringWithFormat:@"Author : %@", [item objectForKey:@"author"]];
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"author"]];
     self.bundleDev.stringValue = newString;
     
     if ([[item objectForKey:@"webpage"] length])
     {
-        //        NSURL*url=[NSURL URLWithString:@"http://w0lfschild.github.io/app_cDock"];
-        NSURL*url=[NSURL URLWithString:[item objectForKey:@"webpage"]];
-        NSURLRequest*request=[NSURLRequest requestWithURL:url];
-        [[self.bundleWebView mainFrame] loadRequest:request];
         if (!doOnce)
         {
             doOnce = true;
-            //            [[[[[self.bundleWebView mainFrame] frameView] documentView] superview] scaleUnitSquareToSize:NSMakeSize(.5, .5)];
+//            [[[[[self.bundleWebView mainFrame] frameView] documentView] superview] scaleUnitSquareToSize:NSMakeSize(.5, .5)];
+//            [[[[[self.bundleWebView mainFrame] frameView] documentView] superview] setNeedsDisplay:YES];
         }
+//        NSURL*url=[NSURL URLWithString:@"http://w0lfschild.github.io/app_cDock"];
+        NSURL*url=[NSURL URLWithString:[item objectForKey:@"webpage"]];
+        NSURLRequest*request=[NSURLRequest requestWithURL:url];
+        [[self.bundleWebView mainFrame] loadRequest:request];
     } else {
+//        NSURL*url=[NSURL URLWithString:@"http://w0lfschild.github.io/app_cDock"];
+//        NSURLRequest*request=[NSURLRequest requestWithURL:url];
+//        [[self.bundleWebView mainFrame] loadRequest:request];
         [[self.bundleWebView mainFrame] loadHTMLString:nil baseURL:nil];
     }
     
@@ -98,6 +111,12 @@ extern long selectedRow;
         NSString* str = [dict objectForKey:@"bundleId"];
         [installedPlugins setObject:dict forKey:str];
     }
+    
+    if (![[item objectForKey:@"donate"] length])
+        [self.bundleDonate setEnabled:false];
+    
+    if (![[item objectForKey:@"contact"] length])
+        [self.bundleContact setEnabled:false];
     
     [self.bundleContact setTarget:self];
     [self.bundleDonate setTarget:self];

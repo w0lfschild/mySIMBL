@@ -41,6 +41,22 @@ long selectedRow;
     NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages.plist", repoPackages]];
     allPlugins = [[NSArray alloc] initWithContentsOfURL:dicURL];
     
+//    Bundle ID Sort
+    
+//    NSArray *sortedArray = [allPlugins sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+//        NSString *first_name1 = [[[obj1 valueForKey:@"targets"] valueForKey:@"BundleIdentifier"] objectAtIndex:0];
+//        NSString *first_name2 = [[[obj2 valueForKey:@"targets"] valueForKey:@"BundleIdentifier"] objectAtIndex:0];
+//        return [first_name1 compare:first_name2];
+//    }];
+
+//    Name sort
+    
+    NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
+    NSArray *sortedArray = [allPlugins sortedArrayUsingDescriptors:sortDescriptors];
+    
+    allPlugins = sortedArray;
+    
     return [allPlugins count];
 }
 
@@ -49,7 +65,7 @@ long selectedRow;
     NSDictionary* item = [[NSMutableDictionary alloc] initWithDictionary:[allPlugins objectAtIndex:row]];
     result.bundleName.stringValue = [item objectForKey:@"name"];
     result.bundleDescription.stringValue = [item objectForKey:@"description"];
-    NSString *bInfo = [NSString stringWithFormat:@"%@ - %@ - %@", [item objectForKey:@"version"], [item objectForKey:@"package"], [item objectForKey:@"homepage"]];
+    NSString *bInfo = [NSString stringWithFormat:@"%@ - %@", [item objectForKey:@"version"], [item objectForKey:@"package"]];
     result.bundleInfo.stringValue = bInfo;
     result.bundleDescription.toolTip = [item objectForKey:@"description"];
     result.bundleImage.image = [self getbundleIcon:item];
