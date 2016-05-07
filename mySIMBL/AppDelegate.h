@@ -88,7 +88,6 @@
 @property IBOutlet NSTextView *changeLog;
 
 - (void)setupEventListener;
-+ (AppDelegate*) sharedInstance;
 - (IBAction)pushView:(id)sender;
 - (IBAction)popView:(id)sender;
 

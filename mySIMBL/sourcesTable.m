@@ -42,6 +42,7 @@ NSArray *sourceURLS;
     
     item = [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
     sourceURLS = [item objectForKey:@"sources"];
+//    NSLog(@"%@", sourceURLS);
     
     return [sourceURLS count];
 }

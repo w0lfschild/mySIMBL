@@ -37,9 +37,11 @@ long selectedRow;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     if (_sharedMethods == nil)
         _sharedMethods = [shareClass alloc];
-
+    
     NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages.plist", repoPackages]];
     allPlugins = [[NSArray alloc] initWithContentsOfURL:dicURL];
+    
+//    NSLog(@"url: %@", dicURL);
     
 //    Bundle ID Sort
     
@@ -50,6 +52,7 @@ long selectedRow;
 //    }];
 
 //    Name sort
+    selectedRow = 0;
     
     NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];

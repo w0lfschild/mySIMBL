@@ -49,8 +49,8 @@ NSArray *sourceItems;
     // Setup plugin table
     [_tblView registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
     
-    [_donateButton setImage:[NSImage imageNamed:@"heart2.png"]];
-    [[_donateButton cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
+//    [_donateButton setImage:[NSImage imageNamed:@"heart2.png"]];
+//    [[_donateButton cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
     
     PFMoveToApplicationsFolderIfNecessary();
     [self setupEventListener];
@@ -173,13 +173,23 @@ NSArray *sourceItems;
         [_window setTitlebarAppearsTransparent:true];
     }
     
-    if (![[myPreferences objectForKey:@"sources"] containsObject:@"https://w0lfschild.github.io/repo"])
-    {
-        NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
-        [newArray addObject:@"https://w0lfschild.github.io/repo"];
-        [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
-        [myPreferences setObject:newArray forKey:@"sources"];
-    }
+    NSArray *defaultRepos = [[NSArray alloc] initWithObjects:@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks", @"https://github.com/w0lfschild/myRepo/raw/master/urtweaks", nil];
+    NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
+    for (NSString *item in defaultRepos)
+        if (![[myPreferences objectForKey:@"sources"] containsObject:item])
+            [newArray addObject:item];
+    [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
+    [myPreferences setObject:newArray forKey:@"sources"];
+    
+//    if (![[myPreferences objectForKey:@"sources"] containsObject:@"https://w0lfschild.github.io/repo"])
+//    {
+//        NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
+//        [newArray addObject:@"https://w0lfschild.github.io/repo"];
+//        [newArray addObject:@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks"];
+//        [newArray addObject:@"https://github.com/w0lfschild/myRepo/raw/master/urtweaks"];
+//        [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
+//        [myPreferences setObject:newArray forKey:@"sources"];
+//    }
     
     if ([[myPreferences valueForKey:@"prefVibrant"] boolValue])
     {
@@ -241,7 +251,7 @@ NSArray *sourceItems;
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
     [_appName setStringValue:[infoDict objectForKey:@"CFBundleExecutable"]];
     [_appVersion setStringValue:[NSString stringWithFormat:@"Version %@ (%@)", [infoDict objectForKey:@"CFBundleShortVersionString"], [infoDict objectForKey:@"CFBundleVersion"]]];
-    [_appCopyright setStringValue:@"Copyright © 2015 Wolfgang Baird"];
+    [_appCopyright setStringValue:@"Copyright © 2015 - 2016 Wolfgang Baird"];
     
     [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
 }
@@ -270,7 +280,6 @@ NSArray *sourceItems;
 - (void)setupPrefstab {
     NSString *res = [self runCommand:@"defaults read net.culater.SIMBL SIMBLLogLevel"];
     [_SIMBLLogging selectItemAtIndex:[res integerValue]];
-    
     [_prefDonate setState:[[myPreferences objectForKey:@"prefDonate"] boolValue]];
     [_prefTips setState:[[myPreferences objectForKey:@"prefTips"] boolValue]];
     [_prefVibrant setState:[[myPreferences objectForKey:@"prefVibrant"] boolValue]];
@@ -288,7 +297,8 @@ NSArray *sourceItems;
         [test setInitialToolTipDelay:0.1];
     }
     
-    [_donateButton setHidden:[[myPreferences objectForKey:@"prefDonate"] boolValue]];
+//    [_donateButton setHidden:[[myPreferences objectForKey:@"prefDonate"] boolValue]];
+    [_donateButton.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SUAutomaticallyUpdate"]) {
         [_prefUpdateAuto selectItemAtIndex:2];
@@ -541,15 +551,23 @@ NSArray *sourceItems;
     if ([_sourcesAllTable selectedRow] > -1)
     {
         [_sourcesPop setEnabled:true];
-        if ((cur + 2) >= [sourceItems count])
-            [_sourcesPush setEnabled:false];
-        else
-            [_sourcesPush setEnabled:true];
-            
+
         if ((cur + 1) < [sourceItems count])
         {
             [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[sourceItems objectAtIndex:cur + 1]];
             [self.window makeFirstResponder: [sourceItems objectAtIndex:cur + 1]];
+        }
+        
+        if ((cur + 2) >= [sourceItems count])
+        {
+            [_sourcesPush setEnabled:false];
+        }
+        else
+        {
+            [_sourcesPush setEnabled:true];
+//            NSTableView *t = [[[_sourcesRoot.subviews objectAtIndex:0].subviews objectAtIndex:0].subviews objectAtIndex:0];
+//            [t deselectAll:nil];
+            [[[[_sourcesRoot.subviews objectAtIndex:0].subviews objectAtIndex:0].subviews objectAtIndex:0] reloadData];
         }
     }
     //    [_sourcesRoot setSubviews:[[NSArray alloc] initWithObjects:_sourcesPlugins, nil]];
@@ -568,6 +586,7 @@ NSArray *sourceItems;
     {
         [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[sourceItems objectAtIndex:cur - 1]];
         [self.window makeFirstResponder: [sourceItems objectAtIndex:cur - 1]];
+//        [[[[_sourcesRoot.subviews objectAtIndex:0].subviews objectAtIndex:0].subviews objectAtIndex:0] reloadData];
     }
 //    [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:_sourcesURLS];
 //    [_sourcesRoot setSubviews:[[NSArray alloc] initWithObjects:_sourcesPlugins, nil]];
@@ -607,28 +626,32 @@ NSArray *sourceItems;
             {
                 [newArray removeObject:item];
             } else {
-                NSString* content = [item stringByAppendingString:@"/resource.plist"];
-                NSURL *theURL = [NSURL fileURLWithPath:content
-                                           isDirectory:NO];
-                
-                NSLog(@"%@", theURL);
-                NSError *err;
-                if ([theURL checkResourceIsReachableAndReturnError:&err] == NO)
-                    [[NSAlert alertWithError:err] runModal];
-                else
-                    [newArray addObject:item];
+                [newArray addObject:item];
+//                NSString* content = [item stringByAppendingString:@"/resource.plist"];
+//                NSURL *theURL = [NSURL fileURLWithPath:content
+//                                           isDirectory:NO];
+//                
+//                NSLog(@"%@", theURL);
+//                NSError *err;
+//                if ([theURL checkResourceIsReachableAndReturnError:&err] == NO)
+//                    [[NSAlert alertWithError:err] runModal];
+//                else
+//                    [newArray addObject:item];
             }
         }
     }
+    
     
     [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
     [myPreferences setObject:newArray forKey:@"sources"];
     [_srcWin close];
     [_sourcesAllTable reloadData];
+    [_sourcesRepoTable reloadData];
 }
 
 - (IBAction)refreshSources:(id)sender {
     [_sourcesAllTable reloadData];
+    [_sourcesRepoTable reloadData];
 }
 
 - (IBAction)sourceAddNew:(id)sender {

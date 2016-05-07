@@ -7,14 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FB09A4C51C4B26AD0072C553 /* INAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FB09A4BA1C4B26AD0072C553 /* INAppStoreWindow.m */; };
 		FB09A4C61C4B26AD0072C553 /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FB09A4BD1C4B26AD0072C553 /* INWindowButton.m */; };
 		FB09A4C71C4B26AD0072C553 /* WAYAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FB09A4C11C4B26AD0072C553 /* WAYAppStoreWindow.m */; };
 		FB09A4C81C4B26AD0072C553 /* WAYWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FB09A4C41C4B26AD0072C553 /* WAYWindow.m */; };
 		FB09A4F51C4B5FEF0072C553 /* Changelog.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4F41C4B5FEF0072C553 /* Changelog.rtf */; };
 		FB09A4F71C4B64F80072C553 /* webicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4F61C4B64F80072C553 /* webicon.png */; };
 		FB09A4FB1C4B85250072C553 /* brick.png in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4FA1C4B85250072C553 /* brick.png */; };
-		FB0CF6941C61D133002CF3DE /* SIMBL_Install.sh in Resources */ = {isa = PBXBuildFile; fileRef = FB0CF6931C61D133002CF3DE /* SIMBL_Install.sh */; };
 		FB0CF6961C61D13F002CF3DE /* SIMBL.osax in Resources */ = {isa = PBXBuildFile; fileRef = FB0CF6951C61D13F002CF3DE /* SIMBL.osax */; };
 		FB0CF69F1C61D1E9002CF3DE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB0CF69E1C61D1E9002CF3DE /* AppDelegate.m */; };
 		FB0CF6A21C61D1E9002CF3DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB0CF6A11C61D1E9002CF3DE /* main.m */; };
@@ -25,10 +23,7 @@
 		FB0CF6B11C61D625002CF3DE /* SIMBL_Install.sh in Resources */ = {isa = PBXBuildFile; fileRef = FB0CF6931C61D133002CF3DE /* SIMBL_Install.sh */; };
 		FB24B09E1C952FF700443CA0 /* pluginTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB24B09D1C952FF700443CA0 /* pluginTable.m */; };
 		FB24B0A21C955D2C00443CA0 /* shareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = FB24B0A11C955D2C00443CA0 /* shareClass.m */; };
-		FB3E55971C82EE4C006B4A54 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5F44DE1C43A5AF00DE80B4 /* Sparkle.framework */; };
-		FB4F45701C8FD4C3004AAE68 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FB4F456F1C8FD4C3004AAE68 /* icon.icns */; };
-		FB57D2F31C4BAFB20077F91C /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB5F44DE1C43A5AF00DE80B4 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FB57D2F51C4BB0C00077F91C /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5F44DE1C43A5AF00DE80B4 /* Sparkle.framework */; };
+		FB429A001CD585010020F916 /* INAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4299FF1CD585010020F916 /* INAppStoreWindow.m */; };
 		FB5F44B81C41EA4000DE80B4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F44B71C41EA4000DE80B4 /* AppDelegate.m */; };
 		FB5F44BB1C41EA4000DE80B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F44BA1C41EA4000DE80B4 /* main.m */; };
 		FB5F44BD1C41EA4000DE80B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB5F44BC1C41EA4000DE80B4 /* Assets.xcassets */; };
@@ -43,10 +38,16 @@
 		FBB793501C7AB6C3006BF301 /* SIMBL_Install.sh in Resources */ = {isa = PBXBuildFile; fileRef = FBB7934E1C7AB6C3006BF301 /* SIMBL_Install.sh */; };
 		FBB793521C7AB7BC006BF301 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FBB793511C7AB7BC006BF301 /* dsa_pub.pem */; };
 		FBB793541C7AB7C5006BF301 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FBB793531C7AB7C5006BF301 /* dsa_pub.pem */; };
+		FBC021201CD5E22900145366 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC0211F1CD5E22900145366 /* Sparkle.framework */; };
+		FBC021231CD5E25000145366 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC0211F1CD5E22900145366 /* Sparkle.framework */; };
+		FBC021241CD5E28E00145366 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBC0211F1CD5E22900145366 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FBC194B41CDE576C0025D361 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBC194B31CDE576C0025D361 /* Info.plist */; };
+		FBC194D31CDE5B860025D361 /* SIMBLHelper.app in Resources */ = {isa = PBXBuildFile; fileRef = FBC194D21CDE5B860025D361 /* SIMBLHelper.app */; };
+		FBC43DD01CCC3A4000AAD4E5 /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC43DCF1CCC3A4000AAD4E5 /* PFMoveApplication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FBC54D6C1C4C31D70021517C /* heart2.png in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6B1C4C31D70021517C /* heart2.png */; };
 		FBC54D6F1C4C33030021517C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6D1C4C33030021517C /* Credits.rtf */; };
 		FBC54D701C4C33030021517C /* EULA.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6E1C4C33030021517C /* EULA.rtf */; };
-		FBC54D8B1C4C454E0021517C /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC54D8A1C4C454E0021517C /* PFMoveApplication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		FBE8FA531CD5217B00F79687 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FBE8FA521CD5217B00F79687 /* icon.icns */; };
 		FBEC2F311C4C7164008237A6 /* github.png in Resources */ = {isa = PBXBuildFile; fileRef = FBEC2F2F1C4C7164008237A6 /* github.png */; };
 /* End PBXBuildFile section */
 
@@ -57,7 +58,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FB57D2F31C4BAFB20077F91C /* Sparkle.framework in CopyFiles */,
+				FBC021241CD5E28E00145366 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +66,6 @@
 
 /* Begin PBXFileReference section */
 		FB09A4B91C4B26AD0072C553 /* INAppStoreWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAppStoreWindow.h; sourceTree = "<group>"; };
-		FB09A4BA1C4B26AD0072C553 /* INAppStoreWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAppStoreWindow.m; sourceTree = "<group>"; };
 		FB09A4BB1C4B26AD0072C553 /* INAppStoreWindowCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAppStoreWindowCompatibility.h; sourceTree = "<group>"; };
 		FB09A4BC1C4B26AD0072C553 /* INWindowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INWindowButton.h; sourceTree = "<group>"; };
 		FB09A4BD1C4B26AD0072C553 /* INWindowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INWindowButton.m; sourceTree = "<group>"; };
@@ -89,15 +89,13 @@
 		FB24B09D1C952FF700443CA0 /* pluginTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pluginTable.m; sourceTree = "<group>"; };
 		FB24B0A11C955D2C00443CA0 /* shareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = shareClass.m; sourceTree = "<group>"; };
 		FB24B0A31C955EEC00443CA0 /* shareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shareClass.h; sourceTree = "<group>"; };
-		FB4F456F1C8FD4C3004AAE68 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		FB4299FF1CD585010020F916 /* INAppStoreWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAppStoreWindow.m; sourceTree = "<group>"; };
 		FB5F44B31C41EA4000DE80B4 /* mySIMBL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mySIMBL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB5F44B61C41EA4000DE80B4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FB5F44B71C41EA4000DE80B4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		FB5F44BA1C41EA4000DE80B4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FB5F44BC1C41EA4000DE80B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB5F44BF1C41EA4000DE80B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Appliaction.xib; sourceTree = "<group>"; };
-		FB5F44C11C41EA4000DE80B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FB5F44DE1C43A5AF00DE80B4 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = mySIMBL/Sparkle.framework; sourceTree = "<group>"; };
 		FB5F44E01C44BFF100DE80B4 /* SCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCConstants.h; sourceTree = "<group>"; };
 		FB5F44E11C44BFF100DE80B4 /* SCEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEvent.h; sourceTree = "<group>"; };
 		FB5F44E21C44BFF100DE80B4 /* SCEventListenerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEventListenerProtocol.h; sourceTree = "<group>"; };
@@ -112,11 +110,15 @@
 		FBB7934E1C7AB6C3006BF301 /* SIMBL_Install.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = SIMBL_Install.sh; sourceTree = "<group>"; };
 		FBB793511C7AB7BC006BF301 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		FBB793531C7AB7C5006BF301 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		FBC0211F1CD5E22900145366 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		FBC194B31CDE576C0025D361 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FBC194D21CDE5B860025D361 /* SIMBLHelper.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = SIMBLHelper.app; path = "../../../Library/Developer/Xcode/DerivedData/mySIMBL-esenprirbnufkediacexxqbwxkfk/Build/Products/Debug/SIMBLHelper.app"; sourceTree = "<group>"; };
+		FBC43DCE1CCC3A4000AAD4E5 /* PFMoveApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFMoveApplication.h; sourceTree = "<group>"; };
+		FBC43DCF1CCC3A4000AAD4E5 /* PFMoveApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFMoveApplication.m; sourceTree = "<group>"; };
 		FBC54D6B1C4C31D70021517C /* heart2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heart2.png; sourceTree = "<group>"; };
 		FBC54D6D1C4C33030021517C /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		FBC54D6E1C4C33030021517C /* EULA.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = EULA.rtf; sourceTree = "<group>"; };
-		FBC54D891C4C454E0021517C /* PFMoveApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFMoveApplication.h; sourceTree = "<group>"; };
-		FBC54D8A1C4C454E0021517C /* PFMoveApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFMoveApplication.m; sourceTree = "<group>"; };
+		FBE8FA521CD5217B00F79687 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		FBEC2F2F1C4C7164008237A6 /* github.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = github.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,7 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB3E55971C82EE4C006B4A54 /* Sparkle.framework in Frameworks */,
+				FBC021231CD5E25000145366 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB57D2F51C4BB0C00077F91C /* Sparkle.framework in Frameworks */,
+				FBC021201CD5E22900145366 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,8 +146,8 @@
 			isa = PBXGroup;
 			children = (
 				FB09A4B91C4B26AD0072C553 /* INAppStoreWindow.h */,
-				FB09A4BA1C4B26AD0072C553 /* INAppStoreWindow.m */,
 				FB09A4BB1C4B26AD0072C553 /* INAppStoreWindowCompatibility.h */,
+				FB4299FF1CD585010020F916 /* INAppStoreWindow.m */,
 				FB09A4BC1C4B26AD0072C553 /* INWindowButton.h */,
 				FB09A4BD1C4B26AD0072C553 /* INWindowButton.m */,
 			);
@@ -208,7 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				FB9BF3691CA6801F00A63718 /* loading_mini.gif */,
-				FB4F456F1C8FD4C3004AAE68 /* icon.icns */,
+				FBE8FA521CD5217B00F79687 /* icon.icns */,
 				FB09A4FA1C4B85250072C553 /* brick.png */,
 				FB09A4F61C4B64F80072C553 /* webicon.png */,
 				FBEC2F2F1C4C7164008237A6 /* github.png */,
@@ -230,7 +232,7 @@
 		FB5F44AA1C41EA4000DE80B4 = {
 			isa = PBXGroup;
 			children = (
-				FB5F44DE1C43A5AF00DE80B4 /* Sparkle.framework */,
+				FBC0211F1CD5E22900145366 /* Sparkle.framework */,
 				FB5F44B51C41EA4000DE80B4 /* mySIMBL */,
 				FB0CF69C1C61D1E9002CF3DE /* SIMBLHelper */,
 				FB5F44B41C41EA4000DE80B4 /* Products */,
@@ -258,9 +260,9 @@
 				FB5F44B71C41EA4000DE80B4 /* AppDelegate.m */,
 				FB790FEB1CA4AA8600BE3B59 /* Tables */,
 				FB24B0A31C955EEC00443CA0 /* shareClass.h */,
+				FBC194B31CDE576C0025D361 /* Info.plist */,
 				FB24B0A11C955D2C00443CA0 /* shareClass.m */,
 				FB09A4F41C4B5FEF0072C553 /* Changelog.rtf */,
-				FB5F44C11C41EA4000DE80B4 /* Info.plist */,
 			);
 			path = mySIMBL;
 			sourceTree = "<group>";
@@ -268,6 +270,7 @@
 		FB5F44D41C4380BB00DE80B4 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				FBC194D21CDE5B860025D361 /* SIMBLHelper.app */,
 				FB5F44BA1C41EA4000DE80B4 /* main.m */,
 				FBB793511C7AB7BC006BF301 /* dsa_pub.pem */,
 				FB5F44BC1C41EA4000DE80B4 /* Assets.xcassets */,
@@ -323,8 +326,8 @@
 		FBC54D881C4C452F0021517C /* LetsMove */ = {
 			isa = PBXGroup;
 			children = (
-				FBC54D891C4C454E0021517C /* PFMoveApplication.h */,
-				FBC54D8A1C4C454E0021517C /* PFMoveApplication.m */,
+				FBC43DCE1CCC3A4000AAD4E5 /* PFMoveApplication.h */,
+				FBC43DCF1CCC3A4000AAD4E5 /* PFMoveApplication.m */,
 			);
 			name = LetsMove;
 			sourceTree = "<group>";
@@ -354,9 +357,9 @@
 			buildConfigurationList = FB5F44C41C41EA4000DE80B4 /* Build configuration list for PBXNativeTarget "mySIMBL" */;
 			buildPhases = (
 				FB5F44AF1C41EA4000DE80B4 /* Sources */,
-				FB5F44B01C41EA4000DE80B4 /* Frameworks */,
 				FB5F44B11C41EA4000DE80B4 /* Resources */,
 				FB57D2F21C4BAF8B0077F91C /* CopyFiles */,
+				FB5F44B01C41EA4000DE80B4 /* Frameworks */,
 				FB09A4F31C4B5B920072C553 /* ShellScript */,
 			);
 			buildRules = (
@@ -374,16 +377,16 @@
 		FB5F44AB1C41EA4000DE80B4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Wolfgang Baird";
 				TargetAttributes = {
 					FB0CF69A1C61D1E8002CF3DE = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 4K8C8TCUQ6;
+						DevelopmentTeam = EX596BNL45;
 					};
 					FB5F44B21C41EA4000DE80B4 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 4K8C8TCUQ6;
+						DevelopmentTeam = EX596BNL45;
 					};
 				};
 			};
@@ -427,19 +430,20 @@
 			files = (
 				FB09A4F71C4B64F80072C553 /* webicon.png in Resources */,
 				FB09A4FB1C4B85250072C553 /* brick.png in Resources */,
+				FBC194D31CDE5B860025D361 /* SIMBLHelper.app in Resources */,
 				FB5F44BD1C41EA4000DE80B4 /* Assets.xcassets in Resources */,
 				FBB793501C7AB6C3006BF301 /* SIMBL_Install.sh in Resources */,
 				FBB7934F1C7AB6C3006BF301 /* injectPROC.sh in Resources */,
 				FBC54D6F1C4C33030021517C /* Credits.rtf in Resources */,
-				FB4F45701C8FD4C3004AAE68 /* icon.icns in Resources */,
 				FB9BF36A1CA6801F00A63718 /* loading_mini.gif in Resources */,
-				FB0CF6941C61D133002CF3DE /* SIMBL_Install.sh in Resources */,
 				FB0CF6961C61D13F002CF3DE /* SIMBL.osax in Resources */,
+				FBE8FA531CD5217B00F79687 /* icon.icns in Resources */,
 				FB09A4F51C4B5FEF0072C553 /* Changelog.rtf in Resources */,
 				FBB793521C7AB7BC006BF301 /* dsa_pub.pem in Resources */,
 				FB5F44C01C41EA4000DE80B4 /* Appliaction.xib in Resources */,
 				FBEC2F311C4C7164008237A6 /* github.png in Resources */,
 				FBC54D6C1C4C31D70021517C /* heart2.png in Resources */,
+				FBC194B41CDE576C0025D361 /* Info.plist in Resources */,
 				FBC54D701C4C33030021517C /* EULA.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -458,7 +462,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -rf \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_NAME}.app\" /Applications\ncp -Rf \"${BUILT_PRODUCTS_DIR}/SIMBLHelper.app\" \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_NAME}.app/Contents/Resources/\"";
+			shellScript = "# cp -rf \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_NAME}.app\" /Applications\n# cp -Rf \"${BUILT_PRODUCTS_DIR}/SIMBLHelper.app\" \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_NAME}.app/Contents/Resources/\"";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -478,8 +483,6 @@
 			files = (
 				FB09A4C61C4B26AD0072C553 /* INWindowButton.m in Sources */,
 				FB24B09E1C952FF700443CA0 /* pluginTable.m in Sources */,
-				FB09A4C51C4B26AD0072C553 /* INAppStoreWindow.m in Sources */,
-				FBC54D8B1C4C454E0021517C /* PFMoveApplication.m in Sources */,
 				FB5F44E71C44BFF100DE80B4 /* SCEvents.m in Sources */,
 				FBA9EB341C965E9F00511BE3 /* sourcesTable.m in Sources */,
 				FB09A4C71C4B26AD0072C553 /* WAYAppStoreWindow.m in Sources */,
@@ -488,7 +491,9 @@
 				FB5F44BB1C41EA4000DE80B4 /* main.m in Sources */,
 				FB790FED1CA4BC0900BE3B59 /* bundlePage.m in Sources */,
 				FB5F44B81C41EA4000DE80B4 /* AppDelegate.m in Sources */,
+				FBC43DD01CCC3A4000AAD4E5 /* PFMoveApplication.m in Sources */,
 				FB5F44E61C44BFF100DE80B4 /* SCEvent.m in Sources */,
+				FB429A001CD585010020F916 /* INAppStoreWindow.m in Sources */,
 				FB09A4C81C4B26AD0072C553 /* WAYWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,10 +524,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/mySIMBL",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = SIMBLHelper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks $SRCROOT/mySIMBL";
@@ -536,10 +543,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/mySIMBL",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = SIMBLHelper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../Frameworks $SRCROOT/mySIMBL";
@@ -553,6 +562,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -566,7 +576,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: wolfgang baird (EX596BNL45)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -597,6 +607,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -610,7 +621,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: wolfgang baird (EX596BNL45)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -626,6 +637,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -633,13 +645,15 @@
 		FB5F44C51C41EA4000DE80B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/mySIMBL",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = mySIMBL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks $SRCROOT/mySIMBL";
@@ -653,13 +667,15 @@
 		FB5F44C61C41EA4000DE80B4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/mySIMBL",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = mySIMBL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks $SRCROOT/mySIMBL";
