@@ -9,16 +9,14 @@
 @import Foundation;
 @import AppKit;
 @import Sparkle;
-#import "SCEvent.h"
-#import "SCEvents.h"
+#import "SGDirWatchdog.h"
 #import "WAYAppStoreWindow.h"
-#import "SCEventListenerProtocol.h"
 #import "PFMoveApplication.h"
 #import "shareClass.h"
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, SCEventListenerProtocol>
+@interface AppDelegate : NSObject <NSApplicationDelegate>
 {
-    SCEvents *_events;
+    NSMutableArray *watchdogs;
     shareClass *_sharedMethods;
 }
 

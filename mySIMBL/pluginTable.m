@@ -169,12 +169,6 @@ NSInteger previusRow = -1;
     else
         [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashEmpty"]];
     
-    //    [result.pluginBlackList setEnabled:true];
-    //    NSNumber* n = [info objectForKey:@"SupportsBlackList"];
-    //    BOOL value = [n boolValue];
-    //    if (!value)
-    //        [result.pluginBlackList setEnabled:false];
-    
     [result.pluginWeb setImage:[NSImage imageNamed:@"webicon.png"]];
     [[result.pluginWeb cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
     

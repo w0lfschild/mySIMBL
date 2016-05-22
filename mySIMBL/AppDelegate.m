@@ -349,33 +349,24 @@ NSArray *sourceItems;
 }
 
 - (void)setupEventListener {
-    if (_events) return;
+    watchdogs = [[NSMutableArray alloc] init];
+    NSArray* _LOClibrary = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
+    NSArray* _USRlibrary = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
     
-    _events = [[SCEvents alloc] init];
+    NSString* _simblLOC = [NSString stringWithFormat:@"%@/SIMBL/plugins", [[_LOClibrary objectAtIndex:0] path]];
+    NSString* _simblUSR = [NSString stringWithFormat:@"%@/SIMBL/plugins", [[_USRlibrary objectAtIndex:0] path]];
+    NSString* _parasiteLOC = [NSString stringWithFormat:@"%@/Parasite/Extensions", [[_LOClibrary objectAtIndex:0] path]];
     
-    [_events setDelegate:self];
-    
-    NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
-    NSArray* usrDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
-    NSString* libSupport = [NSString stringWithFormat:@"%@/SIMBL/Plugins", [[libDomain objectAtIndex:0] path]];
-    NSString* usrSupport = [NSString stringWithFormat:@"%@/SIMBL/Plugins", [[usrDomain objectAtIndex:0] path]];
-    
-    NSMutableArray *paths = [NSMutableArray arrayWithObjects:libSupport, usrSupport, nil];
-//    NSMutableArray *excludePaths = [NSMutableArray arrayWithObject:nil];
-    
-    // Set the paths to be excluded
-//    [_events setExcludedPaths:excludePaths];
-    
-    // Start receiving events
-    [_events startWatchingPaths:paths];
-    
-    // Display a description of the stream
-//    NSLog(@"%@", [_events streamDescription]);
-}
-
-- (void)pathWatcher:(SCEvents *)pathWatcher eventOccurred:(SCEvent *)event {
-//    NSLog(@"%@", event);
-    [_sharedMethods readPlugins:_tblView];
+    NSMutableArray *paths = [NSMutableArray arrayWithObjects:_simblLOC, _simblUSR, _parasiteLOC, nil];
+    for (NSString *path in paths)
+    {
+        SGDirWatchdog *watchDog = [[SGDirWatchdog alloc] initWithPath:path
+                                                               update:^{
+                                                                   [_sharedMethods readPlugins:_tblView];
+                                                               }];
+        [watchDog start];
+        [watchdogs addObject:watchDog];
+    }
 }
 
 - (IBAction)changeAutoUpdates:(id)sender {
