@@ -129,15 +129,27 @@ extern long selectedRow;
     [self.bundleDelete setAction:@selector(pluginDelete)];
     if ([installedPlugins objectForKey:[item objectForKey:@"package"]])
     {
-        // Pack needs update
-        if (![[[[installedPlugins objectForKey:[item objectForKey:@"package"]] objectForKey:@"bundleInfo"] objectForKey:@"CFBundleShortVersionString"] isEqualToString:[item objectForKey:@"version"]])
-        {
+        // Pack already exists
+        NSDictionary* dic = [[installedPlugins objectForKey:[item objectForKey:@"package"]] objectForKey:@"bundleInfo"];
+        NSString* cur = [dic objectForKey:@"CFBundleShortVersionString"];
+        if ([cur isEqualToString:@""])
+            cur = [dic objectForKey:@"CFBundleVersion"];
+        NSString* new = [item objectForKey:@"version"];
+        id <SUVersionComparison> comparator = [SUStandardVersionComparator defaultComparator];
+        NSInteger result = [comparator compareVersion:cur toVersion:new];
+        if (result == NSOrderedSame) {
+            //versionA == versionB
+            [self.bundleInstall setEnabled:false];
+            self.bundleInstall.title = @"Up to date";
+        } else if (result == NSOrderedAscending) {
+            //versionA < versionB
             [self.bundleInstall setEnabled:true];
             self.bundleInstall.title = @"Update";
             [self.bundleInstall setAction:@selector(pluginUpdate)];
         } else {
+            //versionA > versionB
             [self.bundleInstall setEnabled:false];
-            self.bundleInstall.title = @"Up to date";
+            self.bundleInstall.title = @"Downgrade";
         }
     } else {
         // Package not installed

@@ -14,8 +14,14 @@ NSMutableArray *pluginsArray;
 NSMutableArray *confirmDelete;
 NSArray *tabs;
 NSArray *sourceItems;
+NSDate *appStart;
 
 @implementation AppDelegate
+
+- (instancetype)init {
+    appStart = [NSDate date];
+    return self;
+}
 
 // Quit when window closed
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
@@ -56,6 +62,11 @@ NSArray *sourceItems;
     [self setupEventListener];
     
     [self.window makeKeyAndOrderFront:self];
+    
+    NSDate *methodFinish = [NSDate date];
+    NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:appStart];
+    NSLog(@"executionTime = %f", executionTime);
+
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
@@ -173,6 +184,7 @@ NSArray *sourceItems;
         [_window setTitlebarAppearsTransparent:true];
     }
     
+    [_window setTitle:@""];
     NSArray *defaultRepos = [[NSArray alloc] initWithObjects:@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks", @"https://github.com/w0lfschild/myRepo/raw/master/urtweaks", nil];
     NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
     for (NSString *item in defaultRepos)
@@ -180,30 +192,18 @@ NSArray *sourceItems;
             [newArray addObject:item];
     [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
     [myPreferences setObject:newArray forKey:@"sources"];
-    
-//    if (![[myPreferences objectForKey:@"sources"] containsObject:@"https://w0lfschild.github.io/repo"])
-//    {
-//        NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
-//        [newArray addObject:@"https://w0lfschild.github.io/repo"];
-//        [newArray addObject:@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks"];
-//        [newArray addObject:@"https://github.com/w0lfschild/myRepo/raw/master/urtweaks"];
-//        [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
-//        [myPreferences setObject:newArray forKey:@"sources"];
-//    }
-    
-    if ([[myPreferences valueForKey:@"prefVibrant"] boolValue])
+
+    Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
+    if (vibrantClass)
     {
-        Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
-        if (vibrantClass)
-        {
-            NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
-            [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-            [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-            [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
-        }
+        NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
+        [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
+        [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
+        [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
+    } else {
+        [_window setBackgroundColor:[NSColor whiteColor]];
     }
-    
-    [_window setBackgroundColor:[NSColor whiteColor]];
+ 
     [_window setMovableByWindowBackground:YES];
     
     // Setup tab view
@@ -227,19 +227,8 @@ NSArray *sourceItems;
     {
         if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion >= 11)
         {
-            // Rootless check
-            NSTask *task = [[NSTask alloc] init];
-            [task setLaunchPath:@"/bin/sh"];
-            NSArray *arguments = [NSArray arrayWithObjects:@"-c", @"touch /System/test 2>&1", nil];
-            [task setArguments:arguments];
-            NSPipe *pipe = [NSPipe pipe];
-            [task setStandardOutput:pipe];
-            NSFileHandle *file = [pipe fileHandleForReading];
-            [task launch];
-            NSData *data = [file readDataToEndOfFile];
-            NSString *output = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            //            NSLog(@"%@", output);
-            if ([output containsString:@"Operation not permitted"])
+            NSString *rootless = [self runCommand:@"touch /System/test 2>&1"];
+            if ([rootless rangeOfString:@"Operation not permitted"].length)
                 [tabItem1 setView:_tabSIP];
             else
                 [tabItem1 setView:_tabSIMBL];
@@ -275,6 +264,26 @@ NSArray *sourceItems;
     system("killall SIMBLHelper");
     NSString *path = [[NSBundle mainBundle] pathForResource:@"SIMBLHelper" ofType:@"app"];
     [[NSWorkspace sharedWorkspace] launchApplication:path];
+}
+
+- (IBAction)simblInstall:(id)sender {
+    NSArray *apps = [NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.SIMBLHelper"];
+    if (apps.count)
+        [(NSRunningApplication *)[apps objectAtIndex:0] terminate];
+    [self launchHelper];
+    dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(myQueue, ^{
+        // Insert code to be executed on another thread here
+        while (![[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/ScriptingAdditions/SIMBL.osax"])
+            usleep(1000000);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Insert code to be executed on the main thread here
+            [self launchHelper];
+            NSTabViewItem *editTab = [_tabView tabViewItemAtIndex:0];
+            [editTab setView:_tabPlugins];
+            NSLog(@"SIMBL Installed");
+        });
+    });
 }
 
 - (void)setupPrefstab {
@@ -325,11 +334,6 @@ NSArray *sourceItems;
 
 - (void)donate {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://goo.gl/DSyEFR"]];
-}
-
-- (void)translate {
-    NSString *myURL = [[NSBundle mainBundle] pathForResource:@"MyApp" ofType:@"strings"];
-    [[NSWorkspace sharedWorkspace] openFile:myURL];
 }
 
 - (void)sendEmail {
@@ -393,29 +397,6 @@ NSArray *sourceItems;
 - (IBAction)changeSIMBLLogging:(id)sender {
     NSString *logLevel = [NSString stringWithFormat:@"defaults write net.culater.SIMBL SIMBLLogLevel -int %ld", [_SIMBLLogging indexOfSelectedItem]];
     logLevel = [self runCommand:logLevel];
-}
-
-- (IBAction)toggleVibrancy:(id)sender {
-    NSButton *btn = sender;
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefVibrant"];
-    Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
-    if (vibrantClass)
-    {
-        if ([btn state])
-        {
-            NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
-            [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-            [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-            if (![[_window.contentView subviews] containsObject:vibrant])
-                [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
-        } else {
-            for (NSVisualEffectView *v in (NSMutableArray *)[_window.contentView subviews])
-                if ([v class] == vibrantClass) {
-                    [v removeFromSuperview];
-                    break;
-                }
-        }
-    }
 }
 
 - (IBAction)toggleTips:(id)sender {

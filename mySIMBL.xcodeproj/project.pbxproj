@@ -27,10 +27,10 @@
 		FB5F44BB1C41EA4000DE80B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F44BA1C41EA4000DE80B4 /* main.m */; };
 		FB5F44BD1C41EA4000DE80B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB5F44BC1C41EA4000DE80B4 /* Assets.xcassets */; };
 		FB5F44C01C41EA4000DE80B4 /* Appliaction.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB5F44BE1C41EA4000DE80B4 /* Appliaction.xib */; };
-		FB62D0211CF138500070E0D6 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FB62D0201CF138500070E0D6 /* icon.icns */; };
 		FB62D0231CF146E00070E0D6 /* SIMBLHelper.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB0CF69B1C61D1E8002CF3DE /* SIMBLHelper.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FB790FE81CA447AD00BE3B59 /* repopluginTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB790FE71CA447AD00BE3B59 /* repopluginTable.m */; };
 		FB790FED1CA4BC0900BE3B59 /* bundlePage.m in Sources */ = {isa = PBXBuildFile; fileRef = FB790FEC1CA4BC0900BE3B59 /* bundlePage.m */; };
+		FB7C75A41D067A4F001407DC /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FB7C75A31D067A4F001407DC /* icon.icns */; };
 		FB9BF36A1CA6801F00A63718 /* loading_mini.gif in Resources */ = {isa = PBXBuildFile; fileRef = FB9BF3691CA6801F00A63718 /* loading_mini.gif */; };
 		FBA9EB341C965E9F00511BE3 /* sourcesTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA9EB331C965E9F00511BE3 /* sourcesTable.m */; };
 		FBB7934F1C7AB6C3006BF301 /* injectPROC.sh in Resources */ = {isa = PBXBuildFile; fileRef = FBB7934D1C7AB6C3006BF301 /* injectPROC.sh */; };
@@ -40,7 +40,6 @@
 		FBC021201CD5E22900145366 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC0211F1CD5E22900145366 /* Sparkle.framework */; };
 		FBC021231CD5E25000145366 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC0211F1CD5E22900145366 /* Sparkle.framework */; };
 		FBC021241CD5E28E00145366 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBC0211F1CD5E22900145366 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FBC194B41CDE576C0025D361 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBC194B31CDE576C0025D361 /* Info.plist */; };
 		FBC43DD01CCC3A4000AAD4E5 /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC43DCF1CCC3A4000AAD4E5 /* PFMoveApplication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FBC54D6F1C4C33030021517C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6D1C4C33030021517C /* Credits.rtf */; };
 		FBC54D701C4C33030021517C /* EULA.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6E1C4C33030021517C /* EULA.rtf */; };
@@ -103,9 +102,9 @@
 		FB5F44BA1C41EA4000DE80B4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FB5F44BC1C41EA4000DE80B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB5F44BF1C41EA4000DE80B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Appliaction.xib; sourceTree = "<group>"; };
-		FB62D0201CF138500070E0D6 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		FB790FE71CA447AD00BE3B59 /* repopluginTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = repopluginTable.m; sourceTree = "<group>"; };
 		FB790FEC1CA4BC0900BE3B59 /* bundlePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bundlePage.m; sourceTree = "<group>"; };
+		FB7C75A31D067A4F001407DC /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		FB9BF3691CA6801F00A63718 /* loading_mini.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_mini.gif; sourceTree = "<group>"; };
 		FBA9EB331C965E9F00511BE3 /* sourcesTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = sourcesTable.m; sourceTree = "<group>"; };
 		FBB7934D1C7AB6C3006BF301 /* injectPROC.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = injectPROC.sh; sourceTree = "<group>"; };
@@ -212,7 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				FB9BF3691CA6801F00A63718 /* loading_mini.gif */,
-				FB62D0201CF138500070E0D6 /* icon.icns */,
+				FB7C75A31D067A4F001407DC /* icon.icns */,
 				FB09A4F61C4B64F80072C553 /* webicon.png */,
 				FBEC2F2F1C4C7164008237A6 /* github.png */,
 			);
@@ -260,8 +259,8 @@
 				FB5F44B71C41EA4000DE80B4 /* AppDelegate.m */,
 				FB790FEB1CA4AA8600BE3B59 /* Tables */,
 				FB24B0A31C955EEC00443CA0 /* shareClass.h */,
-				FBC194B31CDE576C0025D361 /* Info.plist */,
 				FB24B0A11C955D2C00443CA0 /* shareClass.m */,
+				FBC194B31CDE576C0025D361 /* Info.plist */,
 				FB09A4F41C4B5FEF0072C553 /* Changelog.rtf */,
 			);
 			path = mySIMBL;
@@ -434,11 +433,10 @@
 				FB9BF36A1CA6801F00A63718 /* loading_mini.gif in Resources */,
 				FB0CF6961C61D13F002CF3DE /* SIMBL.osax in Resources */,
 				FB09A4F51C4B5FEF0072C553 /* Changelog.rtf in Resources */,
-				FB62D0211CF138500070E0D6 /* icon.icns in Resources */,
 				FBB793521C7AB7BC006BF301 /* dsa_pub.pem in Resources */,
 				FB5F44C01C41EA4000DE80B4 /* Appliaction.xib in Resources */,
 				FBEC2F311C4C7164008237A6 /* github.png in Resources */,
-				FBC194B41CDE576C0025D361 /* Info.plist in Resources */,
+				FB7C75A41D067A4F001407DC /* icon.icns in Resources */,
 				FBC54D701C4C33030021517C /* EULA.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

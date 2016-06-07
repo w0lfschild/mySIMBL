@@ -34,6 +34,7 @@ NSInteger previusRow = -1;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     if (_sharedMethods == nil)
         _sharedMethods = [shareClass alloc];
+    [tableView setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleNone];
     return [pluginsArray count];
 }
 
@@ -149,15 +150,11 @@ NSInteger previusRow = -1;
     if([[item objectForKey:@"path"] length]){
         NSString *path = [item objectForKey:@"path"];
         NSArray *components = [path pathComponents];
-        
         if ([[components objectAtIndex:1] isEqualToString:@"Library"])
-        {
             [result.pluginStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
-        } else {
+        else
             [result.pluginStatus setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
-        }
-        
-        if ([path containsString:@"Disabled"])
+        if ([path rangeOfString:@"Disabled"].length)
             [result.pluginStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
     }
     
@@ -171,7 +168,6 @@ NSInteger previusRow = -1;
     
     [result.pluginWeb setImage:[NSImage imageNamed:@"webicon.png"]];
     [[result.pluginWeb cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
-    
     [result.pluginWeb setEnabled:true];
     [result.pluginWeb setHidden:false];
     NSString* webURL = [info objectForKey:@"DevURL"];

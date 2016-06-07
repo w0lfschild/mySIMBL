@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>2E4776C7-D350-4C16-84B3-FF20DB98FAED</string>
+	<key>IDESourceControlProjectName</key>
+	<string>mySIMBL</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>789959052DD0B4AAA81B7775A08F75B71916423B</key>
+		<string>https://github.com/w0lfschild/mySIMBL.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>mySIMBL.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>789959052DD0B4AAA81B7775A08F75B71916423B</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/w0lfschild/mySIMBL.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>789959052DD0B4AAA81B7775A08F75B71916423B</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>789959052DD0B4AAA81B7775A08F75B71916423B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>wb_mySIMBL</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -42,29 +42,29 @@ const CGFloat INTitleDocumentStatusXOffset = -20.0;
 const CGFloat INTitleVersionsButtonXOffset = -1.0;
 
 NS_INLINE CGFloat INMidHeight(NSRect aRect) {
-	return (aRect.size.height * (CGFloat) 0.5);
+    return (aRect.size.height * (CGFloat) 0.5);
 }
 
 CF_RETURNS_RETAINED
 NS_INLINE CGPathRef INCreateClippingPathWithRectAndRadius(NSRect rect, CGFloat radius) {
-	CGMutablePathRef path = CGPathCreateMutable();
-	CGPathMoveToPoint(path, NULL, NSMinX(rect), NSMinY(rect));
-	CGPathAddLineToPoint(path, NULL, NSMinX(rect), NSMaxY(rect) - radius);
-	CGPathAddArcToPoint(path, NULL, NSMinX(rect), NSMaxY(rect), NSMinX(rect) + radius, NSMaxY(rect), radius);
-	CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - radius, NSMaxY(rect));
-	CGPathAddArcToPoint(path, NULL, NSMaxX(rect), NSMaxY(rect), NSMaxX(rect), NSMaxY(rect) - radius, radius);
-	CGPathAddLineToPoint(path, NULL, NSMaxX(rect), NSMinY(rect));
-	CGPathCloseSubpath(path);
-	return path;
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, NSMinX(rect), NSMinY(rect));
+    CGPathAddLineToPoint(path, NULL, NSMinX(rect), NSMaxY(rect) - radius);
+    CGPathAddArcToPoint(path, NULL, NSMinX(rect), NSMaxY(rect), NSMinX(rect) + radius, NSMaxY(rect), radius);
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect) - radius, NSMaxY(rect));
+    CGPathAddArcToPoint(path, NULL, NSMaxX(rect), NSMaxY(rect), NSMaxX(rect), NSMaxY(rect) - radius, radius);
+    CGPathAddLineToPoint(path, NULL, NSMaxX(rect), NSMinY(rect));
+    CGPathCloseSubpath(path);
+    return path;
 }
 
 NS_INLINE void INApplyClippingPath(CGPathRef path, CGContextRef ctx) {
-	CGContextAddPath(ctx, path);
-	CGContextClip(ctx);
+    CGContextAddPath(ctx, path);
+    CGContextClip(ctx);
 }
 
 NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
-	INApplyClippingPath(path, [[NSGraphicsContext currentContext] graphicsPort]);
+    INApplyClippingPath(path, [[NSGraphicsContext currentContext] graphicsPort]);
 }
 
 @interface INAppStoreWindowDelegateProxy : NSProxy <NSWindowDelegate>
@@ -75,46 +75,46 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-	NSMethodSignature *signature = [[self.secondaryDelegate class] instanceMethodSignatureForSelector:selector];
-	if (!signature) {
-		signature = [super methodSignatureForSelector:selector];
-	}
-	return signature;
+    NSMethodSignature *signature = [[self.secondaryDelegate class] instanceMethodSignatureForSelector:selector];
+    if (!signature) {
+        signature = [super methodSignatureForSelector:selector];
+    }
+    return signature;
 }
 
 - (BOOL)respondsToSelector:(SEL)aSelector
 {
-	if ([self.secondaryDelegate respondsToSelector:aSelector]) {
-		return YES;
-	} else if (aSelector == @selector(window:willPositionSheet:usingRect:)) {
-		return YES;
-	}
-	return NO;
+    if ([self.secondaryDelegate respondsToSelector:aSelector]) {
+        return YES;
+    } else if (aSelector == @selector(window:willPositionSheet:usingRect:)) {
+        return YES;
+    }
+    return NO;
 }
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-	if ([self.secondaryDelegate respondsToSelector:anInvocation.selector]) {
-		[anInvocation invokeWithTarget:self.secondaryDelegate];
-	}
+    if ([self.secondaryDelegate respondsToSelector:anInvocation.selector]) {
+        [anInvocation invokeWithTarget:self.secondaryDelegate];
+    }
 }
 
 - (NSRect)window:(INAppStoreWindow *)window willPositionSheet:(NSWindow *)sheet usingRect:(NSRect)rect
 {
-	// Somehow the forwarding machinery doesn't handle this.
-	if ([self.secondaryDelegate respondsToSelector:_cmd]) {
-		return [self.secondaryDelegate window:window willPositionSheet:sheet usingRect:rect];
-	}
-	rect.origin.y = NSHeight(window.frame) - window.titleBarHeight - window.toolbarHeight;
-	return rect;
+    // Somehow the forwarding machinery doesn't handle this.
+    if ([self.secondaryDelegate respondsToSelector:_cmd]) {
+        return [self.secondaryDelegate window:window willPositionSheet:sheet usingRect:rect];
+    }
+    rect.origin.y = NSHeight(window.frame) - window.titleBarHeight - window.toolbarHeight;
+    return rect;
 }
 
 - (BOOL)isKindOfClass:(Class)aClass
 {
-	if (self.secondaryDelegate) {
-		return [self.secondaryDelegate isKindOfClass:aClass];
-	}
-	return NO;
+    if (self.secondaryDelegate) {
+        return [self.secondaryDelegate isKindOfClass:aClass];
+    }
+    return NO;
 }
 
 @end
@@ -145,153 +145,155 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
  */
 + (NSColor *)windowPatternOverlayColor
 {
-	static NSColor *noiseColor = nil;
-
-	static dispatch_once_t oncePredicate;
-	dispatch_once(&oncePredicate, ^{
-		NSBitmapImageRep *rep = nil;
-
-		NSData *layerInBase64 = nil;
-	#if __MAC_OS_X_VERSION_MAX_ALLOWED >= __MAC_10_9 // initWithBase64EncodedString:options: is available in OS X v10.9 and later
-		layerInBase64 = [[NSData alloc] initWithBase64EncodedString:INWindowBackgroundPatternOverlayLayer options:NSDataBase64DecodingIgnoreUnknownCharacters];
-	#else
-		layerInBase64 = [[NSData alloc] initWithBase64Encoding:INWindowBackgroundPatternOverlayLayer];
-	#endif
-		rep = [[NSBitmapImageRep alloc] initWithData:layerInBase64];
-
-		NSImage *image = [[NSImage alloc] initWithSize:rep.size];
-		[image addRepresentation:rep];
-
-		NSData *layer2xInBase64 = nil;
-	#if __MAC_OS_X_VERSION_MAX_ALLOWED >= __MAC_10_9 // Same as above
-		layer2xInBase64 = [[NSData alloc] initWithBase64EncodedString:INWindowBackgroundPatternOverlayLayer2x options:NSDataBase64DecodingIgnoreUnknownCharacters];
-	#else
-		layer2xInBase64 = [[NSData alloc] initWithBase64Encoding:INWindowBackgroundPatternOverlayLayer2x];
-	#endif
-		[image addRepresentation:[[NSBitmapImageRep alloc] initWithData:layer2xInBase64]];
-
-		noiseColor = [NSColor colorWithPatternImage:image];
-	});
-
-	return noiseColor;
+    static NSColor *noiseColor = nil;
+    
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        NSBitmapImageRep *rep = nil;
+        
+        NSData *layerInBase64 = nil;
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= __MAC_10_9 // initWithBase64EncodedString:options: is available in OS X v10.9 and later
+        layerInBase64 = [[NSData alloc] initWithBase64EncodedString:INWindowBackgroundPatternOverlayLayer options:NSDataBase64DecodingIgnoreUnknownCharacters];
+#else
+        layerInBase64 = [[NSData alloc] initWithBase64Encoding:INWindowBackgroundPatternOverlayLayer];
+#endif
+        rep = [[NSBitmapImageRep alloc] initWithData:layerInBase64];
+        
+        NSImage *image = [[NSImage alloc] initWithSize:rep.size];
+        [image addRepresentation:rep];
+        
+        NSData *layer2xInBase64 = nil;
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= __MAC_10_9 // Same as above
+        layer2xInBase64 = [[NSData alloc] initWithBase64EncodedString:INWindowBackgroundPatternOverlayLayer2x options:NSDataBase64DecodingIgnoreUnknownCharacters];
+#else
+        layer2xInBase64 = [[NSData alloc] initWithBase64Encoding:INWindowBackgroundPatternOverlayLayer2x];
+#endif
+        [image addRepresentation:[[NSBitmapImageRep alloc] initWithData:layer2xInBase64]];
+        
+        noiseColor = [NSColor colorWithPatternImage:image];
+    });
+    
+    return noiseColor;
 }
 
 - (void)drawWindowPatternOverlayColorInRect:(NSRect)rect forEdge:(NSRectEdge)edge
 {
-	NSAssert(edge == NSMinYEdge || edge == NSMaxYEdge, @"edge must be NSMinYEdge or NSMaxYEdge");
-
-	// known constants used by OS X
-	const CGFloat opacity = 0.3;
-	const CGSize patternPhase = CGSizeMake(edge == NSMaxYEdge ? -5 : 0, self.window.frame.size.height);
-
-	CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
-	CGContextSaveGState(context);
-	CGContextSetAlpha(context, opacity);
-	CGContextSetBlendMode(context, kCGBlendModeOverlay);
-
-	CGContextSetPatternPhase(context, patternPhase);
-	[[INWindowBackgroundView windowPatternOverlayColor] setFill];
-	CGContextFillRect(context, NSRectToCGRect(rect));
-
-	CGContextRestoreGState(context);
+    NSAssert(edge == NSMinYEdge || edge == NSMaxYEdge, @"edge must be NSMinYEdge or NSMaxYEdge");
+    
+    // known constants used by OS X
+    const CGFloat opacity = 0.3;
+    const CGSize patternPhase = CGSizeMake(edge == NSMaxYEdge ? -5 : 0, self.window.frame.size.height);
+    
+    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+    CGContextSaveGState(context);
+    CGContextSetAlpha(context, opacity);
+    CGContextSetBlendMode(context, kCGBlendModeOverlay);
+    
+    CGContextSetPatternPhase(context, patternPhase);
+    [[INWindowBackgroundView windowPatternOverlayColor] setFill];
+    CGContextFillRect(context, NSRectToCGRect(rect));
+    
+    CGContextRestoreGState(context);
 }
 
 - (void)drawSeparatorInRect:(NSRect)separatorFrame forEdge:(NSRectEdge)edge
 {
-	NSAssert(edge == NSMinYEdge || edge == NSMaxYEdge, @"edge must be NSMinYEdge or NSMaxYEdge");
-
-	CGFloat multiplier = 0;
-	switch (edge) {
-		case NSMinYEdge:
-			multiplier = -1;
-			break;
-		case NSMaxYEdge:
-			multiplier = 1;
-			break;
-	}
-
-	INAppStoreWindow *window = (INAppStoreWindow *)self.window;
-	BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
-
-	NSColor *bottomColor = drawsAsMainWindow ? window.baselineSeparatorColor : window.inactiveBaselineSeparatorColor;
-
-	bottomColor = bottomColor ? bottomColor : [INAppStoreWindow defaultBaselineSeparatorColor:drawsAsMainWindow];
-
-	[bottomColor set];
-	NSRectFill(separatorFrame);
-
-	if (INRunningLion()) {
-		separatorFrame.origin.y += (separatorFrame.size.height * multiplier);
-		separatorFrame.size.height = 1.0;
-		[[NSColor colorWithDeviceWhite:1.0 alpha:0.12] setFill];
-		[[NSBezierPath bezierPathWithRect:separatorFrame] fill];
-	}
+    NSAssert(edge == NSMinYEdge || edge == NSMaxYEdge, @"edge must be NSMinYEdge or NSMaxYEdge");
+    
+    CGFloat multiplier = 0;
+    switch (edge) {
+        case NSMinYEdge:
+            multiplier = -1;
+            break;
+        case NSMaxYEdge:
+            multiplier = 1;
+            break;
+        case NSRectEdgeMinX:;
+        case NSRectEdgeMaxX:;
+    }
+    
+    INAppStoreWindow *window = (INAppStoreWindow *)self.window;
+    BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
+    
+    NSColor *bottomColor = drawsAsMainWindow ? window.baselineSeparatorColor : window.inactiveBaselineSeparatorColor;
+    
+    bottomColor = bottomColor ? bottomColor : [INAppStoreWindow defaultBaselineSeparatorColor:drawsAsMainWindow];
+    
+    [bottomColor set];
+    NSRectFill(separatorFrame);
+    
+    if (INRunningLion()) {
+        separatorFrame.origin.y += (separatorFrame.size.height * multiplier);
+        separatorFrame.size.height = 1.0;
+        [[NSColor colorWithDeviceWhite:1.0 alpha:0.12] setFill];
+        [[NSBezierPath bezierPathWithRect:separatorFrame] fill];
+    }
 }
 
 - (void)drawBackgroundGradientInRect:(NSRect)drawingRect forEdge:(NSRectEdge)edge
 {
-	NSAssert(edge == NSMinYEdge || edge == NSMaxYEdge, @"edge must be NSMinYEdge or NSMaxYEdge");
-
-	INAppStoreWindow *window = (INAppStoreWindow *)self.window;
-	BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
-
-	NSGradient *gradient = nil;
-	if (edge == NSMaxYEdge) {
-		gradient = drawsAsMainWindow ? window.titleBarGradient : window.inactiveTitleBarGradient;
-		gradient = gradient ? gradient : [INAppStoreWindow defaultTitleBarGradient:drawsAsMainWindow];
-	} else if (edge == NSMinYEdge) {
-		gradient = drawsAsMainWindow ? window.bottomBarGradient : window.inactiveBottomBarGradient;
-		gradient = gradient ? gradient : [INAppStoreWindow defaultBottomBarGradient:drawsAsMainWindow];
-	}
-
-	[gradient drawInRect:drawingRect angle:self.isFlipped ? -90 : 90];
+    NSAssert(edge == NSMinYEdge || edge == NSMaxYEdge, @"edge must be NSMinYEdge or NSMaxYEdge");
+    
+    INAppStoreWindow *window = (INAppStoreWindow *)self.window;
+    BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
+    
+    NSGradient *gradient = nil;
+    if (edge == NSMaxYEdge) {
+        gradient = drawsAsMainWindow ? window.titleBarGradient : window.inactiveTitleBarGradient;
+        gradient = gradient ? gradient : [INAppStoreWindow defaultTitleBarGradient:drawsAsMainWindow];
+    } else if (edge == NSMinYEdge) {
+        gradient = drawsAsMainWindow ? window.bottomBarGradient : window.inactiveBottomBarGradient;
+        gradient = gradient ? gradient : [INAppStoreWindow defaultBottomBarGradient:drawsAsMainWindow];
+    }
+    
+    [gradient drawInRect:drawingRect angle:self.isFlipped ? -90 : 90];
 }
 
 - (void)drawWindowBackgroundLayersInRect:(NSRect)drawingRect forEdge:(NSRectEdge)drawingEdge showsSeparator:(BOOL)showsSeparator clippingPath:(CGPathRef)clippingPath
 {
-	INAppStoreWindow *window = (INAppStoreWindow *)self.window;
-
-	if (clippingPath) {
-		INApplyClippingPathInCurrentContext(clippingPath);
-	}
-
-	if ((window.styleMask & NSTexturedBackgroundWindowMask) == NSTexturedBackgroundWindowMask) {
-		// If this is a textured window, we can draw the real background gradient and noise pattern
-		CGFloat contentBorderThickness = 0;
-		if (drawingEdge == NSMaxYEdge) {
-			contentBorderThickness = window.titleBarHeight;
-			if (((window.styleMask & NSFullScreenWindowMask) != NSFullScreenWindowMask)) {
-				contentBorderThickness -= window._minimumTitlebarHeight;
-			}
-		} else if (drawingEdge == NSMinYEdge) {
-			contentBorderThickness = window.bottomBarHeight;
-		}
-
-		[window setAutorecalculatesContentBorderThickness:NO forEdge:drawingEdge];
-		[window setContentBorderThickness:contentBorderThickness forEdge:drawingEdge];
-
-		// Technically the noise should be drawn over the separator but we can't do that here
-		if (showsSeparator) {
-			[self drawSeparatorInRect:[self baselineSeparatorFrameForRect:drawingRect edge:drawingEdge] forEdge:drawingEdge];
-		}
-	} else {
-		// Not textured, we have to fake the background gradient and noise pattern
-		[self drawBackgroundGradientInRect:drawingRect forEdge:drawingEdge];
-
-		if (showsSeparator) {
-			[self drawSeparatorInRect:[self baselineSeparatorFrameForRect:drawingRect edge:drawingEdge] forEdge:drawingEdge];
-		}
-
-		if (INRunningLion() && !INRunningYosemite() && window.drawsTitlePatternOverlay) {
-			[self drawWindowPatternOverlayColorInRect:drawingRect forEdge:drawingEdge];
-		}
-	}
+    INAppStoreWindow *window = (INAppStoreWindow *)self.window;
+    
+    if (clippingPath) {
+        INApplyClippingPathInCurrentContext(clippingPath);
+    }
+    
+    if ((window.styleMask & NSTexturedBackgroundWindowMask) == NSTexturedBackgroundWindowMask) {
+        // If this is a textured window, we can draw the real background gradient and noise pattern
+        CGFloat contentBorderThickness = 0;
+        if (drawingEdge == NSMaxYEdge) {
+            contentBorderThickness = window.titleBarHeight;
+            if (((window.styleMask & NSFullScreenWindowMask) != NSFullScreenWindowMask)) {
+                contentBorderThickness -= window._minimumTitlebarHeight;
+            }
+        } else if (drawingEdge == NSMinYEdge) {
+            contentBorderThickness = window.bottomBarHeight;
+        }
+        
+        [window setAutorecalculatesContentBorderThickness:NO forEdge:drawingEdge];
+        [window setContentBorderThickness:contentBorderThickness forEdge:drawingEdge];
+        
+        // Technically the noise should be drawn over the separator but we can't do that here
+        if (showsSeparator) {
+            [self drawSeparatorInRect:[self baselineSeparatorFrameForRect:drawingRect edge:drawingEdge] forEdge:drawingEdge];
+        }
+    } else {
+        // Not textured, we have to fake the background gradient and noise pattern
+        [self drawBackgroundGradientInRect:drawingRect forEdge:drawingEdge];
+        
+        if (showsSeparator) {
+            [self drawSeparatorInRect:[self baselineSeparatorFrameForRect:drawingRect edge:drawingEdge] forEdge:drawingEdge];
+        }
+        
+        if (INRunningLion() && !INRunningYosemite() && window.drawsTitlePatternOverlay) {
+            [self drawWindowPatternOverlayColorInRect:drawingRect forEdge:drawingEdge];
+        }
+    }
 }
 
 - (NSRect)baselineSeparatorFrameForRect:(NSRect)rect edge:(NSRectEdge)edge
 {
-	NSAssert(edge == NSMinYEdge || edge == NSMaxYEdge, @"edge must be NSMinYEdge or NSMaxYEdge");
-	return NSMakeRect(0, edge == NSMaxYEdge ? NSMinY(rect) : NSMaxY(rect) - 1, NSWidth(rect), 1);
+    NSAssert(edge == NSMinYEdge || edge == NSMaxYEdge, @"edge must be NSMinYEdge or NSMaxYEdge");
+    return NSMakeRect(0, edge == NSMaxYEdge ? NSMinY(rect) : NSMaxY(rect) - 1, NSWidth(rect), 1);
 }
 
 @end
@@ -300,221 +302,215 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 - (void)drawWindowBorderAccentLineInRect:(NSRect)rect
 {
-	CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
-	CGContextSaveGState(context);
-	CGContextSetAlpha(context, 0.4);
-	CGContextSetBlendMode(context, kCGBlendModeScreen);
-
-	[[NSColor whiteColor] setFill];
-	CGContextFillRect(context, NSRectToCGRect(rect));
-
-	CGContextRestoreGState(context);
+    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+    CGContextSaveGState(context);
+    CGContextSetAlpha(context, 0.4);
+    CGContextSetBlendMode(context, kCGBlendModeScreen);
+    
+    [[NSColor whiteColor] setFill];
+    CGContextFillRect(context, NSRectToCGRect(rect));
+    
+    CGContextRestoreGState(context);
 }
 
 - (NSRect)windowBorderAccentLineFrameForRect:(NSRect)rect
 {
-	return NSMakeRect(0, NSMaxY(rect) - 1, NSWidth(rect), 1);
+    return NSMakeRect(0, NSMaxY(rect) - 1, NSWidth(rect), 1);
 }
 
 - (void)drawBackgroundGradientInRect:(NSRect)drawingRect forEdge:(NSRectEdge)edge
 {
-	[super drawBackgroundGradientInRect:drawingRect forEdge:edge];
-	[self drawWindowBorderAccentLineInRect:[self windowBorderAccentLineFrameForRect:drawingRect]];
+    [super drawBackgroundGradientInRect:drawingRect forEdge:edge];
+    [self drawWindowBorderAccentLineInRect:[self windowBorderAccentLineFrameForRect:drawingRect]];
 }
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	INAppStoreWindow *window = (INAppStoreWindow *)self.window;
-	BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
-
-	// Start by filling the title bar area with black in fullscreen mode to match native apps
-	// Custom title bar drawing blocks can simply override this by not applying the clipping path
-	if (((window.styleMask & NSFullScreenWindowMask) == NSFullScreenWindowMask)) {
-		[[NSColor blackColor] setFill];
-		[[NSBezierPath bezierPathWithRect:self.bounds] fill];
-	}
-
-	NSRect drawingRect = self.bounds;
-	drawingRect.origin.y -= window.toolbarHeight;
-	drawingRect.size.height += window.toolbarHeight;
-
-	CGPathRef clippingPath = INCreateClippingPathWithRectAndRadius(drawingRect, INCornerClipRadius);
-
-	[self drawWindowBackgroundLayersInRect:drawingRect forEdge:NSMaxYEdge showsSeparator:window.showsBaselineSeparator clippingPath:clippingPath];
-	if (window.titleBarDrawingBlock) {
-		window.titleBarDrawingBlock(drawsAsMainWindow, NSRectToCGRect(drawingRect), CGRectMaxYEdge, clippingPath);
-	}
-
-	CGPathRelease(clippingPath);
-
-	if (window.showsTitle && ((window.styleMask & NSFullScreenWindowMask) == 0 || window.showsTitleInFullscreen)) {
-		NSRect titleTextRect;
-		NSDictionary *titleTextStyles = nil;
-		[self getTitleFrame:&titleTextRect textAttributes:&titleTextStyles forWindow:window];
-
-		if (titleTextStyles) {
-			if (window.verticallyCenterTitle) {
-				titleTextRect.origin.y = floor(NSMidY(drawingRect) - (NSHeight(titleTextRect) / 2.f) + 1);
-			}
-
-			[window.title drawInRect:titleTextRect withAttributes:titleTextStyles];
-		} else {
-			[self drawNativeWindowTitleInRect:titleTextRect];
-		}
-	}
+    INAppStoreWindow *window = (INAppStoreWindow *)self.window;
+    BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
+    
+    // Start by filling the title bar area with black in fullscreen mode to match native apps
+    // Custom title bar drawing blocks can simply override this by not applying the clipping path
+    if (((window.styleMask & NSFullScreenWindowMask) == NSFullScreenWindowMask)) {
+        [[NSColor blackColor] setFill];
+        [[NSBezierPath bezierPathWithRect:self.bounds] fill];
+    }
+    
+    NSRect drawingRect = self.bounds;
+    drawingRect.origin.y -= window.toolbarHeight;
+    drawingRect.size.height += window.toolbarHeight;
+    
+    CGPathRef clippingPath = INCreateClippingPathWithRectAndRadius(drawingRect, INCornerClipRadius);
+    
+    [self drawWindowBackgroundLayersInRect:drawingRect forEdge:NSMaxYEdge showsSeparator:window.showsBaselineSeparator clippingPath:clippingPath];
+    if (window.titleBarDrawingBlock) {
+        window.titleBarDrawingBlock(drawsAsMainWindow, NSRectToCGRect(drawingRect), CGRectMaxYEdge, clippingPath);
+    }
+    
+    CGPathRelease(clippingPath);
+    
+    if (window.showsTitle && ((window.styleMask & NSFullScreenWindowMask) == 0 || window.showsTitleInFullscreen)) {
+        NSRect titleTextRect;
+        NSDictionary *titleTextStyles = nil;
+        [self getTitleFrame:&titleTextRect textAttributes:&titleTextStyles forWindow:window];
+        
+        if (titleTextStyles) {
+            if (window.verticallyCenterTitle) {
+                titleTextRect.origin.y = floor(NSMidY(drawingRect) - (NSHeight(titleTextRect) / 2.f) + 1);
+            }
+            
+            [window.title drawInRect:titleTextRect withAttributes:titleTextStyles];
+        } else {
+            [self drawNativeWindowTitleInRect:titleTextRect];
+        }
+    }
 }
 
 - (void)getNativeTitleTextInfo:(out HIThemeTextInfo *)titleTextInfo
 {
-	INAppStoreWindow *window = (INAppStoreWindow *)self.window;
-	BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
-	titleTextInfo->version = 1;
-	titleTextInfo->state = drawsAsMainWindow ? kThemeStateActive : kThemeStateUnavailableInactive;
-	titleTextInfo->fontID = kThemeWindowTitleFont;
-	titleTextInfo->horizontalFlushness = kHIThemeTextHorizontalFlushCenter;
-	titleTextInfo->verticalFlushness = kHIThemeTextVerticalFlushCenter;
-	titleTextInfo->options = kHIThemeTextBoxOptionEngraved;
-	titleTextInfo->truncationPosition = kHIThemeTextTruncationDefault;
-	titleTextInfo->truncationMaxLines = 1;
+    INAppStoreWindow *window = (INAppStoreWindow *)self.window;
+    BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
+    titleTextInfo->version = 1;
+    titleTextInfo->state = drawsAsMainWindow ? kThemeStateActive : kThemeStateUnavailableInactive;
+    titleTextInfo->fontID = kThemeWindowTitleFont;
+    titleTextInfo->horizontalFlushness = kHIThemeTextHorizontalFlushCenter;
+    titleTextInfo->verticalFlushness = kHIThemeTextVerticalFlushCenter;
+    titleTextInfo->options = kHIThemeTextBoxOptionEngraved;
+    titleTextInfo->truncationPosition = kHIThemeTextTruncationDefault;
+    titleTextInfo->truncationMaxLines = 1;
 }
 
 - (void)drawNativeWindowTitleInRect:(NSRect)titleTextRect
 {
-	INAppStoreWindow *window = (INAppStoreWindow *)self.window;
-
-	HIThemeTextInfo titleTextInfo;
-	[self getNativeTitleTextInfo:&titleTextInfo];
-
-	// Let kHIThemeTextVerticalFlushCenter handle the vertical alignment instead of manually calculating it
-	titleTextRect.size.height = window.verticallyCenterTitle ? self.bounds.size.height : window._minimumTitlebarHeight;
-	titleTextRect.origin.y = self.isFlipped ? 0 : self.bounds.size.height - titleTextRect.size.height;
-
-	HIThemeDrawTextBox((__bridge CFTypeRef)(window.title), &titleTextRect, &titleTextInfo, [[NSGraphicsContext currentContext] graphicsPort], self.isFlipped ? kHIThemeOrientationNormal : kHIThemeOrientationInverted);
+    INAppStoreWindow *window = (INAppStoreWindow *)self.window;
+    
+    HIThemeTextInfo titleTextInfo;
+    [self getNativeTitleTextInfo:&titleTextInfo];
+    
+    // Let kHIThemeTextVerticalFlushCenter handle the vertical alignment instead of manually calculating it
+    titleTextRect.size.height = window.verticallyCenterTitle ? self.bounds.size.height : window._minimumTitlebarHeight;
+    titleTextRect.origin.y = self.isFlipped ? 0 : self.bounds.size.height - titleTextRect.size.height;
+    
+    HIThemeDrawTextBox((__bridge CFTypeRef)(window.title), &titleTextRect, &titleTextInfo, [[NSGraphicsContext currentContext] graphicsPort], self.isFlipped ? kHIThemeOrientationNormal : kHIThemeOrientationInverted);
 }
 
 - (void)getTitleFrame:(out NSRect *)frame textAttributes:(out NSDictionary **)attributes forWindow:(in INAppStoreWindow *)window
 {
-	BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
-	BOOL isUsingCustomTitleDrawing = window.titleTextShadow
-								  || window.inactiveTitleTextShadow
-								  || window.titleTextColor
-								  || window.inactiveTitleTextColor
-								  || window.titleFont;
-
-	NSSize titleSize;
-	NSRect titleTextRect;
-	if (isUsingCustomTitleDrawing)
-	{
-		NSShadow *titleTextShadow = drawsAsMainWindow ? window.titleTextShadow : window.inactiveTitleTextShadow;
-		if (titleTextShadow == nil) {
-			titleTextShadow = [[NSShadow alloc] init];
-			titleTextShadow.shadowBlurRadius = 0.0;
-			titleTextShadow.shadowOffset = NSMakeSize(0, -1);
-			titleTextShadow.shadowColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.5];
-		}
-
-		NSColor *titleTextColor = drawsAsMainWindow ? window.titleTextColor : window.inactiveTitleTextColor;
-		titleTextColor = titleTextColor ? titleTextColor : [INAppStoreWindow defaultTitleTextColor:drawsAsMainWindow];
-
-		NSFont *titleFont = window.titleFont ?: [NSFont titleBarFontOfSize:[NSFont systemFontSizeForControlSize:NSRegularControlSize]];
-
-		NSMutableParagraphStyle *titleParagraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-		[titleParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
-		NSDictionary *titleTextStyles = @{NSFontAttributeName : titleFont,
-										  NSForegroundColorAttributeName : titleTextColor,
-										  NSShadowAttributeName : titleTextShadow,
-										  NSParagraphStyleAttributeName : titleParagraphStyle};
-		titleSize = [window.title sizeWithAttributes:titleTextStyles];
-
-		if (attributes) {
-			*attributes = titleTextStyles;
-		}
-	}
-	else
-	{
-		HIThemeTextInfo titleTextInfo;
-		[self getNativeTitleTextInfo:&titleTextInfo];
-		HIThemeGetTextDimensions((__bridge CFTypeRef)(window.title), 0, &titleTextInfo, &titleSize.width, &titleSize.height, NULL);
-	}
-
-	titleTextRect.size = titleSize;
-
-	NSButton *docIconButton = [window standardWindowButton:NSWindowDocumentIconButton];
-	NSButton *versionsButton = [window standardWindowButton:NSWindowDocumentVersionsButton];
-	NSButton *closeButton = window._closeButtonToLayout;
-	NSButton *minimizeButton = window._minimizeButtonToLayout;
-	NSButton *zoomButton = window._zoomButtonToLayout;
-	if (docIconButton) {
-		NSRect docIconButtonFrame = [self convertRect:docIconButton.frame fromView:docIconButton.superview];
-		titleTextRect.origin.x = NSMaxX(docIconButtonFrame) + INTitleDocumentButtonOffset.width;
-		titleTextRect.origin.y = NSMidY(docIconButtonFrame) - titleSize.height / 2 + INTitleDocumentButtonOffset.height;
-	} else if (versionsButton) {
-		NSRect versionsButtonFrame = [self convertRect:versionsButton.frame fromView:versionsButton.superview];
-		titleTextRect.origin.x = NSMinX(versionsButtonFrame) - titleSize.width + INTitleVersionsButtonXOffset;
-
-		NSDocument *document = (NSDocument *)[(NSWindowController *)self.window.windowController document];
-		if (document.hasUnautosavedChanges || document.isDocumentEdited) {
-			titleTextRect.origin.x += INTitleDocumentStatusXOffset;
-		}
-	} else if (closeButton || minimizeButton || zoomButton) {
-		CGFloat closeMaxX = NSMaxX(closeButton.frame);
-		CGFloat minimizeMaxX = NSMaxX(minimizeButton.frame);
-		CGFloat zoomMaxX = NSMaxX(zoomButton.frame);
-
-		CGFloat adjustedX = MAX(MAX(closeMaxX, minimizeMaxX), zoomMaxX) + INTitleMargins.width;
-		CGFloat proposedX = NSMidX(self.bounds) - titleSize.width / 2;
-
-		titleTextRect.origin.x = (proposedX < adjustedX) ? adjustedX : proposedX;
-	} else {
-		titleTextRect.origin.x = NSMidX(self.bounds) - titleSize.width / 2;
-	}
-
-	if (versionsButton) {
-		NSRect versionsButtonFrame = [self convertRect:versionsButton.frame fromView:versionsButton.superview];
-
-		NSTextField *titleDivider = window.titleDivider;
-		if (titleDivider) {
-			versionsButtonFrame = [self convertRect:titleDivider.frame fromView:titleDivider.superview];
-		}
-
-		if (NSMaxX(titleTextRect) > NSMinX(versionsButtonFrame)) {
-			titleTextRect.size.width = NSMinX(versionsButtonFrame) - NSMinX(titleTextRect) - INTitleMargins.width;
-		}
-	}
-
-	NSButton *fullScreenButton = window._fullScreenButtonToLayout;
-	if (fullScreenButton) {
-		CGFloat fullScreenX = fullScreenButton.frame.origin.x;
-		CGFloat maxTitleX = NSMaxX(titleTextRect);
-		if ((fullScreenX - INTitleMargins.width) < NSMaxX(titleTextRect)) {
-			titleTextRect.size.width = titleTextRect.size.width - (maxTitleX - fullScreenX) - INTitleMargins.width;
-		}
-	}
-
-	titleTextRect.origin.y = NSMaxY(self.bounds) - titleSize.height - INTitleMargins.height;
-
-	if (frame) {
-		*frame = titleTextRect;
-	}
+    BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
+    BOOL isUsingCustomTitleDrawing = window.titleTextShadow
+    || window.inactiveTitleTextShadow
+    || window.titleTextColor
+    || window.inactiveTitleTextColor
+    || window.titleFont;
+    
+    NSSize titleSize;
+    NSRect titleTextRect;
+    if (isUsingCustomTitleDrawing)
+    {
+        NSShadow *titleTextShadow = drawsAsMainWindow ? window.titleTextShadow : window.inactiveTitleTextShadow;
+        if (titleTextShadow == nil) {
+            titleTextShadow = [[NSShadow alloc] init];
+            titleTextShadow.shadowBlurRadius = 0.0;
+            titleTextShadow.shadowOffset = NSMakeSize(0, -1);
+            titleTextShadow.shadowColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.5];
+        }
+        
+        NSColor *titleTextColor = drawsAsMainWindow ? window.titleTextColor : window.inactiveTitleTextColor;
+        titleTextColor = titleTextColor ? titleTextColor : [INAppStoreWindow defaultTitleTextColor:drawsAsMainWindow];
+        
+        NSFont *titleFont = window.titleFont ?: [NSFont titleBarFontOfSize:[NSFont systemFontSizeForControlSize:NSRegularControlSize]];
+        
+        NSMutableParagraphStyle *titleParagraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        [titleParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+        NSDictionary *titleTextStyles = @{NSFontAttributeName : titleFont,
+                                          NSForegroundColorAttributeName : titleTextColor,
+                                          NSShadowAttributeName : titleTextShadow,
+                                          NSParagraphStyleAttributeName : titleParagraphStyle};
+        titleSize = [window.title sizeWithAttributes:titleTextStyles];
+        
+        if (attributes) {
+            *attributes = titleTextStyles;
+        }
+    }
+    else
+    {
+        HIThemeTextInfo titleTextInfo;
+        [self getNativeTitleTextInfo:&titleTextInfo];
+        HIThemeGetTextDimensions((__bridge CFTypeRef)(window.title), 0, &titleTextInfo, &titleSize.width, &titleSize.height, NULL);
+    }
+    
+    titleTextRect.size = titleSize;
+    
+    NSButton *docIconButton = [window standardWindowButton:NSWindowDocumentIconButton];
+    NSButton *versionsButton = [window standardWindowButton:NSWindowDocumentVersionsButton];
+    NSButton *closeButton = window._closeButtonToLayout;
+    NSButton *minimizeButton = window._minimizeButtonToLayout;
+    NSButton *zoomButton = window._zoomButtonToLayout;
+    if (docIconButton) {
+        NSRect docIconButtonFrame = [self convertRect:docIconButton.frame fromView:docIconButton.superview];
+        titleTextRect.origin.x = NSMaxX(docIconButtonFrame) + INTitleDocumentButtonOffset.width;
+        titleTextRect.origin.y = NSMidY(docIconButtonFrame) - titleSize.height / 2 + INTitleDocumentButtonOffset.height;
+    } else if (versionsButton) {
+        NSRect versionsButtonFrame = [self convertRect:versionsButton.frame fromView:versionsButton.superview];
+        titleTextRect.origin.x = NSMinX(versionsButtonFrame) - titleSize.width + INTitleVersionsButtonXOffset;
+        
+        NSDocument *document = (NSDocument *)[(NSWindowController *)self.window.windowController document];
+        if (document.hasUnautosavedChanges || document.isDocumentEdited) {
+            titleTextRect.origin.x += INTitleDocumentStatusXOffset;
+        }
+    } else if (closeButton || minimizeButton || zoomButton) {
+        CGFloat closeMaxX = NSMaxX(closeButton.frame);
+        CGFloat minimizeMaxX = NSMaxX(minimizeButton.frame);
+        CGFloat zoomMaxX = NSMaxX(zoomButton.frame);
+        
+        CGFloat adjustedX = MAX(MAX(closeMaxX, minimizeMaxX), zoomMaxX) + INTitleMargins.width;
+        CGFloat proposedX = NSMidX(self.bounds) - titleSize.width / 2;
+        
+        titleTextRect.origin.x = (proposedX < adjustedX) ? adjustedX : proposedX;
+    } else {
+        titleTextRect.origin.x = NSMidX(self.bounds) - titleSize.width / 2;
+    }
+    
+    if (versionsButton) {
+        NSRect versionsButtonFrame = [self convertRect:versionsButton.frame fromView:versionsButton.superview];
+        
+        NSTextField *titleDivider = window.titleDivider;
+        if (titleDivider) {
+            versionsButtonFrame = [self convertRect:titleDivider.frame fromView:titleDivider.superview];
+        }
+        
+        if (NSMaxX(titleTextRect) > NSMinX(versionsButtonFrame)) {
+            titleTextRect.size.width = NSMinX(versionsButtonFrame) - NSMinX(titleTextRect) - INTitleMargins.width;
+        }
+    }
+    
+    NSButton *fullScreenButton = window._fullScreenButtonToLayout;
+    if (fullScreenButton) {
+        CGFloat fullScreenX = fullScreenButton.frame.origin.x;
+        CGFloat maxTitleX = NSMaxX(titleTextRect);
+        if ((fullScreenX - INTitleMargins.width) < NSMaxX(titleTextRect)) {
+            titleTextRect.size.width = titleTextRect.size.width - (maxTitleX - fullScreenX) - INTitleMargins.width;
+        }
+    }
+    
+    titleTextRect.origin.y = NSMaxY(self.bounds) - titleSize.height - INTitleMargins.height;
+    
+    if (frame) {
+        *frame = titleTextRect;
+    }
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
-	if ([theEvent clickCount] == 2) {
-		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-		
-		// Get settings from "System Preferences" >  "Appearance" > "Double-click on windows title bar to minimize"
-		NSString *const MDAppleMiniaturizeOnDoubleClickKey = @"AppleMiniaturizeOnDoubleClick";
-		BOOL shouldMiniaturize = [[userDefaults objectForKey:MDAppleMiniaturizeOnDoubleClickKey] boolValue];
-		
-		// In El Capitan and later from "System Preferences" >  "Dock" > "Double-click on windows title bar to ..."
-		NSString *const MDAppleMiniaturizeOnDoubleClickKeyElCapitan = @"AppleActionOnDoubleClick";
-		shouldMiniaturize = shouldMiniaturize || [[userDefaults objectForKey:MDAppleMiniaturizeOnDoubleClickKeyElCapitan] isEqualToString:@"Minimize"];
-		
-		if (shouldMiniaturize) {
-			[[self window] performMiniaturize:self];
-		}
-	}
+    if (theEvent.clickCount == 2) {
+        // Get settings from "System Preferences" >	 "Appearance" > "Double-click on windows title bar to minimize"
+        NSString *const MDAppleMiniaturizeOnDoubleClickKey = @"AppleMiniaturizeOnDoubleClick";
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        BOOL shouldMiniaturize = [[userDefaults objectForKey:MDAppleMiniaturizeOnDoubleClickKey] boolValue];
+        if (shouldMiniaturize) {
+            [self.window performMiniaturize:self];
+        }
+    }
 }
 
 @end
@@ -523,15 +519,15 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	INAppStoreWindow *window = (INAppStoreWindow *)self.window;
-	BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
-
-	NSRect drawingRect = self.bounds;
-
-	[self drawWindowBackgroundLayersInRect:drawingRect forEdge:NSMinYEdge showsSeparator:window.showsBottomBarSeparator clippingPath:NULL];
-	if (window.bottomBarDrawingBlock) {
-		window.bottomBarDrawingBlock(drawsAsMainWindow, NSRectToCGRect(drawingRect), CGRectMinYEdge, NULL);
-	}
+    INAppStoreWindow *window = (INAppStoreWindow *)self.window;
+    BOOL drawsAsMainWindow = (window.isMainWindow && [NSApplication sharedApplication].isActive);
+    
+    NSRect drawingRect = self.bounds;
+    
+    [self drawWindowBackgroundLayersInRect:drawingRect forEdge:NSMinYEdge showsSeparator:window.showsBottomBarSeparator clippingPath:NULL];
+    if (window.bottomBarDrawingBlock) {
+        window.bottomBarDrawingBlock(drawsAsMainWindow, NSRectToCGRect(drawingRect), CGRectMinYEdge, NULL);
+    }
 }
 
 @end
@@ -543,41 +539,45 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 @implementation INMovableByBackgroundContainerView
 - (instancetype)initWithFrame:(NSRect)frameRect
 {
-	self = [super initWithFrame:frameRect];
-	if (self) {
-		_mouseDragDetectionThreshold = 1;
-	}
-	return self;
+    self = [super initWithFrame:frameRect];
+    if (self) {
+        _mouseDragDetectionThreshold = 1;
+    }
+    return self;
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-	NSWindow *window = self.window;
-	if (window.isMovableByWindowBackground || (window.styleMask & NSFullScreenWindowMask) == NSFullScreenWindowMask) {
-		[super mouseDragged:theEvent];
-		return;
-	}
-
-	NSPoint where = [window convertBaseToScreen:theEvent.locationInWindow];
-	NSPoint origin = window.frame.origin;
-	CGFloat deltaX = 0.0;
-	CGFloat deltaY = 0.0;
-	while ((theEvent = [NSApp nextEventMatchingMask:NSLeftMouseDownMask | NSLeftMouseDraggedMask | NSLeftMouseUpMask untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:YES]) && (theEvent.type != NSLeftMouseUp)) {
-		@autoreleasepool {
-			NSPoint now = [window convertBaseToScreen:theEvent.locationInWindow];
-			deltaX += now.x - where.x;
-			deltaY += now.y - where.y;
-			if (fabs(deltaX) >= _mouseDragDetectionThreshold || fabs(deltaY) >= _mouseDragDetectionThreshold) {
-				// This part is only called if drag occurs on container view!
-				origin.x += deltaX;
-				origin.y += deltaY;
-				window.frameOrigin = origin;
-				deltaX = 0.0;
-				deltaY = 0.0;
-			}
-			where = now; // this should be inside above if but doing that results in jittering while moving the window...
-		}
-	}
+    NSWindow *window = self.window;
+    if (window.isMovableByWindowBackground || (window.styleMask & NSFullScreenWindowMask) == NSFullScreenWindowMask) {
+        [super mouseDragged:theEvent];
+        return;
+    }
+    
+    NSPoint wherePoint = theEvent.locationInWindow;
+    CGRect whereRect = CGRectMake(wherePoint.x, wherePoint.y, 0, 0);
+    
+    NSPoint where = [window convertRectToScreen:whereRect].origin;
+    NSPoint origin = window.frame.origin;
+    CGFloat deltaX = 0.0;
+    CGFloat deltaY = 0.0;
+    while ((theEvent = [NSApp nextEventMatchingMask:NSLeftMouseDownMask | NSLeftMouseDraggedMask | NSLeftMouseUpMask untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:YES]) && (theEvent.type != NSLeftMouseUp)) {
+        @autoreleasepool {
+            NSPoint now = [window convertRectToScreen:whereRect].origin;
+            //			NSPoint now = [window convertBaseToScreen:theEvent.locationInWindow];
+            deltaX += now.x - where.x;
+            deltaY += now.y - where.y;
+            if (fabs(deltaX) >= _mouseDragDetectionThreshold || fabs(deltaY) >= _mouseDragDetectionThreshold) {
+                // This part is only called if drag occurs on container view!
+                origin.x += deltaX;
+                origin.y += deltaY;
+                window.frameOrigin = origin;
+                deltaX = 0.0;
+                deltaY = 0.0;
+            }
+            where = now; // this should be inside above if but doing that results in jittering while moving the window...
+        }
+    }
 }
 @end
 
@@ -588,25 +588,25 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 - (void)setFrame:(NSRect)frameRect
 {
-	frameRect = [(INAppStoreWindow *)self.window _contentViewFrame];
-	super.frame = frameRect;
+    frameRect = [(INAppStoreWindow *)self.window _contentViewFrame];
+    super.frame = frameRect;
 }
 
 - (void)setFrameSize:(NSSize)newSize
 {
-	newSize = [(INAppStoreWindow *)self.window _contentViewFrame].size;
-	super.frameSize = newSize;
+    newSize = [(INAppStoreWindow *)self.window _contentViewFrame].size;
+    super.frameSize = newSize;
 }
 
 @end
 
 @implementation INAppStoreWindow {
-	CGFloat _cachedTitleBarHeight;
-	BOOL _setFullScreenButtonRightMargin;
-	BOOL _preventWindowFrameChange;
-	INAppStoreWindowDelegateProxy *_delegateProxy;
-	INMovableByBackgroundContainerView *_titleBarContainer;
-	INMovableByBackgroundContainerView *_bottomBarContainer;
+    CGFloat _cachedTitleBarHeight;
+    BOOL _setFullScreenButtonRightMargin;
+    BOOL _preventWindowFrameChange;
+    INAppStoreWindowDelegateProxy *_delegateProxy;
+    INMovableByBackgroundContainerView *_titleBarContainer;
+    INMovableByBackgroundContainerView *_bottomBarContainer;
 }
 
 @synthesize titleBarView = _titleBarView;
@@ -636,26 +636,26 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 - (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag
 {
-	if ((self = [super initWithContentRect:contentRect styleMask:aStyle backing:bufferingType defer:flag])) {
-		[self _doInitialWindowSetup];
-	}
-	return self;
+    if ((self = [super initWithContentRect:contentRect styleMask:aStyle backing:bufferingType defer:flag])) {
+        [self _doInitialWindowSetup];
+    }
+    return self;
 }
 
 - (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag screen:(NSScreen *)screen
 {
-	if ((self = [super initWithContentRect:contentRect styleMask:aStyle backing:bufferingType defer:flag screen:screen])) {
-		[self _doInitialWindowSetup];
-	}
-	return self;
+    if ((self = [super initWithContentRect:contentRect styleMask:aStyle backing:bufferingType defer:flag screen:screen])) {
+        [self _doInitialWindowSetup];
+    }
+    return self;
 }
 
 - (void)setRepresentedURL:(NSURL *)url
 {
-	super.representedURL = url;
-	if (_showsDocumentProxyIcon == NO) {
-		[self standardWindowButton:NSWindowDocumentIconButton].image = nil;
-	}
+    super.representedURL = url;
+    if (_showsDocumentProxyIcon == NO) {
+        [self standardWindowButton:NSWindowDocumentIconButton].image = nil;
+    }
 }
 
 #pragma mark -
@@ -663,7 +663,7 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 - (void)dealloc
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark -
@@ -671,82 +671,82 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 - (void)becomeKeyWindow
 {
-	[super becomeKeyWindow];
-	[self _updateTitlebarView];
-	[self _updateBottomBarView];
-	[self _layoutTrafficLightsAndContent];
-	[self _setupTrafficLightsTrackingArea];
+    [super becomeKeyWindow];
+    [self _updateTitlebarView];
+    [self _updateBottomBarView];
+    [self _layoutTrafficLightsAndContent];
+    [self _setupTrafficLightsTrackingArea];
 }
 
 - (void)resignKeyWindow
 {
-	[super resignKeyWindow];
-	[self _updateTitlebarView];
-	[self _updateBottomBarView];
-	[self _layoutTrafficLightsAndContent];
+    [super resignKeyWindow];
+    [self _updateTitlebarView];
+    [self _updateBottomBarView];
+    [self _layoutTrafficLightsAndContent];
 }
 
 - (void)becomeMainWindow
 {
-	[super becomeMainWindow];
-	[self _updateTitlebarView];
-	[self _updateBottomBarView];
+    [super becomeMainWindow];
+    [self _updateTitlebarView];
+    [self _updateBottomBarView];
 }
 
 - (void)resignMainWindow
 {
-	[super resignMainWindow];
-	[self _updateTitlebarView];
-	[self _updateBottomBarView];
+    [super resignMainWindow];
+    [self _updateTitlebarView];
+    [self _updateBottomBarView];
 }
 
 - (void)setContentView:(NSView *)aView
 {
-	// Remove performance-optimized content view class when changing content views
-	NSView *oldView = self.contentView;
-	if (oldView && object_getClass(oldView) == [INAppStoreWindowContentView class]) {
-		object_setClass(oldView, [NSView class]);
-	}
-
-	super.contentView = aView;
-
-	// Swap in performance-optimized content view class
-	if (aView && object_getClass(aView) == [NSView class]) {
-		object_setClass(aView, [INAppStoreWindowContentView class]);
-	}
-
-	[self _repositionContentView];
+    // Remove performance-optimized content view class when changing content views
+    NSView *oldView = self.contentView;
+    if (oldView && object_getClass(oldView) == [INAppStoreWindowContentView class]) {
+        object_setClass(oldView, [NSView class]);
+    }
+    
+    super.contentView = aView;
+    
+    // Swap in performance-optimized content view class
+    if (aView && object_getClass(aView) == [NSView class]) {
+        object_setClass(aView, [INAppStoreWindowContentView class]);
+    }
+    
+    [self _repositionContentView];
 }
 
 - (void)setTitle:(NSString *)aString
 {
-	super.title = aString;
-	[self _layoutTrafficLightsAndContent];
-	[self _displayWindowAndTitlebar];
+    super.title = aString;
+    [self _layoutTrafficLightsAndContent];
+    [self _displayWindowAndTitlebar];
 }
 
 - (void)setMaxSize:(NSSize)size
 {
-	super.maxSize = size;
-	[self _layoutTrafficLightsAndContent];
+    super.maxSize = size;
+    [self _layoutTrafficLightsAndContent];
 }
 
 - (void)setMinSize:(NSSize)size
 {
-	super.minSize = size;
-	[self _layoutTrafficLightsAndContent];
+    super.minSize = size;
+    [self _layoutTrafficLightsAndContent];
 }
 
 - (void)setToolbar:(NSToolbar *)toolbar
 {
-	self.titleBarHeight = self._minimumTitlebarHeight;
-	super.toolbar = toolbar;
+    self.titleBarHeight = self._minimumTitlebarHeight;
+    super.toolbar = toolbar;
 }
 
 - (IBAction)toggleToolbarShown:(id)sender
 {
-	[super toggleToolbarShown:sender];
-	[self _repositionContentView];
+    [super toggleToolbarShown:sender];
+    [self _repositionContentView];
 }
 
 #pragma mark -
@@ -754,308 +754,308 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 - (void)setTitleBarView:(NSView *)newTitleBarView
 {
-	if ((_titleBarView != newTitleBarView) && newTitleBarView) {
-		[_titleBarView removeFromSuperview];
-		_titleBarView = newTitleBarView;
-		_titleBarView.frame = _titleBarContainer.bounds;
-		_titleBarView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-		[_titleBarContainer addSubview:_titleBarView];
-	}
+    if ((_titleBarView != newTitleBarView) && newTitleBarView) {
+        [_titleBarView removeFromSuperview];
+        _titleBarView = newTitleBarView;
+        _titleBarView.frame = _titleBarContainer.bounds;
+        _titleBarView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+        [_titleBarContainer addSubview:_titleBarView];
+    }
 }
 
 - (void)setTitleBarHeight:(CGFloat)newTitleBarHeight
 {
-	[self setTitleBarHeight:newTitleBarHeight adjustWindowFrame:YES];
+    [self setTitleBarHeight:newTitleBarHeight adjustWindowFrame:YES];
 }
 
 - (void)setTitleBarHeight:(CGFloat)newTitleBarHeight adjustWindowFrame:(BOOL)adjustWindowFrame
 {
-	if (_titleBarHeight != newTitleBarHeight) {
-		if (self.toolbar) {
-			newTitleBarHeight = self._minimumTitlebarHeight;
-		}
-
-		NSRect windowFrame = self.frame;
-		if (adjustWindowFrame)
-		{
-			windowFrame.origin.y -= newTitleBarHeight - _titleBarHeight;
-			windowFrame.size.height += newTitleBarHeight - _titleBarHeight;
-		}
-
-		_cachedTitleBarHeight = newTitleBarHeight;
-		_titleBarHeight = _cachedTitleBarHeight;
-
-		[self setFrame:windowFrame display:YES];
-
-		[self _layoutTrafficLightsAndContent];
-		[self _displayWindowAndTitlebar];
-
-		if ((self.styleMask & NSTexturedBackgroundWindowMask) == NSTexturedBackgroundWindowMask) {
-			[self.contentView displayIfNeeded];
-		}
-	}
+    if (_titleBarHeight != newTitleBarHeight) {
+        if (self.toolbar) {
+            newTitleBarHeight = self._minimumTitlebarHeight;
+        }
+        
+        NSRect windowFrame = self.frame;
+        if (adjustWindowFrame)
+        {
+            windowFrame.origin.y -= newTitleBarHeight - _titleBarHeight;
+            windowFrame.size.height += newTitleBarHeight - _titleBarHeight;
+        }
+        
+        _cachedTitleBarHeight = newTitleBarHeight;
+        _titleBarHeight = _cachedTitleBarHeight;
+        
+        [self setFrame:windowFrame display:YES];
+        
+        [self _layoutTrafficLightsAndContent];
+        [self _displayWindowAndTitlebar];
+        
+        if ((self.styleMask & NSTexturedBackgroundWindowMask) == NSTexturedBackgroundWindowMask) {
+            [self.contentView displayIfNeeded];
+        }
+    }
 }
 
 - (void)setBottomBarView:(NSView *)bottomBarView
 {
-	if ((_bottomBarView != bottomBarView) && bottomBarView) {
-		[_bottomBarView removeFromSuperview];
-		_bottomBarView = bottomBarView;
-		_bottomBarView.frame = _bottomBarContainer.bounds;
-		_bottomBarView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-		[_bottomBarContainer addSubview:_bottomBarView];
-	}
+    if ((_bottomBarView != bottomBarView) && bottomBarView) {
+        [_bottomBarView removeFromSuperview];
+        _bottomBarView = bottomBarView;
+        _bottomBarView.frame = _bottomBarContainer.bounds;
+        _bottomBarView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+        [_bottomBarContainer addSubview:_bottomBarView];
+    }
 }
 
 - (void)setBottomBarHeight:(CGFloat)bottomBarHeight
 {
-	if (_bottomBarHeight != bottomBarHeight) {
-		_bottomBarHeight = bottomBarHeight;
-
-		[self _layoutTrafficLightsAndContent];
-
-		if ((self.styleMask & NSTexturedBackgroundWindowMask) == NSTexturedBackgroundWindowMask) {
-			[self.contentView displayIfNeeded];
-		}
-	}
+    if (_bottomBarHeight != bottomBarHeight) {
+        _bottomBarHeight = bottomBarHeight;
+        
+        [self _layoutTrafficLightsAndContent];
+        
+        if ((self.styleMask & NSTexturedBackgroundWindowMask) == NSTexturedBackgroundWindowMask) {
+            [self.contentView displayIfNeeded];
+        }
+    }
 }
 
 - (void)setShowsBaselineSeparator:(BOOL)showsBaselineSeparator
 {
-	if (_showsBaselineSeparator != showsBaselineSeparator) {
-		_showsBaselineSeparator = showsBaselineSeparator;
-		[self.titleBarView setNeedsDisplay:YES];
-	}
+    if (_showsBaselineSeparator != showsBaselineSeparator) {
+        _showsBaselineSeparator = showsBaselineSeparator;
+        [self.titleBarView setNeedsDisplay:YES];
+    }
 }
 
 - (void)setShowsBottomBarSeparator:(BOOL)showsBottomBarSeparator
 {
-	if (_showsBottomBarSeparator != showsBottomBarSeparator) {
-		_showsBottomBarSeparator = showsBottomBarSeparator;
-		[self.bottomBarView setNeedsDisplay:YES];
-	}
+    if (_showsBottomBarSeparator != showsBottomBarSeparator) {
+        _showsBottomBarSeparator = showsBottomBarSeparator;
+        [self.bottomBarView setNeedsDisplay:YES];
+    }
 }
 
 - (void)setTrafficLightButtonsLeftMargin:(CGFloat)newTrafficLightButtonsLeftMargin
 {
-	if (_trafficLightButtonsLeftMargin != newTrafficLightButtonsLeftMargin) {
-		_trafficLightButtonsLeftMargin = newTrafficLightButtonsLeftMargin;
-		[self _layoutTrafficLightsAndContent];
-		[self _displayWindowAndTitlebar];
-		[self _setupTrafficLightsTrackingArea];
-	}
+    if (_trafficLightButtonsLeftMargin != newTrafficLightButtonsLeftMargin) {
+        _trafficLightButtonsLeftMargin = newTrafficLightButtonsLeftMargin;
+        [self _layoutTrafficLightsAndContent];
+        [self _displayWindowAndTitlebar];
+        [self _setupTrafficLightsTrackingArea];
+    }
 }
 
 - (void)setFullScreenButtonRightMargin:(CGFloat)newFullScreenButtonRightMargin
 {
-	if (_fullScreenButtonRightMargin != newFullScreenButtonRightMargin) {
-		_setFullScreenButtonRightMargin = YES;
-		_fullScreenButtonRightMargin = newFullScreenButtonRightMargin;
-		[self _layoutTrafficLightsAndContent];
-		[self _displayWindowAndTitlebar];
-	}
+    if (_fullScreenButtonRightMargin != newFullScreenButtonRightMargin) {
+        _setFullScreenButtonRightMargin = YES;
+        _fullScreenButtonRightMargin = newFullScreenButtonRightMargin;
+        [self _layoutTrafficLightsAndContent];
+        [self _displayWindowAndTitlebar];
+    }
 }
 
 - (void)setShowsTitle:(BOOL)showsTitle
 {
-	if (_showsTitle != showsTitle) {
-		_showsTitle = showsTitle;
-		[self _displayWindowAndTitlebar];
-	}
+    if (_showsTitle != showsTitle) {
+        _showsTitle = showsTitle;
+        [self _displayWindowAndTitlebar];
+    }
 }
 
 - (void)setShowsDocumentProxyIcon:(BOOL)showsDocumentProxyIcon
 {
-	if (_showsDocumentProxyIcon != showsDocumentProxyIcon) {
-		_showsDocumentProxyIcon = showsDocumentProxyIcon;
-		[self _displayWindowAndTitlebar];
-	}
+    if (_showsDocumentProxyIcon != showsDocumentProxyIcon) {
+        _showsDocumentProxyIcon = showsDocumentProxyIcon;
+        [self _displayWindowAndTitlebar];
+    }
 }
 
 - (void)setCenterFullScreenButton:(BOOL)centerFullScreenButton
 {
-	if (_centerFullScreenButton != centerFullScreenButton) {
-		_centerFullScreenButton = centerFullScreenButton;
-		[self _layoutTrafficLightsAndContent];
-	}
+    if (_centerFullScreenButton != centerFullScreenButton) {
+        _centerFullScreenButton = centerFullScreenButton;
+        [self _layoutTrafficLightsAndContent];
+    }
 }
 
 - (void)setCenterTrafficLightButtons:(BOOL)centerTrafficLightButtons
 {
-	if (_centerTrafficLightButtons != centerTrafficLightButtons) {
-		_centerTrafficLightButtons = centerTrafficLightButtons;
-		[self _layoutTrafficLightsAndContent];
-		[self _setupTrafficLightsTrackingArea];
-	}
+    if (_centerTrafficLightButtons != centerTrafficLightButtons) {
+        _centerTrafficLightButtons = centerTrafficLightButtons;
+        [self _layoutTrafficLightsAndContent];
+        [self _setupTrafficLightsTrackingArea];
+    }
 }
 
 - (void)setVerticalTrafficLightButtons:(BOOL)verticalTrafficLightButtons
 {
-	if (_verticalTrafficLightButtons != verticalTrafficLightButtons) {
-		_verticalTrafficLightButtons = verticalTrafficLightButtons;
-		[self _layoutTrafficLightsAndContent];
-		[self _setupTrafficLightsTrackingArea];
-	}
+    if (_verticalTrafficLightButtons != verticalTrafficLightButtons) {
+        _verticalTrafficLightButtons = verticalTrafficLightButtons;
+        [self _layoutTrafficLightsAndContent];
+        [self _setupTrafficLightsTrackingArea];
+    }
 }
 
 - (void)setVerticallyCenterTitle:(BOOL)verticallyCenterTitle
 {
-	if (_verticallyCenterTitle != verticallyCenterTitle) {
-		_verticallyCenterTitle = verticallyCenterTitle;
-		[self _displayWindowAndTitlebar];
-	}
+    if (_verticallyCenterTitle != verticallyCenterTitle) {
+        _verticallyCenterTitle = verticallyCenterTitle;
+        [self _displayWindowAndTitlebar];
+    }
 }
 
 - (void)setTrafficLightSeparation:(CGFloat)trafficLightSeparation
 {
-	if (_trafficLightSeparation != trafficLightSeparation) {
-		_trafficLightSeparation = trafficLightSeparation;
-		[self _layoutTrafficLightsAndContent];
-		[self _setupTrafficLightsTrackingArea];
-	}
+    if (_trafficLightSeparation != trafficLightSeparation) {
+        _trafficLightSeparation = trafficLightSeparation;
+        [self _layoutTrafficLightsAndContent];
+        [self _setupTrafficLightsTrackingArea];
+    }
 }
 
 - (void)setMouseDragDetectionThreshold:(CGFloat)mouseDragDetectionThreshold
 {
-	_titleBarContainer.mouseDragDetectionThreshold = mouseDragDetectionThreshold;
+    _titleBarContainer.mouseDragDetectionThreshold = mouseDragDetectionThreshold;
 }
 
 - (CGFloat)mouseDragDetectionThreshold
 {
-	return _titleBarContainer.mouseDragDetectionThreshold;
+    return _titleBarContainer.mouseDragDetectionThreshold;
 }
 
 - (void)setDelegate:(id <NSWindowDelegate>)anObject
 {
-	_delegateProxy.secondaryDelegate = anObject;
-	super.delegate = nil;
-	super.delegate = _delegateProxy;
+    _delegateProxy.secondaryDelegate = anObject;
+    super.delegate = nil;
+    super.delegate = _delegateProxy;
 }
 
 - (id <NSWindowDelegate>)delegate
 {
-	return _delegateProxy.secondaryDelegate;
+    return _delegateProxy.secondaryDelegate;
 }
 
 - (void)setCloseButton:(INWindowButton *)closeButton
 {
-	if (_closeButton != closeButton) {
-		[_closeButton removeFromSuperview];
-		_closeButton = closeButton;
-		if (_closeButton) {
-			_closeButton.target = self;
-			_closeButton.action = @selector(performClose:);
-			_closeButton.frameOrigin = [self standardWindowButton:NSWindowCloseButton].frame.origin;
-			[_closeButton.cell accessibilitySetOverrideValue:NSAccessibilityCloseButtonSubrole forAttribute:NSAccessibilitySubroleAttribute];
-			[_closeButton.cell accessibilitySetOverrideValue:NSAccessibilityRoleDescription(NSAccessibilityButtonRole, NSAccessibilityCloseButtonSubrole) forAttribute:NSAccessibilityRoleDescriptionAttribute];
-			[self.themeFrameView addSubview:_closeButton];
-		}
-	}
+    if (_closeButton != closeButton) {
+        [_closeButton removeFromSuperview];
+        _closeButton = closeButton;
+        if (_closeButton) {
+            _closeButton.target = self;
+            _closeButton.action = @selector(performClose:);
+            _closeButton.frameOrigin = [self standardWindowButton:NSWindowCloseButton].frame.origin;
+            [_closeButton.cell accessibilitySetOverrideValue:NSAccessibilityCloseButtonSubrole forAttribute:NSAccessibilitySubroleAttribute];
+            [_closeButton.cell accessibilitySetOverrideValue:NSAccessibilityRoleDescription(NSAccessibilityButtonRole, NSAccessibilityCloseButtonSubrole) forAttribute:NSAccessibilityRoleDescriptionAttribute];
+            [self.themeFrameView addSubview:_closeButton];
+        }
+    }
 }
 
 - (void)setMinimizeButton:(INWindowButton *)minimizeButton
 {
-	if (_minimizeButton != minimizeButton) {
-		[_minimizeButton removeFromSuperview];
-		_minimizeButton = minimizeButton;
-		if (_minimizeButton) {
-			_minimizeButton.target = self;
-			_minimizeButton.action = @selector(performMiniaturize:);
-			_minimizeButton.frameOrigin = [self standardWindowButton:NSWindowMiniaturizeButton].frame.origin;
-			[_minimizeButton.cell accessibilitySetOverrideValue:NSAccessibilityMinimizeButtonSubrole forAttribute:NSAccessibilitySubroleAttribute];
-			[_minimizeButton.cell accessibilitySetOverrideValue:NSAccessibilityRoleDescription(NSAccessibilityButtonRole, NSAccessibilityMinimizeButtonSubrole) forAttribute:NSAccessibilityRoleDescriptionAttribute];
-			[self.themeFrameView addSubview:_minimizeButton];
-		}
-	}
+    if (_minimizeButton != minimizeButton) {
+        [_minimizeButton removeFromSuperview];
+        _minimizeButton = minimizeButton;
+        if (_minimizeButton) {
+            _minimizeButton.target = self;
+            _minimizeButton.action = @selector(performMiniaturize:);
+            _minimizeButton.frameOrigin = [self standardWindowButton:NSWindowMiniaturizeButton].frame.origin;
+            [_minimizeButton.cell accessibilitySetOverrideValue:NSAccessibilityMinimizeButtonSubrole forAttribute:NSAccessibilitySubroleAttribute];
+            [_minimizeButton.cell accessibilitySetOverrideValue:NSAccessibilityRoleDescription(NSAccessibilityButtonRole, NSAccessibilityMinimizeButtonSubrole) forAttribute:NSAccessibilityRoleDescriptionAttribute];
+            [self.themeFrameView addSubview:_minimizeButton];
+        }
+    }
 }
 
 - (void)setZoomButton:(INWindowButton *)zoomButton
 {
-	if (_zoomButton != zoomButton) {
-		[_zoomButton removeFromSuperview];
-		_zoomButton = zoomButton;
-		if (_zoomButton) {
-			_zoomButton.target = self;
-			_zoomButton.action = @selector(performZoom:);
-			_zoomButton.frameOrigin = [self standardWindowButton:NSWindowZoomButton].frame.origin;
-			[_zoomButton.cell accessibilitySetOverrideValue:NSAccessibilityZoomButtonSubrole forAttribute:NSAccessibilitySubroleAttribute];
-			[_zoomButton.cell accessibilitySetOverrideValue:NSAccessibilityRoleDescription(NSAccessibilityButtonRole, NSAccessibilityZoomButtonSubrole) forAttribute:NSAccessibilityRoleDescriptionAttribute];
-			[self.themeFrameView addSubview:_zoomButton];
-		}
-	}
+    if (_zoomButton != zoomButton) {
+        [_zoomButton removeFromSuperview];
+        _zoomButton = zoomButton;
+        if (_zoomButton) {
+            _zoomButton.target = self;
+            _zoomButton.action = @selector(performZoom:);
+            _zoomButton.frameOrigin = [self standardWindowButton:NSWindowZoomButton].frame.origin;
+            [_zoomButton.cell accessibilitySetOverrideValue:NSAccessibilityZoomButtonSubrole forAttribute:NSAccessibilitySubroleAttribute];
+            [_zoomButton.cell accessibilitySetOverrideValue:NSAccessibilityRoleDescription(NSAccessibilityButtonRole, NSAccessibilityZoomButtonSubrole) forAttribute:NSAccessibilityRoleDescriptionAttribute];
+            [self.themeFrameView addSubview:_zoomButton];
+        }
+    }
 }
 
 - (void)setFullScreenButton:(INWindowButton *)fullScreenButton
 {
-	if (_fullScreenButton != fullScreenButton) {
-		[_fullScreenButton removeFromSuperview];
-		_fullScreenButton = fullScreenButton;
-		if (_fullScreenButton) {
-			_fullScreenButton.target = self;
-			_fullScreenButton.action = @selector(toggleFullScreen:);
-			_fullScreenButton.frameOrigin = [self standardWindowButton:NSWindowFullScreenButton].frame.origin;
-			[_fullScreenButton.cell accessibilitySetOverrideValue:NSAccessibilityFullScreenButtonSubrole forAttribute:NSAccessibilitySubroleAttribute];
-			[_fullScreenButton.cell accessibilitySetOverrideValue:NSAccessibilityRoleDescription(NSAccessibilityButtonRole, NSAccessibilityFullScreenButtonSubrole) forAttribute:NSAccessibilityRoleDescriptionAttribute];
-			[self.themeFrameView addSubview:_fullScreenButton];
-		}
-	}
+    if (_fullScreenButton != fullScreenButton) {
+        [_fullScreenButton removeFromSuperview];
+        _fullScreenButton = fullScreenButton;
+        if (_fullScreenButton) {
+            _fullScreenButton.target = self;
+            _fullScreenButton.action = @selector(toggleFullScreen:);
+            _fullScreenButton.frameOrigin = [self standardWindowButton:NSWindowFullScreenButton].frame.origin;
+            [_fullScreenButton.cell accessibilitySetOverrideValue:NSAccessibilityFullScreenButtonSubrole forAttribute:NSAccessibilitySubroleAttribute];
+            [_fullScreenButton.cell accessibilitySetOverrideValue:NSAccessibilityRoleDescription(NSAccessibilityButtonRole, NSAccessibilityFullScreenButtonSubrole) forAttribute:NSAccessibilityRoleDescriptionAttribute];
+            [self.themeFrameView addSubview:_fullScreenButton];
+        }
+    }
 }
 
 - (NSTextField *)titleDivider
 {
-	for (NSTextField *divider in self.themeFrameView.subviews) {
-		if ([divider isKindOfClass:[NSTextField class]]) {
-			if ([divider.stringValue isEqualToString:@"\u2014"]) {
-				return divider;
-			}
-		}
-	}
-
-	return nil;
+    for (NSTextField *divider in self.themeFrameView.subviews) {
+        if ([divider isKindOfClass:[NSTextField class]]) {
+            if ([divider.stringValue isEqualToString:@"\u2014"]) {
+                return divider;
+            }
+        }
+    }
+    
+    return nil;
 }
 
 - (void)setStyleMask:(NSUInteger)styleMask
 {
-	_preventWindowFrameChange = YES;
-
-	// Prevent drawing artifacts when turning off NSTexturedBackgroundWindowMask before
-	// exiting from full screen and then resizing the title bar; the problem is that internally
-	// the content border is still set to the previous value, which confuses the system
-	if (((self.styleMask & NSTexturedBackgroundWindowMask) == NSTexturedBackgroundWindowMask) &&
-			((styleMask & NSTexturedBackgroundWindowMask) != NSTexturedBackgroundWindowMask)) {
-		[self setContentBorderThickness:0 forEdge:NSMaxYEdge];
-		[self setAutorecalculatesContentBorderThickness:YES forEdge:NSMaxYEdge];
-	}
-
-	super.styleMask = styleMask;
-	[self _displayWindowAndTitlebar];
-	[self.contentView display]; // force display, the view doesn't think it needs it, but it does
-	_preventWindowFrameChange = NO;
+    _preventWindowFrameChange = YES;
+    
+    // Prevent drawing artifacts when turning off NSTexturedBackgroundWindowMask before
+    // exiting from full screen and then resizing the title bar; the problem is that internally
+    // the content border is still set to the previous value, which confuses the system
+    if (((self.styleMask & NSTexturedBackgroundWindowMask) == NSTexturedBackgroundWindowMask) &&
+        ((styleMask & NSTexturedBackgroundWindowMask) != NSTexturedBackgroundWindowMask)) {
+        [self setContentBorderThickness:0 forEdge:NSMaxYEdge];
+        [self setAutorecalculatesContentBorderThickness:YES forEdge:NSMaxYEdge];
+    }
+    
+    super.styleMask = styleMask;
+    [self _displayWindowAndTitlebar];
+    [self.contentView display]; // force display, the view doesn't think it needs it, but it does
+    _preventWindowFrameChange = NO;
 }
 
 - (void)setFrame:(NSRect)frameRect display:(BOOL)flag
 {
-	if (!_preventWindowFrameChange)
-		[super setFrame:frameRect display:flag];
+    if (!_preventWindowFrameChange)
+        [super setFrame:frameRect display:flag];
 }
 
 - (void)setFrame:(NSRect)frameRect display:(BOOL)displayFlag animate:(BOOL)animateFlag
 {
-	if (!_preventWindowFrameChange)
-		[super setFrame:frameRect display:displayFlag animate:animateFlag];
+    if (!_preventWindowFrameChange)
+        [super setFrame:frameRect display:displayFlag animate:animateFlag];
 }
 
 - (CGFloat)toolbarHeight
 {
-	CGFloat toolbarHeight = 0.0;
-	NSToolbar *toolbar = self.toolbar;
-	if (toolbar.isVisible) {
-		NSRect expectedContentFrame = [NSWindow contentRectForFrameRect:self.frame
-															  styleMask:self.styleMask];
-		toolbarHeight = NSHeight(expectedContentFrame) -
-						NSHeight([self contentRectForFrameRect:self.frame]);
-	}
-	return toolbarHeight;
+    CGFloat toolbarHeight = 0.0;
+    NSToolbar *toolbar = self.toolbar;
+    if (toolbar.isVisible) {
+        NSRect expectedContentFrame = [NSWindow contentRectForFrameRect:self.frame
+                                                              styleMask:self.styleMask];
+        toolbarHeight = NSHeight(expectedContentFrame) -
+        NSHeight([self contentRectForFrameRect:self.frame]);
+    }
+    return toolbarHeight;
 }
 
 #pragma mark -
@@ -1063,430 +1063,430 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 - (void)_doInitialWindowSetup
 {
-	_showsBaselineSeparator = YES;
-	_showsBottomBarSeparator = YES;
-	_centerTrafficLightButtons = YES;
-	_titleBarHeight = self._minimumTitlebarHeight;
-	_cachedTitleBarHeight = _titleBarHeight;
-	_trafficLightButtonsLeftMargin = self._defaultTrafficLightLeftMargin;
-	_delegateProxy = [INAppStoreWindowDelegateProxy alloc];
-	_trafficLightButtonsTopMargin = 3.f;
-	_fullScreenButtonTopMargin = 3.f;
-	_trafficLightSeparation = self._defaultTrafficLightSeparation;
-	_drawsTitlePatternOverlay = YES;
-	super.delegate = _delegateProxy;
-
-	/** -----------------------------------------
-	 - The window automatically does layout every time its moved or resized, which means that the traffic lights and content view get reset at the original positions, so we need to put them back in place
-	 - NSWindow is hardcoded to redraw the traffic lights in a specific rect, so when they are moved down, only part of the buttons get redrawn, causing graphical artifacts. Therefore, the window must be force redrawn every time it becomes key/resigns key
-	 ----------------------------------------- **/
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc addObserver:self selector:@selector(_layoutTrafficLightsAndContent) name:NSWindowDidResizeNotification object:self];
-	[nc addObserver:self selector:@selector(_layoutTrafficLightsAndContent) name:NSWindowDidMoveNotification object:self];
-	[nc addObserver:self selector:@selector(_layoutTrafficLightsAndContent) name:NSWindowDidEndSheetNotification object:self];
-
-	[nc addObserver:self selector:@selector(_updateTitlebarView) name:NSApplicationDidBecomeActiveNotification object:nil];
-	[nc addObserver:self selector:@selector(_updateTitlebarView) name:NSApplicationDidResignActiveNotification object:nil];
-
-	[nc addObserver:self selector:@selector(_updateBottomBarView) name:NSApplicationDidBecomeActiveNotification object:nil];
-	[nc addObserver:self selector:@selector(_updateBottomBarView) name:NSApplicationDidResignActiveNotification object:nil];
-
-	if (INRunningLion()) {
-		[nc addObserver:self selector:@selector(windowDidExitFullScreen:) name:NSWindowDidExitFullScreenNotification object:self];
-		[nc addObserver:self selector:@selector(windowWillEnterFullScreen:) name:NSWindowWillEnterFullScreenNotification object:self];
-		[nc addObserver:self selector:@selector(windowWillExitFullScreen:) name:NSWindowWillExitFullScreenNotification object:self];
-	}
-
-	[self _createTitlebarView];
-	[self _createBottomBarView];
-	[self _layoutTrafficLightsAndContent];
-	[self _setupTrafficLightsTrackingArea];
+    _showsBaselineSeparator = YES;
+    _showsBottomBarSeparator = YES;
+    _centerTrafficLightButtons = YES;
+    _titleBarHeight = self._minimumTitlebarHeight;
+    _cachedTitleBarHeight = _titleBarHeight;
+    _trafficLightButtonsLeftMargin = self._defaultTrafficLightLeftMargin;
+    _delegateProxy = [INAppStoreWindowDelegateProxy alloc];
+    _trafficLightButtonsTopMargin = 3.f;
+    _fullScreenButtonTopMargin = 3.f;
+    _trafficLightSeparation = self._defaultTrafficLightSeparation;
+    _drawsTitlePatternOverlay = YES;
+    super.delegate = _delegateProxy;
+    
+    /** -----------------------------------------
+     - The window automatically does layout every time its moved or resized, which means that the traffic lights and content view get reset at the original positions, so we need to put them back in place
+     - NSWindow is hardcoded to redraw the traffic lights in a specific rect, so when they are moved down, only part of the buttons get redrawn, causing graphical artifacts. Therefore, the window must be force redrawn every time it becomes key/resigns key
+     ----------------------------------------- **/
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(_layoutTrafficLightsAndContent) name:NSWindowDidResizeNotification object:self];
+    [nc addObserver:self selector:@selector(_layoutTrafficLightsAndContent) name:NSWindowDidMoveNotification object:self];
+    [nc addObserver:self selector:@selector(_layoutTrafficLightsAndContent) name:NSWindowDidEndSheetNotification object:self];
+    
+    [nc addObserver:self selector:@selector(_updateTitlebarView) name:NSApplicationDidBecomeActiveNotification object:nil];
+    [nc addObserver:self selector:@selector(_updateTitlebarView) name:NSApplicationDidResignActiveNotification object:nil];
+    
+    [nc addObserver:self selector:@selector(_updateBottomBarView) name:NSApplicationDidBecomeActiveNotification object:nil];
+    [nc addObserver:self selector:@selector(_updateBottomBarView) name:NSApplicationDidResignActiveNotification object:nil];
+    
+    if (INRunningLion()) {
+        [nc addObserver:self selector:@selector(windowDidExitFullScreen:) name:NSWindowDidExitFullScreenNotification object:self];
+        [nc addObserver:self selector:@selector(windowWillEnterFullScreen:) name:NSWindowWillEnterFullScreenNotification object:self];
+        [nc addObserver:self selector:@selector(windowWillExitFullScreen:) name:NSWindowWillExitFullScreenNotification object:self];
+    }
+    
+    [self _createTitlebarView];
+    [self _createBottomBarView];
+    [self _layoutTrafficLightsAndContent];
+    [self _setupTrafficLightsTrackingArea];
 }
 
 - (NSButton *)_windowButtonToLayout:(NSWindowButton)defaultButtonType orUserProvided:(NSButton *)userButton
 {
-	NSButton *defaultButton = [self standardWindowButton:defaultButtonType];
-	if (userButton) {
-		[defaultButton setHidden:YES];
-		defaultButton = userButton;
-	} else if (defaultButton.superview != self.themeFrameView) {
-		[defaultButton setHidden:NO];
-	}
-	return defaultButton;
+    NSButton *defaultButton = [self standardWindowButton:defaultButtonType];
+    if (userButton) {
+        [defaultButton setHidden:YES];
+        defaultButton = userButton;
+    } else if (defaultButton.superview != self.themeFrameView) {
+        [defaultButton setHidden:NO];
+    }
+    return defaultButton;
 }
 
 - (NSButton *)_closeButtonToLayout
 {
-	return [self _windowButtonToLayout:NSWindowCloseButton orUserProvided:self.closeButton];
+    return [self _windowButtonToLayout:NSWindowCloseButton orUserProvided:self.closeButton];
 }
 
 - (NSButton *)_minimizeButtonToLayout
 {
-	return [self _windowButtonToLayout:NSWindowMiniaturizeButton orUserProvided:self.minimizeButton];
+    return [self _windowButtonToLayout:NSWindowMiniaturizeButton orUserProvided:self.minimizeButton];
 }
 
 - (NSButton *)_zoomButtonToLayout
 {
-	return [self _windowButtonToLayout:NSWindowZoomButton orUserProvided:self.zoomButton];
+    return [self _windowButtonToLayout:NSWindowZoomButton orUserProvided:self.zoomButton];
 }
 
 - (NSButton *)_fullScreenButtonToLayout
 {
-	return [self _windowButtonToLayout:NSWindowFullScreenButton orUserProvided:self.fullScreenButton];
+    return [self _windowButtonToLayout:NSWindowFullScreenButton orUserProvided:self.fullScreenButton];
 }
 
 - (void)_layoutTrafficLightsAndContent
 {
-	// Reposition/resize the title bar view as needed
-	[self _recalculateFrameForTitleBarContainer];
-	[self _recalculateFrameForBottomBarContainer];
-	NSButton *close = self._closeButtonToLayout;
-	NSButton *minimize = self._minimizeButtonToLayout;
-	NSButton *zoom = self._zoomButtonToLayout;
-
-	// Set the frame of the window buttons
-	NSRect closeFrame = close.frame;
-	NSRect minimizeFrame = minimize.frame;
-	NSRect zoomFrame = zoom.frame;
-	NSRect titleBarFrame = _titleBarContainer.frame;
-	CGFloat buttonOrigin = 0.0;
-	if (!self.verticalTrafficLightButtons) {
-		if (self.centerTrafficLightButtons) {
-			buttonOrigin = round(NSMidY(titleBarFrame) - INMidHeight(closeFrame));
-		} else {
-			buttonOrigin = NSMaxY(titleBarFrame) - NSHeight(closeFrame) - self.trafficLightButtonsTopMargin;
-		}
-		closeFrame.origin.y = buttonOrigin;
-		minimizeFrame.origin.y = buttonOrigin;
-		zoomFrame.origin.y = buttonOrigin;
-		closeFrame.origin.x = self.trafficLightButtonsLeftMargin;
-		minimizeFrame.origin.x = NSMaxX(closeFrame) + self.trafficLightSeparation;
-		zoomFrame.origin.x = NSMaxX(minimizeFrame) + self.trafficLightSeparation;
-	} else {
-		CGFloat groupHeight = NSHeight(closeFrame) + NSHeight(minimizeFrame) + NSHeight(zoomFrame) + 2.f * (self.trafficLightSeparation - 2.f);
-		if (self.centerTrafficLightButtons) {
-			buttonOrigin = round(NSMidY(titleBarFrame) - groupHeight / 2.f);
-		} else {
-			buttonOrigin = NSMaxY(titleBarFrame) - groupHeight - self.trafficLightButtonsTopMargin;
-		}
-		closeFrame.origin.x = self.trafficLightButtonsLeftMargin;
-		minimizeFrame.origin.x = self.trafficLightButtonsLeftMargin;
-		zoomFrame.origin.x = self.trafficLightButtonsLeftMargin;
-		zoomFrame.origin.y = buttonOrigin;
-		minimizeFrame.origin.y = NSMaxY(zoomFrame) + self.trafficLightSeparation - 2.f;
-		closeFrame.origin.y = NSMaxY(minimizeFrame) + self.trafficLightSeparation - 2.f;
-	}
-	close.frame = closeFrame;
-	minimize.frame = minimizeFrame;
-	zoom.frame = zoomFrame;
-
-	NSButton *docIconButton = [self standardWindowButton:NSWindowDocumentIconButton];
-	if (docIconButton) {
-		NSRect docButtonIconFrame = docIconButton.frame;
-
-		if (self.verticallyCenterTitle) {
-			docButtonIconFrame.origin.y = floor(NSMidY(titleBarFrame) - INMidHeight(docButtonIconFrame));
-		} else {
-			docButtonIconFrame.origin.y = NSMaxY(titleBarFrame) - NSHeight(docButtonIconFrame) - INWindowDocumentIconButtonOriginY;
-		}
-
-		docIconButton.frame = docButtonIconFrame;
-	}
-
-	// Set the frame of the FullScreen button in Lion if available
-	if (INRunningLion()) {
-		NSButton *fullScreen = self._fullScreenButtonToLayout;
-		if (fullScreen) {
-			NSRect fullScreenFrame = fullScreen.frame;
-			if (!_setFullScreenButtonRightMargin) {
-				self.fullScreenButtonRightMargin = NSWidth(_titleBarContainer.frame) - NSMaxX(fullScreen.frame);
-			}
-			fullScreenFrame.origin.x = NSWidth(titleBarFrame) - NSWidth(fullScreenFrame) - _fullScreenButtonRightMargin;
-			if (self.centerFullScreenButton) {
-				fullScreenFrame.origin.y = floor(NSMidY(titleBarFrame) - INMidHeight(fullScreenFrame));
-			} else {
-				fullScreenFrame.origin.y = NSMaxY(titleBarFrame) - NSHeight(fullScreenFrame) - self.fullScreenButtonTopMargin;
-			}
-			fullScreen.frame = fullScreenFrame;
-		}
-
-		NSButton *versionsButton = [self standardWindowButton:NSWindowDocumentVersionsButton];
-		if (versionsButton) {
-			NSRect versionsButtonFrame = versionsButton.frame;
-
-			if (self.verticallyCenterTitle) {
-				versionsButtonFrame.origin.y = floor(NSMidY(titleBarFrame) - INMidHeight(versionsButtonFrame));
-			} else {
-				versionsButtonFrame.origin.y = NSMaxY(titleBarFrame) - NSHeight(versionsButtonFrame) - INWindowDocumentVersionsButtonOriginY;
-			}
-
-			versionsButton.frame = versionsButtonFrame;
-
-			// Also ensure that the title font is set
-			if (self.titleFont) {
-				versionsButton.font = self.titleFont;
-			}
-		}
-
-		for (id subview in self.themeFrameView.subviews) {
-			if ([subview isKindOfClass:[NSTextField class]]) {
-				NSTextField *textField = (NSTextField *) subview;
-				NSRect textFieldFrame = textField.frame;
-
-				if (self.verticallyCenterTitle) {
-					textFieldFrame.origin.y = round(NSMidY(titleBarFrame) - INMidHeight(textFieldFrame));
-				} else {
-					textFieldFrame.origin.y = NSMaxY(titleBarFrame) - NSHeight(textFieldFrame) - INWindowDocumentVersionsDividerOriginY;
-				}
-
-				textField.frame = textFieldFrame;
-
-				// Also ensure that the font is set
-				if (self.titleFont) {
-					textField.font = self.titleFont;
-				}
-			}
-		}
-	}
-
-	[self _repositionContentView];
+    // Reposition/resize the title bar view as needed
+    [self _recalculateFrameForTitleBarContainer];
+    [self _recalculateFrameForBottomBarContainer];
+    NSButton *close = self._closeButtonToLayout;
+    NSButton *minimize = self._minimizeButtonToLayout;
+    NSButton *zoom = self._zoomButtonToLayout;
+    
+    // Set the frame of the window buttons
+    NSRect closeFrame = close.frame;
+    NSRect minimizeFrame = minimize.frame;
+    NSRect zoomFrame = zoom.frame;
+    NSRect titleBarFrame = _titleBarContainer.frame;
+    CGFloat buttonOrigin = 0.0;
+    if (!self.verticalTrafficLightButtons) {
+        if (self.centerTrafficLightButtons) {
+            buttonOrigin = round(NSMidY(titleBarFrame) - INMidHeight(closeFrame));
+        } else {
+            buttonOrigin = NSMaxY(titleBarFrame) - NSHeight(closeFrame) - self.trafficLightButtonsTopMargin;
+        }
+        closeFrame.origin.y = buttonOrigin;
+        minimizeFrame.origin.y = buttonOrigin;
+        zoomFrame.origin.y = buttonOrigin;
+        closeFrame.origin.x = self.trafficLightButtonsLeftMargin;
+        minimizeFrame.origin.x = NSMaxX(closeFrame) + self.trafficLightSeparation;
+        zoomFrame.origin.x = NSMaxX(minimizeFrame) + self.trafficLightSeparation;
+    } else {
+        CGFloat groupHeight = NSHeight(closeFrame) + NSHeight(minimizeFrame) + NSHeight(zoomFrame) + 2.f * (self.trafficLightSeparation - 2.f);
+        if (self.centerTrafficLightButtons) {
+            buttonOrigin = round(NSMidY(titleBarFrame) - groupHeight / 2.f);
+        } else {
+            buttonOrigin = NSMaxY(titleBarFrame) - groupHeight - self.trafficLightButtonsTopMargin;
+        }
+        closeFrame.origin.x = self.trafficLightButtonsLeftMargin;
+        minimizeFrame.origin.x = self.trafficLightButtonsLeftMargin;
+        zoomFrame.origin.x = self.trafficLightButtonsLeftMargin;
+        zoomFrame.origin.y = buttonOrigin;
+        minimizeFrame.origin.y = NSMaxY(zoomFrame) + self.trafficLightSeparation - 2.f;
+        closeFrame.origin.y = NSMaxY(minimizeFrame) + self.trafficLightSeparation - 2.f;
+    }
+    close.frame = closeFrame;
+    minimize.frame = minimizeFrame;
+    zoom.frame = zoomFrame;
+    
+    NSButton *docIconButton = [self standardWindowButton:NSWindowDocumentIconButton];
+    if (docIconButton) {
+        NSRect docButtonIconFrame = docIconButton.frame;
+        
+        if (self.verticallyCenterTitle) {
+            docButtonIconFrame.origin.y = floor(NSMidY(titleBarFrame) - INMidHeight(docButtonIconFrame));
+        } else {
+            docButtonIconFrame.origin.y = NSMaxY(titleBarFrame) - NSHeight(docButtonIconFrame) - INWindowDocumentIconButtonOriginY;
+        }
+        
+        docIconButton.frame = docButtonIconFrame;
+    }
+    
+    // Set the frame of the FullScreen button in Lion if available
+    if (INRunningLion()) {
+        NSButton *fullScreen = self._fullScreenButtonToLayout;
+        if (fullScreen) {
+            NSRect fullScreenFrame = fullScreen.frame;
+            if (!_setFullScreenButtonRightMargin) {
+                self.fullScreenButtonRightMargin = NSWidth(_titleBarContainer.frame) - NSMaxX(fullScreen.frame);
+            }
+            fullScreenFrame.origin.x = NSWidth(titleBarFrame) - NSWidth(fullScreenFrame) - _fullScreenButtonRightMargin;
+            if (self.centerFullScreenButton) {
+                fullScreenFrame.origin.y = floor(NSMidY(titleBarFrame) - INMidHeight(fullScreenFrame));
+            } else {
+                fullScreenFrame.origin.y = NSMaxY(titleBarFrame) - NSHeight(fullScreenFrame) - self.fullScreenButtonTopMargin;
+            }
+            fullScreen.frame = fullScreenFrame;
+        }
+        
+        NSButton *versionsButton = [self standardWindowButton:NSWindowDocumentVersionsButton];
+        if (versionsButton) {
+            NSRect versionsButtonFrame = versionsButton.frame;
+            
+            if (self.verticallyCenterTitle) {
+                versionsButtonFrame.origin.y = floor(NSMidY(titleBarFrame) - INMidHeight(versionsButtonFrame));
+            } else {
+                versionsButtonFrame.origin.y = NSMaxY(titleBarFrame) - NSHeight(versionsButtonFrame) - INWindowDocumentVersionsButtonOriginY;
+            }
+            
+            versionsButton.frame = versionsButtonFrame;
+            
+            // Also ensure that the title font is set
+            if (self.titleFont) {
+                versionsButton.font = self.titleFont;
+            }
+        }
+        
+        for (id subview in self.themeFrameView.subviews) {
+            if ([subview isKindOfClass:[NSTextField class]]) {
+                NSTextField *textField = (NSTextField *) subview;
+                NSRect textFieldFrame = textField.frame;
+                
+                if (self.verticallyCenterTitle) {
+                    textFieldFrame.origin.y = round(NSMidY(titleBarFrame) - INMidHeight(textFieldFrame));
+                } else {
+                    textFieldFrame.origin.y = NSMaxY(titleBarFrame) - NSHeight(textFieldFrame) - INWindowDocumentVersionsDividerOriginY;
+                }
+                
+                textField.frame = textFieldFrame;
+                
+                // Also ensure that the font is set
+                if (self.titleFont) {
+                    textField.font = self.titleFont;
+                }
+            }
+        }
+    }
+    
+    [self _repositionContentView];
 }
 
 - (void)undoManagerDidCloseUndoGroupNotification:(NSNotification *)notification
 {
-	[self _displayWindowAndTitlebar];
+    [self _displayWindowAndTitlebar];
 }
 
 - (void)windowWillEnterFullScreen:(NSNotification *)notification
 {
-	if (_hideTitleBarInFullScreen) {
-		// Recalculate the views when entering from fullscreen
-		_titleBarHeight = 0.0f;
-		[self _layoutTrafficLightsAndContent];
-		[self _displayWindowAndTitlebar];
-
-		[self _setTitleBarViewHidden:YES];
-	}
+    if (_hideTitleBarInFullScreen) {
+        // Recalculate the views when entering from fullscreen
+        _titleBarHeight = 0.0f;
+        [self _layoutTrafficLightsAndContent];
+        [self _displayWindowAndTitlebar];
+        
+        [self _setTitleBarViewHidden:YES];
+    }
 }
 
 - (void)windowWillExitFullScreen:(NSNotification *)notification
 {
-	if (_hideTitleBarInFullScreen) {
-		_titleBarHeight = _cachedTitleBarHeight;
-		[self _layoutTrafficLightsAndContent];
-		[self _displayWindowAndTitlebar];
-
-		[self _setTitleBarViewHidden:NO];
-	}
+    if (_hideTitleBarInFullScreen) {
+        _titleBarHeight = _cachedTitleBarHeight;
+        [self _layoutTrafficLightsAndContent];
+        [self _displayWindowAndTitlebar];
+        
+        [self _setTitleBarViewHidden:NO];
+    }
 }
 
 - (void)windowDidExitFullScreen:(NSNotification *)notification
 {
-	[self _layoutTrafficLightsAndContent];
-	[self _setupTrafficLightsTrackingArea];
+    [self _layoutTrafficLightsAndContent];
+    [self _setupTrafficLightsTrackingArea];
 }
 
 - (NSView *)themeFrameView
 {
-	return [self.contentView superview];
+    return [self.contentView superview];
 }
 
 - (void)_createTitlebarView
 {
-	// Create the title bar view
-	INMovableByBackgroundContainerView *container = [[INMovableByBackgroundContainerView alloc] initWithFrame:NSZeroRect];
-	// Configure the view properties and add it as a subview of the theme frame
-	NSView *firstSubview = self.themeFrameView.subviews.firstObject;
-	[self _recalculateFrameForTitleBarContainer];
-	[self.themeFrameView addSubview:container positioned:NSWindowBelow relativeTo:firstSubview];
-	_titleBarContainer = container;
-	self.titleBarView = [[INTitlebarView alloc] initWithFrame:NSZeroRect];
+    // Create the title bar view
+    INMovableByBackgroundContainerView *container = [[INMovableByBackgroundContainerView alloc] initWithFrame:NSZeroRect];
+    // Configure the view properties and add it as a subview of the theme frame
+    NSView *firstSubview = self.themeFrameView.subviews.firstObject;
+    [self _recalculateFrameForTitleBarContainer];
+    [self.themeFrameView addSubview:container positioned:NSWindowBelow relativeTo:firstSubview];
+    _titleBarContainer = container;
+    self.titleBarView = [[INTitlebarView alloc] initWithFrame:NSZeroRect];
 }
 
 - (void)_createBottomBarView
 {
-	// Create the bottom bar view
-	INMovableByBackgroundContainerView *container = [[INMovableByBackgroundContainerView alloc] initWithFrame:NSZeroRect];
-	// Configure the view properties and add it as a subview of the theme frame
-	NSView *firstSubview = self.themeFrameView.subviews.firstObject;
-	[self _recalculateFrameForBottomBarContainer];
-	[self.themeFrameView addSubview:container positioned:NSWindowBelow relativeTo:firstSubview];
-	_bottomBarContainer = container;
-	self.bottomBarView = [[INBottomBarView alloc] initWithFrame:NSZeroRect];
+    // Create the bottom bar view
+    INMovableByBackgroundContainerView *container = [[INMovableByBackgroundContainerView alloc] initWithFrame:NSZeroRect];
+    // Configure the view properties and add it as a subview of the theme frame
+    NSView *firstSubview = self.themeFrameView.subviews.firstObject;
+    [self _recalculateFrameForBottomBarContainer];
+    [self.themeFrameView addSubview:container positioned:NSWindowBelow relativeTo:firstSubview];
+    _bottomBarContainer = container;
+    self.bottomBarView = [[INBottomBarView alloc] initWithFrame:NSZeroRect];
 }
 
 - (void)_setTitleBarViewHidden:(BOOL)hidden
 {
-	self.titleBarView.hidden = hidden;
+    self.titleBarView.hidden = hidden;
 }
 
 // Solution for tracking area issue thanks to @Perspx (Alex Rozanski) <https://gist.github.com/972958>
 - (void)_setupTrafficLightsTrackingArea
 {
-	[self.themeFrameView viewWillStartLiveResize];
-	[self.themeFrameView viewDidEndLiveResize];
+    [self.themeFrameView viewWillStartLiveResize];
+    [self.themeFrameView viewDidEndLiveResize];
 }
 
 - (void)_recalculateFrameForTitleBarContainer
 {
-	NSRect themeFrameRect = self.themeFrameView.frame;
-	NSRect titleFrame = NSMakeRect(0.0, NSMaxY(themeFrameRect) - _titleBarHeight, NSWidth(themeFrameRect), _titleBarHeight);
-	_titleBarContainer.frame = titleFrame;
+    NSRect themeFrameRect = self.themeFrameView.frame;
+    NSRect titleFrame = NSMakeRect(0.0, NSMaxY(themeFrameRect) - _titleBarHeight, NSWidth(themeFrameRect), _titleBarHeight);
+    _titleBarContainer.frame = titleFrame;
 }
 
 - (void)_recalculateFrameForBottomBarContainer
 {
-	_bottomBarContainer.frame = NSMakeRect(0, 0, NSWidth(self.themeFrameView.frame), _bottomBarHeight);
+    _bottomBarContainer.frame = NSMakeRect(0, 0, NSWidth(self.themeFrameView.frame), _bottomBarHeight);
 }
 
 - (NSRect)_contentViewFrame
 {
-	NSRect windowFrame = self.frame;
-	NSRect contentRect = [self contentRectForFrameRect:windowFrame];
-
-	if ((self.styleMask & NSFullScreenWindowMask) == NSFullScreenWindowMask) {
-		if (self.hideTitleBarInFullScreen) {
-			contentRect.size.height = NSHeight(windowFrame);
-		} else {
-			contentRect.size.height = NSHeight(windowFrame) - self.titleBarHeight - self.toolbarHeight;
-		}
-	} else {
-		contentRect.size.height = NSHeight(windowFrame) - self.titleBarHeight - self.toolbarHeight;
-	}
-	contentRect.origin = NSZeroPoint;
-
-	contentRect.origin.y += self.bottomBarHeight;
-	contentRect.size.height -= self.bottomBarHeight;
-
-	return contentRect;
+    NSRect windowFrame = self.frame;
+    NSRect contentRect = [self contentRectForFrameRect:windowFrame];
+    
+    if ((self.styleMask & NSFullScreenWindowMask) == NSFullScreenWindowMask) {
+        if (self.hideTitleBarInFullScreen) {
+            contentRect.size.height = NSHeight(windowFrame);
+        } else {
+            contentRect.size.height = NSHeight(windowFrame) - self.titleBarHeight - self.toolbarHeight;
+        }
+    } else {
+        contentRect.size.height = NSHeight(windowFrame) - self.titleBarHeight - self.toolbarHeight;
+    }
+    contentRect.origin = NSZeroPoint;
+    
+    contentRect.origin.y += self.bottomBarHeight;
+    contentRect.size.height -= self.bottomBarHeight;
+    
+    return contentRect;
 }
 
 - (void)_repositionContentView
 {
-	NSView *contentView = self.contentView;
-	NSRect newFrame = self._contentViewFrame;
-
-	if (!NSEqualRects(contentView.frame, newFrame)) {
-		contentView.frame = newFrame;
-		[contentView setNeedsDisplay:YES];
-	}
+    NSView *contentView = self.contentView;
+    NSRect newFrame = self._contentViewFrame;
+    
+    if (!NSEqualRects(contentView.frame, newFrame)) {
+        contentView.frame = newFrame;
+        [contentView setNeedsDisplay:YES];
+    }
 }
 
 - (CGFloat)_minimumTitlebarHeight
 {
-	static CGFloat minTitleHeight = 0.0;
-	if (!minTitleHeight) {
-		NSRect frameRect = self.frame;
-		NSRect contentRect = [self contentRectForFrameRect:frameRect];
-		minTitleHeight = NSHeight(frameRect) - NSHeight(contentRect);
-	}
-	return minTitleHeight;
+    static CGFloat minTitleHeight = 0.0;
+    if (!minTitleHeight) {
+        NSRect frameRect = self.frame;
+        NSRect contentRect = [self contentRectForFrameRect:frameRect];
+        minTitleHeight = NSHeight(frameRect) - NSHeight(contentRect);
+    }
+    return minTitleHeight;
 }
 
 - (CGFloat)_defaultTrafficLightLeftMargin
 {
-	static CGFloat trafficLightLeftMargin = 0.0;
-	if (!trafficLightLeftMargin) {
-		NSButton *close = self._closeButtonToLayout;
-		trafficLightLeftMargin = NSMinX(close.frame);
-	}
-	return trafficLightLeftMargin;
+    static CGFloat trafficLightLeftMargin = 0.0;
+    if (!trafficLightLeftMargin) {
+        NSButton *close = self._closeButtonToLayout;
+        trafficLightLeftMargin = NSMinX(close.frame);
+    }
+    return trafficLightLeftMargin;
 }
 
 - (CGFloat)_defaultTrafficLightSeparation
 {
-	static CGFloat trafficLightSeparation = 0.0;
-	if (!trafficLightSeparation) {
-		NSButton *close = self._closeButtonToLayout;
-		NSButton *minimize = self._minimizeButtonToLayout;
-		trafficLightSeparation = NSMinX(minimize.frame) - NSMaxX(close.frame);
-	}
-	return trafficLightSeparation;
+    static CGFloat trafficLightSeparation = 0.0;
+    if (!trafficLightSeparation) {
+        NSButton *close = self._closeButtonToLayout;
+        NSButton *minimize = self._minimizeButtonToLayout;
+        trafficLightSeparation = NSMinX(minimize.frame) - NSMaxX(close.frame);
+    }
+    return trafficLightSeparation;
 }
 
 - (void)_displayWindowAndTitlebar
 {
-	// Redraw the window and titlebar
-	[_titleBarView setNeedsDisplay:YES];
+    // Redraw the window and titlebar
+    [_titleBarView setNeedsDisplay:YES];
 }
 
 - (void)_updateTitlebarView
 {
-	[_titleBarView setNeedsDisplay:YES];
-
-	// "validate" any controls in the titlebar view
-	BOOL isMainWindowAndActive = (self.isMainWindow && [NSApplication sharedApplication].isActive);
-	for (NSView *childView in _titleBarView.subviews) {
-		if ([childView isKindOfClass:[NSControl class]]) {
-			[(NSControl *)childView setEnabled:isMainWindowAndActive];
-		}
-	}
+    [_titleBarView setNeedsDisplay:YES];
+    
+    // "validate" any controls in the titlebar view
+    BOOL isMainWindowAndActive = (self.isMainWindow && [NSApplication sharedApplication].isActive);
+    for (NSView *childView in _titleBarView.subviews) {
+        if ([childView isKindOfClass:[NSControl class]]) {
+            [(NSControl *)childView setEnabled:isMainWindowAndActive];
+        }
+    }
 }
 
 - (void)_updateBottomBarView
 {
-	[_bottomBarView setNeedsDisplay:YES];
+    [_bottomBarView setNeedsDisplay:YES];
 }
 
 + (NSGradient *)defaultTitleBarGradient:(BOOL)drawsAsMainWindow
 {
-	if (INRunningLion()) {
-		// Lion, Mountain Lion, Mavericks: real, 100% accurate system colors
-		if (drawsAsMainWindow) {
-			return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:180. / 0xff alpha:1],
-														[NSColor colorWithDeviceWhite:195. / 0xff alpha:1],
-														[NSColor colorWithDeviceWhite:210. / 0xff alpha:1],
-														[NSColor colorWithDeviceWhite:235. / 0xff alpha:1]]
-										  atLocations:(const CGFloat[]){0.0, 0.25, 0.5, 1.0}
-										   colorSpace:[NSColorSpace deviceRGBColorSpace]];
-		} else {
-			return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:225. / 0xff alpha:1],
-														[NSColor colorWithDeviceWhite:250. / 0xff alpha:1]]
-										  atLocations:(const CGFloat[]){0.0, 1.0}
-										   colorSpace:[NSColorSpace deviceRGBColorSpace]];
-		}
-	} else {
-		// Leopard, Snow Leopard: approximations
-		if (drawsAsMainWindow) {
-			return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:0.659 alpha:1],
-														[NSColor colorWithDeviceWhite:0.812 alpha:1]]
-										  atLocations:(const CGFloat[]){0.0, 1.0}
-										   colorSpace:[NSColorSpace deviceRGBColorSpace]];
-		} else {
-			return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:0.851 alpha:1],
-														[NSColor colorWithDeviceWhite:0.929 alpha:1]]
-										  atLocations:(const CGFloat[]){0.0, 1.0}
-										   colorSpace:[NSColorSpace deviceRGBColorSpace]];
-		}
-	}
+    if (INRunningLion()) {
+        // Lion, Mountain Lion, Mavericks: real, 100% accurate system colors
+        if (drawsAsMainWindow) {
+            return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:180. / 0xff alpha:1],
+                                                        [NSColor colorWithDeviceWhite:195. / 0xff alpha:1],
+                                                        [NSColor colorWithDeviceWhite:210. / 0xff alpha:1],
+                                                        [NSColor colorWithDeviceWhite:235. / 0xff alpha:1]]
+                                          atLocations:(const CGFloat[]){0.0, 0.25, 0.5, 1.0}
+                                           colorSpace:[NSColorSpace deviceRGBColorSpace]];
+        } else {
+            return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:225. / 0xff alpha:1],
+                                                        [NSColor colorWithDeviceWhite:250. / 0xff alpha:1]]
+                                          atLocations:(const CGFloat[]){0.0, 1.0}
+                                           colorSpace:[NSColorSpace deviceRGBColorSpace]];
+        }
+    } else {
+        // Leopard, Snow Leopard: approximations
+        if (drawsAsMainWindow) {
+            return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:0.659 alpha:1],
+                                                        [NSColor colorWithDeviceWhite:0.812 alpha:1]]
+                                          atLocations:(const CGFloat[]){0.0, 1.0}
+                                           colorSpace:[NSColorSpace deviceRGBColorSpace]];
+        } else {
+            return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:0.851 alpha:1],
+                                                        [NSColor colorWithDeviceWhite:0.929 alpha:1]]
+                                          atLocations:(const CGFloat[]){0.0, 1.0}
+                                           colorSpace:[NSColorSpace deviceRGBColorSpace]];
+        }
+    }
 }
 
 + (NSGradient *)defaultBottomBarGradient:(BOOL)drawsAsMainWindow
 {
-	if (drawsAsMainWindow) {
-		return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:180. / 0xff alpha:1],
-													[NSColor colorWithDeviceWhite:210. / 0xff alpha:1]]
-									  atLocations:(const CGFloat[]){0.0, 1.0}
-									   colorSpace:[NSColorSpace deviceRGBColorSpace]];
-	} else {
-		return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:225. / 0xff alpha:1],
-													[NSColor colorWithDeviceWhite:235. / 0xff alpha:1]]
-									  atLocations:(const CGFloat[]){0.0, 1.0}
-									   colorSpace:[NSColorSpace deviceRGBColorSpace]];
-	}
+    if (drawsAsMainWindow) {
+        return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:180. / 0xff alpha:1],
+                                                    [NSColor colorWithDeviceWhite:210. / 0xff alpha:1]]
+                                      atLocations:(const CGFloat[]){0.0, 1.0}
+                                       colorSpace:[NSColorSpace deviceRGBColorSpace]];
+    } else {
+        return [[NSGradient alloc] initWithColors:@[[NSColor colorWithDeviceWhite:225. / 0xff alpha:1],
+                                                    [NSColor colorWithDeviceWhite:235. / 0xff alpha:1]]
+                                      atLocations:(const CGFloat[]){0.0, 1.0}
+                                       colorSpace:[NSColorSpace deviceRGBColorSpace]];
+    }
 }
 
 + (NSColor *)defaultBaselineSeparatorColor:(BOOL)drawsAsMainWindow
 {
-	if (INRunningLion())
-		return drawsAsMainWindow ? [NSColor colorWithDeviceWhite:104. / 0xff alpha:1.0] : [NSColor colorWithDeviceWhite:167. / 0xff alpha:1.0];
-	else
-		return drawsAsMainWindow ? [NSColor colorWithDeviceWhite:0.318 alpha:1.0] : [NSColor colorWithDeviceWhite:0.600 alpha:1.0];
+    if (INRunningLion())
+        return drawsAsMainWindow ? [NSColor colorWithDeviceWhite:104. / 0xff alpha:1.0] : [NSColor colorWithDeviceWhite:167. / 0xff alpha:1.0];
+    else
+        return drawsAsMainWindow ? [NSColor colorWithDeviceWhite:0.318 alpha:1.0] : [NSColor colorWithDeviceWhite:0.600 alpha:1.0];
 }
 
 + (NSColor *)defaultTitleTextColor:(BOOL)drawsAsMainWindow
 {
-	return drawsAsMainWindow ? [NSColor colorWithDeviceWhite:56.0/255.0 alpha:1.0] : [NSColor colorWithDeviceWhite:56.0/255.0 alpha:0.5];
+    return drawsAsMainWindow ? [NSColor colorWithDeviceWhite:56.0/255.0 alpha:1.0] : [NSColor colorWithDeviceWhite:56.0/255.0 alpha:0.5];
 }
 
 @end

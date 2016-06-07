@@ -70,12 +70,10 @@ extern NSMutableArray *confirmDelete;
             NSString* location= [components objectAtIndex:1];
             NSString* endcomp= [components objectAtIndex:[components count] - 2];
             if([location length]){
-                if ([endcomp containsString:@"Disabled"])
-                {
+                if ([endcomp rangeOfString:@"Disabled"].length)
                     description=[NSString stringWithFormat:@"%@ - %@ (Disabled)", description, location];
-                } else {
+                else
                     description=[NSString stringWithFormat:@"%@ - %@", description, location];
-                }
             }
             
             NSMutableDictionary* itm=[NSMutableDictionary dictionaryWithObjectsAndKeys:

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15F31a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15G7b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment version="1090" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
@@ -56,9 +56,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="600" height="522"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OIs-aF-FnM">
-                        <rect key="frame" x="400" y="500" width="100" height="22"/>
-                        <buttonCell key="cell" type="smallSquare" title="About" bezelStyle="smallSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="mqA-Th-ZGl">
+                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OIs-aF-FnM">
+                        <rect key="frame" x="60" y="500" width="60" height="22"/>
+                        <buttonCell key="cell" type="smallSquare" title="About" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="mqA-Th-ZGl">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -67,7 +67,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OMH-Ho-1kY">
-                        <rect key="frame" x="500" y="500" width="100" height="22"/>
+                        <rect key="frame" x="540" y="500" width="60" height="22"/>
                         <buttonCell key="cell" type="smallSquare" title="Donate" bezelStyle="smallSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="hww-f3-Hsw">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -76,34 +76,14 @@
                             <action selector="donate:" target="Voe-Tx-rLC" id="f8f-a9-0CU"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b6t-eI-SzM">
-                        <rect key="frame" x="103" y="500" width="100" height="22"/>
-                        <buttonCell key="cell" type="smallSquare" title="Plugins" bezelStyle="smallSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="tee-Mc-XRA">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="selectView:" target="Voe-Tx-rLC" id="RTL-Mc-CiN"/>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wnt-SO-ETK">
-                        <rect key="frame" x="302" y="500" width="100" height="22"/>
-                        <buttonCell key="cell" type="smallSquare" title="Preferences" bezelStyle="smallSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="Lrs-gu-VXm">
+                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wnt-SO-ETK">
+                        <rect key="frame" x="0.0" y="500" width="60" height="22"/>
+                        <buttonCell key="cell" type="smallSquare" title="Prefs" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="Lrs-gu-VXm">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
                             <action selector="selectView:" target="Voe-Tx-rLC" id="DOm-I4-Jjf"/>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xK6-dm-EDd">
-                        <rect key="frame" x="203" y="500" width="100" height="22"/>
-                        <buttonCell key="cell" type="smallSquare" title="Sources" bezelStyle="smallSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="VBt-zZ-bn5">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="selectView:" target="Voe-Tx-rLC" id="pUL-R5-a3j"/>
                         </connections>
                     </button>
                     <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="eDe-10-Vrw">
@@ -141,6 +121,36 @@
                             </tabViewItem>
                         </tabViewItems>
                     </tabView>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b6t-eI-SzM">
+                        <rect key="frame" x="360" y="500" width="60" height="22"/>
+                        <buttonCell key="cell" type="smallSquare" title="Plugins" bezelStyle="smallSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="tee-Mc-XRA">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="selectView:" target="Voe-Tx-rLC" id="RTL-Mc-CiN"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d0O-cX-4Y4">
+                        <rect key="frame" x="420" y="500" width="60" height="22"/>
+                        <buttonCell key="cell" type="smallSquare" title="Updates" bezelStyle="smallSquare" alignment="center" enabled="NO" imageScaling="proportionallyDown" inset="2" id="GVq-HE-RtJ">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="selectView:" target="Voe-Tx-rLC" id="JoB-52-nH4"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xK6-dm-EDd">
+                        <rect key="frame" x="480" y="500" width="60" height="22"/>
+                        <buttonCell key="cell" type="smallSquare" title="Sources" bezelStyle="smallSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="VBt-zZ-bn5">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="selectView:" target="Voe-Tx-rLC" id="pUL-R5-a3j"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <point key="canvasLocation" x="-606" y="195"/>
@@ -282,12 +292,10 @@
                 <outlet property="donateButton" destination="OMH-Ho-1kY" id="4Zc-X3-oUT"/>
                 <outlet property="emailButton" destination="u4a-2I-fDn" id="i0M-1f-u7G"/>
                 <outlet property="gitButton" destination="Nrm-iX-EzW" id="H91-DS-o2e"/>
-                <outlet property="prefDonate" destination="CJb-bn-y0X" id="q0h-tS-qdm"/>
                 <outlet property="prefStartTab" destination="bIL-ul-fcu" id="Rki-UC-dFu"/>
                 <outlet property="prefTips" destination="EKf-xn-hvp" id="DPi-OZ-ijJ"/>
                 <outlet property="prefUpdateAuto" destination="R9Z-Lo-Ufb" id="F1h-fe-Lc4"/>
                 <outlet property="prefUpdateInterval" destination="icp-Vg-TlK" id="z5u-bK-ByC"/>
-                <outlet property="prefVibrant" destination="3v3-km-xqA" id="gOE-gU-41P"/>
                 <outlet property="prefWindow" destination="Gdt-BK-pvR" id="Jdb-aF-JJ0"/>
                 <outlet property="showChanges" destination="7BD-ed-xfg" id="zK9-tc-7Zw"/>
                 <outlet property="showCredits" destination="p2E-c2-Z4Y" id="h7V-kT-vgq"/>
@@ -334,6 +342,7 @@
                                     <action selector="showAbout:" target="Voe-Tx-rLC" id="w9g-64-bDB"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="z9O-Xk-4CB"/>
                             <menuItem title="Check for updates..." id="NaV-3k-0mC">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -639,18 +648,8 @@
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
                 </box>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3v3-km-xqA">
-                    <rect key="frame" x="198" y="320" width="200" height="18"/>
-                    <buttonCell key="cell" type="check" title="Blurred window" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="uqX-gZ-tHn">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="toggleVibrancy:" target="Voe-Tx-rLC" id="bPr-Qy-k92"/>
-                    </connections>
-                </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EKf-xn-hvp">
-                    <rect key="frame" x="198" y="300" width="200" height="18"/>
+                    <rect key="frame" x="198" y="310" width="200" height="18"/>
                     <buttonCell key="cell" type="check" title="Instant tooltips" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Bm5-hB-fZO">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -659,18 +658,8 @@
                         <action selector="toggleTips:" target="Voe-Tx-rLC" id="awV-V0-cwW"/>
                     </connections>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CJb-bn-y0X">
-                    <rect key="frame" x="198" y="280" width="200" height="18"/>
-                    <buttonCell key="cell" type="check" title="Hide donate button" bezelStyle="regularSquare" imagePosition="left" enabled="NO" state="on" inset="2" id="uqH-aG-wZ1">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="toggleDonateButton:" target="Voe-Tx-rLC" id="EHH-g3-8U5"/>
-                    </connections>
-                </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gdt-BK-pvR">
-                    <rect key="frame" x="198" y="260" width="200" height="18"/>
+                    <rect key="frame" x="198" y="290" width="200" height="18"/>
                     <buttonCell key="cell" type="check" title="Remember window position" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="rL1-ZB-ejc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -680,7 +669,7 @@
                     </connections>
                 </button>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R9Z-Lo-Ufb">
-                    <rect key="frame" x="198" y="196" width="222" height="26"/>
+                    <rect key="frame" x="198" y="226" width="222" height="26"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="7fj-eB-NZJ">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -697,7 +686,7 @@
                     </connections>
                 </popUpButton>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bIL-ul-fcu">
-                    <rect key="frame" x="198" y="227" width="222" height="26"/>
+                    <rect key="frame" x="198" y="257" width="222" height="26"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="CAk-jg-0bl">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -715,7 +704,7 @@
                     </connections>
                 </popUpButton>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="icp-Vg-TlK">
-                    <rect key="frame" x="198" y="165" width="222" height="26"/>
+                    <rect key="frame" x="198" y="195" width="222" height="26"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="b0e-n8-kKa">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -733,7 +722,7 @@
                     </connections>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="469-G3-oLR">
-                    <rect key="frame" x="94" y="203" width="100" height="14"/>
+                    <rect key="frame" x="94" y="233" width="100" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Updates" id="qac-8F-mEe">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -741,7 +730,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OFn-HH-88K">
-                    <rect key="frame" x="94" y="233" width="100" height="14"/>
+                    <rect key="frame" x="94" y="263" width="100" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Default Tab" id="hxI-Qx-6d3">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -749,7 +738,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ulQ-xA-QBB">
-                    <rect key="frame" x="94" y="171" width="100" height="14"/>
+                    <rect key="frame" x="94" y="201" width="100" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Update Interval" id="WNb-ox-dzY">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -757,7 +746,7 @@
                     </textFieldCell>
                 </textField>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ih8-xN-FdK">
-                    <rect key="frame" x="198" y="134" width="105" height="26"/>
+                    <rect key="frame" x="198" y="164" width="105" height="26"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="uDQ-CV-J8c">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -774,7 +763,7 @@
                     </connections>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HQd-7r-6SQ">
-                    <rect key="frame" x="89" y="141" width="105" height="14"/>
+                    <rect key="frame" x="89" y="171" width="105" height="14"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="SIMBL logging" id="adg-KU-zRe">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -782,7 +771,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JiW-cK-Mbc">
-                    <rect key="frame" x="200" y="101" width="217" height="25"/>
+                    <rect key="frame" x="200" y="131" width="217" height="25"/>
                     <buttonCell key="cell" type="roundTextured" title="Inject into running applications" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UCe-Gz-fuz">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -792,24 +781,18 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eo1-4h-dBz">
-                    <rect key="frame" x="198" y="340" width="200" height="18"/>
+                    <rect key="frame" x="198" y="330" width="200" height="18"/>
                     <buttonCell key="cell" type="check" title="Run helper at login" bezelStyle="regularSquare" imagePosition="left" enabled="NO" state="on" inset="2" id="KmX-MO-FPE">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
-                    <connections>
-                        <action selector="toggleVibrancy:" target="Voe-Tx-rLC" id="zKp-cV-yBW"/>
-                    </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xZ8-k1-9eg">
-                    <rect key="frame" x="198" y="360" width="200" height="18"/>
+                    <rect key="frame" x="198" y="350" width="200" height="18"/>
                     <buttonCell key="cell" type="check" title="Automatically refresh sources" bezelStyle="regularSquare" imagePosition="left" enabled="NO" state="on" inset="2" id="8Z7-Ob-d2W">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
-                    <connections>
-                        <action selector="toggleVibrancy:" target="Voe-Tx-rLC" id="dKR-Er-i7g"/>
-                    </connections>
                 </button>
             </subviews>
             <point key="canvasLocation" x="-606" y="-466"/>
@@ -862,6 +845,9 @@ Would you like to install SIMBL now and start using plugins?</string>
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="simblInstall:" target="Voe-Tx-rLC" id="9dl-As-McS"/>
+                    </connections>
                 </button>
             </subviews>
             <point key="canvasLocation" x="-606" y="-466"/>
