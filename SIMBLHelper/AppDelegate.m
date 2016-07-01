@@ -7,6 +7,7 @@
 //
 
 @import Sparkle;
+@import SIMBLManager;
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
@@ -17,85 +18,12 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    // Insert code here to initialize your application
+    [[SIMBLManager sharedInstance] SIMBL_injectAll];
     [self checkSIMBL];
-    [self injectPROC];
     [self checkForUpdates];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-    // Insert code here to tear down your application
-}
-
-- (void) runScript:(NSString*)scriptName {
-    NSTask *task;
-    task = [[NSTask alloc] init];
-    [task setLaunchPath: @"/bin/bash"];
-    
-    NSArray *arguments;
-    NSLog(@"shell script path: %@",scriptName);
-    arguments = [NSArray arrayWithObjects:scriptName, nil];
-    [task setArguments: arguments];
-    
-    NSPipe *pipe;
-    pipe = [NSPipe pipe];
-    [task setStandardOutput: pipe];
-    
-    NSFileHandle *file;
-    file = [pipe fileHandleForReading];
-    
-    [task launch];
-    
-    NSData *data;
-    data = [file readDataToEndOfFile];
-    
-    NSString *string;
-    string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-    NSLog (@"script returned:\n%@", string);
-}
-
-- (BOOL) runProcessAsAdministrator:(NSString*)scriptPath
-                     withArguments:(NSArray *)arguments
-                            output:(NSString **)output
-                  errorDescription:(NSString **)errorDescription {
-    
-    NSString * allArgs = [arguments componentsJoinedByString:@" "];
-    NSString * fullScript = [NSString stringWithFormat:@"'%@' %@", scriptPath, allArgs];
-    
-    NSDictionary *errorInfo = [NSDictionary new];
-    NSString *script =  [NSString stringWithFormat:@"do shell script \"%@\" with administrator privileges", fullScript];
-    
-    NSAppleScript *appleScript = [[NSAppleScript new] initWithSource:script];
-    NSAppleEventDescriptor * eventResult = [appleScript executeAndReturnError:&errorInfo];
-    
-    // Check errorInfo
-    if (! eventResult)
-    {
-        // Describe common errors
-        *errorDescription = nil;
-        if ([errorInfo valueForKey:NSAppleScriptErrorNumber])
-        {
-            NSNumber * errorNumber = (NSNumber *)[errorInfo valueForKey:NSAppleScriptErrorNumber];
-            if ([errorNumber intValue] == -128)
-                *errorDescription = @"The administrator password is required to do this.";
-        }
-        
-        // Set error message from provided message
-        if (*errorDescription == nil)
-        {
-            if ([errorInfo valueForKey:NSAppleScriptErrorMessage])
-                *errorDescription =  (NSString *)[errorInfo valueForKey:NSAppleScriptErrorMessage];
-        }
-        
-        return NO;
-    }
-    else
-    {
-        // Set output to the AppleScript's output
-        *output = [eventResult stringValue];
-        
-        return YES;
-    }
 }
 
 - (void)checkForUpdates {
@@ -117,34 +45,19 @@
 }
 
 - (void)checkSIMBL {
-    NSMutableDictionary *local = [NSMutableDictionary dictionaryWithContentsOfFile:@"/System/Library/ScriptingAdditions/SIMBL.osax/Contents/Info.plist"];
-    NSMutableDictionary *current = [NSMutableDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"SIMBL.osax/Contents/Info" ofType:@"plist"]];
-    NSString *locVer = [local objectForKey:@"CFBundleVersion"];
-    NSString *curVer = [current objectForKey:@"CFBundleVersion"];
-    
-    if (![locVer isEqualToString:curVer])
-        [self installSIMBL];
-}
-
-- (void)installSIMBL {
-    NSString *output = nil;
-    NSString *processErrorDescription = nil;
-    NSString *script = [[NSBundle mainBundle] pathForResource:@"SIMBL_Install" ofType:@"sh"];
-    //    NSLog(@"%@", script);
-    bool success = [self runProcessAsAdministrator:script withArguments:[[NSArray alloc] init] output:&output errorDescription:&processErrorDescription];
-    
-    if (!success) {
-        NSLog(@"Fail");
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText:@"SIMBL install failed!"];
-        [alert setInformativeText:@"Something went wrong, probably System Integrity Protection."];
-        [alert addButtonWithTitle:@"Ok"];
-        NSLog(@"%ld", (long)[alert runModal]);
+    SIMBLManager *sim_m = [SIMBLManager sharedInstance];
+    NSDictionary* key = [sim_m SIMBL_versions];
+    id <SUVersionComparison> comparator = [SUStandardVersionComparator defaultComparator];
+    NSInteger result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
+    NSLog(@"\nOld: %@\nNew: %@", [key objectForKey:@"localVersion"], [key objectForKey:@"newestVersion"]);
+    if (result == NSOrderedDescending) {
+        if (![[[NSWorkspace sharedWorkspace] runningApplications] containsObject:[[NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.mySIMBL"] objectAtIndex:0]])
+        {
+            NSString *path = [[NSBundle bundleWithIdentifier:@"org.w0lf.mySIMBL"] bundlePath];
+            NSLog(@"%@", path);
+            [[NSWorkspace sharedWorkspace] launchApplication:path];
+        }
     }
-}
-
-- (void)injectPROC {
-    [self runScript:[[NSBundle mainBundle] pathForResource:@"injectPROC" ofType:@"sh"]];
 }
 
 @end

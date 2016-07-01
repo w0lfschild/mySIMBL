@@ -9,6 +9,7 @@
 @import Foundation;
 @import AppKit;
 @import Sparkle;
+@import SIMBLManager;
 #import "SGDirWatchdog.h"
 #import "WAYAppStoreWindow.h"
 #import "PFMoveApplication.h"

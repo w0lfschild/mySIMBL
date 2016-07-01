@@ -15,11 +15,15 @@ NSMutableArray *confirmDelete;
 NSArray *tabs;
 NSArray *sourceItems;
 NSDate *appStart;
+SIMBLManager *manageSIMBL;
+sim_c *simc;
+sip_c *sipc;
 
 @implementation AppDelegate
 
 - (instancetype)init {
     appStart = [NSDate date];
+    manageSIMBL = [SIMBLManager sharedInstance];
     return self;
 }
 
@@ -55,9 +59,6 @@ NSDate *appStart;
     // Setup plugin table
     [_tblView registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
     
-//    [_donateButton setImage:[NSImage imageNamed:@"heart2.png"]];
-//    [[_donateButton cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
-    
     PFMoveToApplicationsFolderIfNecessary();
     [self setupEventListener];
     
@@ -66,7 +67,6 @@ NSDate *appStart;
     NSDate *methodFinish = [NSDate date];
     NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:appStart];
     NSLog(@"executionTime = %f", executionTime);
-
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
@@ -223,18 +223,30 @@ NSDate *appStart;
     [[_tabView tabViewItemAtIndex:3] setView:_tabAbout];
     
     NSTabViewItem* tabItem1 = [_tabView tabViewItemAtIndex:0];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/ScriptingAdditions/SIMBL.osax"])
+    if (![manageSIMBL SIMBL_installed])
     {
-        if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion >= 11)
+        if ([manageSIMBL SIP_enabled])
         {
-            NSString *rootless = [self runCommand:@"touch /System/test 2>&1"];
-            if ([rootless rangeOfString:@"Operation not permitted"].length)
-                [tabItem1 setView:_tabSIP];
-            else
-                [tabItem1 setView:_tabSIMBL];
-        } else {
-            [tabItem1 setView:_tabSIMBL];
+            [tabItem1 setView:_tabSIP];
+            [self showSIMBLWarning];
         }
+        else
+        {
+            [tabItem1 setView:_tabSIMBL];
+            dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+            dispatch_async(myQueue, ^{
+                // Insert code to be executed on another thread here
+                [manageSIMBL SIMBL_install];
+                while(![manageSIMBL SIMBL_installed])
+                    usleep(250000);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // Insert code to be executed on the main thread here
+                    [[_tabView tabViewItemAtIndex:0] setView:_tabPlugins];
+                });
+            });
+        }
+    } else {
+        [self checkSIMBL];
     }
     
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
@@ -243,6 +255,64 @@ NSDate *appStart;
     [_appCopyright setStringValue:@"Copyright © 2015 - 2016 Wolfgang Baird"];
     
     [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
+}
+
+- (void)showSIPWarning
+{
+    if (!sipc) {
+        sipc = [[sip_c alloc] initWithWindowNibName:@"sip_c"];
+    }
+    
+    CGRect dlframe = [[sipc window] frame];
+    CGRect apframe = [self.window frame];
+    
+    int xloc = NSMidX(apframe) - (dlframe.size.width / 2);
+    int yloc = NSMidY(apframe) - (dlframe.size.height / 2);
+    
+    dlframe = CGRectMake(xloc, yloc, dlframe.size.width, dlframe.size.height);
+    
+    [[sipc confirm] setTarget:self];
+    [[sipc confirm] setAction:@selector(closeWarning)];
+    
+    [[sipc window] setFrame:dlframe display:true];
+    [self.window setLevel:NSFloatingWindowLevel];
+    [self.window addChildWindow:[sipc window] ordered:NSWindowAbove];
+}
+
+- (void)showSIMBLWarning
+{
+    if (!simc) {
+        simc = [[sim_c alloc] initWithWindowNibName:@"sim_c"];
+    }
+    
+    CGRect dlframe = [[simc window] frame];
+    CGRect apframe = [self.window frame];
+    
+    int xloc = NSMidX(apframe) - (dlframe.size.width / 2);
+    int yloc = NSMidY(apframe) - (dlframe.size.height / 2);
+    
+    dlframe = CGRectMake(xloc, yloc, dlframe.size.width, dlframe.size.height);
+    
+    [[simc cancel] setTarget:self];
+    [[simc cancel] setAction:@selector(closeWarning)];
+    
+    [[simc accept] setTarget:self];
+    [[simc accept] setAction:@selector(confirmSIMBLInstall)];
+    
+    [[simc window] setFrame:dlframe display:true];
+    [self.window setLevel:NSFloatingWindowLevel];
+    [self.window addChildWindow:[simc window] ordered:NSWindowAbove];
+}
+
+- (void)confirmSIMBLInstall {
+    [self closeWarning];
+    [manageSIMBL SIMBL_install];
+    [manageSIMBL SIMBL_injectAll];
+}
+
+- (void)closeWarning {
+    if (simc) [[simc window] close];
+    if (sipc) [[sipc window] close];
 }
 
 - (void)addLoginItem {
@@ -267,21 +337,26 @@ NSDate *appStart;
 }
 
 - (IBAction)simblInstall:(id)sender {
-    NSArray *apps = [NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.SIMBLHelper"];
-    if (apps.count)
-        [(NSRunningApplication *)[apps objectAtIndex:0] terminate];
-    [self launchHelper];
+    if ([manageSIMBL SIMBL_installed])
+        return;
+    
+    if ([manageSIMBL SIP_enabled])
+    {
+        [self showSIPWarning];
+        return;
+    }
+    
     dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(myQueue, ^{
         // Insert code to be executed on another thread here
-        while (![[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/ScriptingAdditions/SIMBL.osax"])
-            usleep(1000000);
+        [manageSIMBL SIMBL_install];
+        while(![manageSIMBL SIMBL_installed])
+            usleep(100000);
         dispatch_async(dispatch_get_main_queue(), ^{
             // Insert code to be executed on the main thread here
             [self launchHelper];
-            NSTabViewItem *editTab = [_tabView tabViewItemAtIndex:0];
-            [editTab setView:_tabPlugins];
-            NSLog(@"SIMBL Installed");
+            if ([manageSIMBL SIMBL_installed])
+                [[_tabView tabViewItemAtIndex:0] setView:_tabPlugins];
         });
     });
 }
@@ -445,7 +520,7 @@ NSDate *appStart;
 
 - (IBAction)inject:(id)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self runScript:[[NSBundle mainBundle] pathForResource:@"injectPROC" ofType:@"sh"]];
+        [manageSIMBL SIMBL_injectAll];
         [[NSSound soundNamed:@"Blow"] play];
     });
 }
@@ -635,6 +710,21 @@ NSDate *appStart;
     [_srcWin setFrame:newFrame display:true];
     NSWindowController *vc = [[NSWindowController alloc] initWithWindow:_srcWin];
     [vc showWindow:nil];
+}
+
+- (void)checkSIMBL {
+    SIMBLManager *sim_m = [SIMBLManager sharedInstance];
+    NSDictionary* key = [sim_m SIMBL_versions];
+    id <SUVersionComparison> comparator = [SUStandardVersionComparator defaultComparator];
+    NSInteger result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
+    if (result == NSOrderedDescending) {
+        if ([sim_m SIP_enabled])
+        {
+            [self showSIPWarning];
+        } else {
+            [self showSIMBLWarning];
+        }
+    }
 }
 
 
