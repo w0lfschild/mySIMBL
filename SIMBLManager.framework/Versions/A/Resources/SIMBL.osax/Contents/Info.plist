@@ -3,15 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>16A201w</string>
+	<string>16A239j</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
+	<string>en</string>
 	<key>CFBundleExecutable</key>
 	<string>SIMBL</string>
-	<key>CFBundleGetInfoString</key>
-	<string>SIMBL 0.9.13, ©2003-2009 Mike Solomon</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.culater.SIMBL.osax</string>
+	<string>org.w0lf.SIMBL</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -19,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>osax</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.10.2</string>
+	<string>0.11.1</string>
 	<key>CFBundleSignature</key>
 	<string>SIMe</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -27,7 +25,7 @@
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0.10.2</string>
+	<string>0.11.1</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
@@ -42,6 +40,8 @@
 	<string>0800</string>
 	<key>DTXcodeBuild</key>
 	<string>8S128d</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2016 Wolfgang Baird. All rights reserved.</string>
 	<key>OSAScriptingDefinition</key>
 	<string>SIMBL.sdef</string>
 	<key>OSAXHandlers</key>

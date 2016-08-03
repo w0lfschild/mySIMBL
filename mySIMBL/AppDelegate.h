@@ -11,7 +11,6 @@
 @import Sparkle;
 @import SIMBLManager;
 #import "SGDirWatchdog.h"
-#import "WAYAppStoreWindow.h"
 #import "PFMoveApplication.h"
 #import "shareClass.h"
 
@@ -19,9 +18,10 @@
 {
     NSMutableArray *watchdogs;
     shareClass *_sharedMethods;
+    IBOutlet NSSplitView *_splitView;
 }
 
-@property IBOutlet WAYAppStoreWindow *window;
+@property IBOutlet NSWindow *window;
 @property IBOutlet NSWindow *srcWin;
 @property IBOutlet SUUpdater *updater;
 @property IBOutlet NSTabView *tabView;

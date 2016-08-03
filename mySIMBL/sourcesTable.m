@@ -63,8 +63,6 @@ NSArray *sourceURLS;
         NSMutableDictionary* dic = [[NSMutableDictionary alloc] initWithContentsOfURL:data];
     
         dispatch_async(dispatch_get_main_queue(), ^{
-            [result.sourceIndicator setImage:[NSImage imageNamed:NSImageNameRightFacingTriangleTemplate]];
-            
             if ([source length])
                 result.sourceDescription.stringValue = source;
             
@@ -74,6 +72,8 @@ NSArray *sourceURLS;
                     result.sourceName.stringValue = [dic objectForKey:@"name"];
                 result.sourceImage.image = [[NSImage alloc] initByReferencingURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/icon.png", source]]];
             }
+            
+            [result.sourceIndicator setImage:[NSImage imageNamed:NSImageNameRightFacingTriangleTemplate]];
         });
     });
     

@@ -140,7 +140,8 @@ extern long selectedRow;
         if (result == NSOrderedSame) {
             //versionA == versionB
             [self.bundleInstall setEnabled:false];
-            self.bundleInstall.title = @"Up to date";
+            self.bundleInstall.title = @"View";
+//            [self.bundleInstall setAction:@selector(pluginUpdate)];
         } else if (result == NSOrderedAscending) {
             //versionA < versionB
             [self.bundleInstall setEnabled:true];
@@ -216,8 +217,9 @@ extern long selectedRow;
     NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
     NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
     [task waitUntilExit];
+    [self.bundleDelete setEnabled:true];
     [self.bundleInstall setEnabled:false];
-    self.bundleInstall.title = @"Up to date";
+    self.bundleInstall.title = @"View";
     shareClass* t = [[shareClass alloc] init];
     [t readPlugins:nil];
 }
@@ -233,8 +235,9 @@ extern long selectedRow;
     NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
     NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
     [task waitUntilExit];
+    [self.bundleDelete setEnabled:true];
     [self.bundleInstall setEnabled:false];
-    self.bundleInstall.title = @"Up to date";
+    self.bundleInstall.title = @"View";
     shareClass* t = [[shareClass alloc] init];
     [t readPlugins:nil];
 }
@@ -263,6 +266,7 @@ extern long selectedRow;
         [[NSFileManager defaultManager] trashItemAtURL:url resultingItemURL:&trash error:&error];
     }
     
+    [self.bundleDelete setEnabled:false];
     [self.bundleInstall setEnabled:true];
     self.bundleInstall.title = @"Install";
     [self.bundleInstall setAction:@selector(pluginInstall)];

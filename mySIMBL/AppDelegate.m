@@ -15,7 +15,7 @@ NSMutableArray *confirmDelete;
 NSArray *tabs;
 NSArray *sourceItems;
 NSDate *appStart;
-SIMBLManager *manageSIMBL;
+SIMBLManager *SIMBLFramework;
 sim_c *simc;
 sip_c *sipc;
 
@@ -23,7 +23,7 @@ sip_c *sipc;
 
 - (instancetype)init {
     appStart = [NSDate date];
-    manageSIMBL = [SIMBLManager sharedInstance];
+    SIMBLFramework = [SIMBLManager sharedInstance];
     return self;
 }
 
@@ -177,11 +177,12 @@ sip_c *sipc;
 - (void)setupWindow {
     if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion < 10)
     {
-        _window.centerTrafficLightButtons = false;
-        _window.showsBaselineSeparator = false;
-        _window.titleBarHeight = 0.0;
+//        _window.centerTrafficLightButtons = false;
+//        _window.showsBaselineSeparator = false;
+//        _window.titleBarHeight = 0.0;
     } else {
         [_window setTitlebarAppearsTransparent:true];
+        _window.styleMask |= NSFullSizeContentViewWindowMask;
     }
     
     [_window setTitle:@""];
@@ -223,9 +224,9 @@ sip_c *sipc;
     [[_tabView tabViewItemAtIndex:3] setView:_tabAbout];
     
     NSTabViewItem* tabItem1 = [_tabView tabViewItemAtIndex:0];
-    if (![manageSIMBL SIMBL_installed])
+    if (![SIMBLFramework OSAX_installed])
     {
-        if ([manageSIMBL SIP_enabled])
+        if ([SIMBLFramework SIP_enabled])
         {
             [tabItem1 setView:_tabSIP];
             [self showSIMBLWarning];
@@ -236,8 +237,7 @@ sip_c *sipc;
             dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(myQueue, ^{
                 // Insert code to be executed on another thread here
-                [manageSIMBL SIMBL_install];
-                while(![manageSIMBL SIMBL_installed])
+                while(![SIMBLFramework OSAX_installed])
                     usleep(250000);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // Insert code to be executed on the main thread here
@@ -245,9 +245,8 @@ sip_c *sipc;
                 });
             });
         }
-    } else {
-        [self checkSIMBL];
     }
+    [self checkSIMBL];
     
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
     [_appName setStringValue:[infoDict objectForKey:@"CFBundleExecutable"]];
@@ -257,8 +256,7 @@ sip_c *sipc;
     [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
 }
 
-- (void)showSIPWarning
-{
+- (void)showSIPWarning {
     if (!sipc) {
         sipc = [[sip_c alloc] initWithWindowNibName:@"sip_c"];
     }
@@ -279,8 +277,7 @@ sip_c *sipc;
     [self.window addChildWindow:[sipc window] ordered:NSWindowAbove];
 }
 
-- (void)showSIMBLWarning
-{
+- (void)showSIMBLWarning {
     if (!simc) {
         simc = [[sim_c alloc] initWithWindowNibName:@"sim_c"];
     }
@@ -304,10 +301,23 @@ sip_c *sipc;
     [self.window addChildWindow:[simc window] ordered:NSWindowAbove];
 }
 
+- (void)confirmOSAXInstall {
+    [self closeWarning];
+    [SIMBLFramework OSAX_install];
+    [SIMBLFramework SIMBL_injectAll];
+}
+
+- (void)confirmAGENTInstall {
+    [self closeWarning];
+    [SIMBLFramework AGENT_install];
+    [SIMBLFramework SIMBL_injectAll];
+}
+
 - (void)confirmSIMBLInstall {
     [self closeWarning];
-    [manageSIMBL SIMBL_install];
-    [manageSIMBL SIMBL_injectAll];
+    [SIMBLFramework OSAX_install];
+    [SIMBLFramework AGENT_install];
+    [SIMBLFramework SIMBL_injectAll];
 }
 
 - (void)closeWarning {
@@ -324,23 +334,24 @@ sip_c *sipc;
         
         // Lets stick to the classics. Same method as cDock uses...
         NSString *nullString;
-        NSString *loginAgent = [[NSBundle mainBundle] pathForResource:@"SIMBLHelper" ofType:@"app"];
+        NSString *loginAgent = [[NSBundle mainBundle] pathForResource:@"mySIMBLAgent" ofType:@"app"];
         nullString = [self runCommand:@"osascript -e \"tell application \\\"System Events\\\" to delete login items \\\"SIMBLHelper\\\"\""];
+        nullString = [self runCommand:@"osascript -e \"tell application \\\"System Events\\\" to delete login items \\\"mySIMBLAgent\\\"\""];
         nullString = [self runCommand:[NSString stringWithFormat:@"osascript -e \"tell application \\\"System Events\\\" to make new login item at end of login items with properties {path:\\\"%@\\\", hidden:false}\"", loginAgent]];
     });
 }
 
 - (void)launchHelper {
-    system("killall SIMBLHelper");
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"SIMBLHelper" ofType:@"app"];
+    system("killall mySIMBLAgent");
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"mySIMBLAgent" ofType:@"app"];
     [[NSWorkspace sharedWorkspace] launchApplication:path];
 }
 
 - (IBAction)simblInstall:(id)sender {
-    if ([manageSIMBL SIMBL_installed])
+    if ([SIMBLFramework OSAX_installed])
         return;
     
-    if ([manageSIMBL SIP_enabled])
+    if ([SIMBLFramework SIP_enabled])
     {
         [self showSIPWarning];
         return;
@@ -349,13 +360,13 @@ sip_c *sipc;
     dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(myQueue, ^{
         // Insert code to be executed on another thread here
-        [manageSIMBL SIMBL_install];
-        while(![manageSIMBL SIMBL_installed])
+        [SIMBLFramework OSAX_install];
+        while(![SIMBLFramework OSAX_installed])
             usleep(100000);
         dispatch_async(dispatch_get_main_queue(), ^{
             // Insert code to be executed on the main thread here
             [self launchHelper];
-            if ([manageSIMBL SIMBL_installed])
+            if ([SIMBLFramework OSAX_installed])
                 [[_tabView tabViewItemAtIndex:0] setView:_tabPlugins];
         });
     });
@@ -520,7 +531,7 @@ sip_c *sipc;
 
 - (IBAction)inject:(id)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [manageSIMBL SIMBL_injectAll];
+        [SIMBLFramework SIMBL_injectAll];
         [[NSSound soundNamed:@"Blow"] play];
     });
 }
@@ -714,10 +725,24 @@ sip_c *sipc;
 
 - (void)checkSIMBL {
     SIMBLManager *sim_m = [SIMBLManager sharedInstance];
-    NSDictionary* key = [sim_m SIMBL_versions];
     id <SUVersionComparison> comparator = [SUStandardVersionComparator defaultComparator];
-    NSInteger result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
-    if (result == NSOrderedDescending) {
+    NSDictionary* key = [[NSDictionary alloc] init];
+    NSInteger result = 0;
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/Application Support/SIMBL/SIMBLAgent.app"])
+    {
+        [sim_m AGENT_install];
+    } else {
+        key = [sim_m AGENT_versions];
+        result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
+        if (result == NSOrderedDescending)
+            [sim_m AGENT_install];
+    }
+    
+    key = [sim_m OSAX_versions];
+    result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
+    if (result == NSOrderedDescending)
+    {
         if ([sim_m SIP_enabled])
         {
             [self showSIPWarning];
@@ -727,5 +752,23 @@ sip_c *sipc;
     }
 }
 
+//- (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)subview
+//{
+//    return NO;
+//}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMinimumPosition ofSubviewAt:(NSInteger)dividerIndex {
+    if (proposedMinimumPosition < 125) {
+        proposedMinimumPosition = 125;
+    }
+    return proposedMinimumPosition;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMaximumPosition ofSubviewAt:(NSInteger)dividerIndex {
+    if (proposedMaximumPosition >= 124) {
+        proposedMaximumPosition = 125;
+    }
+    return proposedMaximumPosition;
+}
 
 @end

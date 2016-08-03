@@ -32,6 +32,11 @@ extern NSMutableArray *confirmDelete;
 
 - (void)replaceFile:(NSString*)start :(NSString*)end {
     NSError* error;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[end stringByDeletingLastPathComponent]])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:[end stringByDeletingLastPathComponent] withIntermediateDirectories:true attributes:nil error:&error];
+    }
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:end]) {
         //        NSLog(@"File Exists");
         [[NSFileManager defaultManager] replaceItemAtURL:[NSURL fileURLWithPath:end] withItemAtURL:[NSURL fileURLWithPath:start] backupItemName:nil options:NSFileManagerItemReplacementUsingNewMetadataOnly resultingItemURL:nil error:&error];

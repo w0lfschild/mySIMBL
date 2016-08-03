@@ -3,29 +3,29 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>16A201w</string>
+	<string>16A239j</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
+	<string>en</string>
 	<key>CFBundleExecutable</key>
-	<string>SIMBL Agent</string>
+	<string>SIMBLAgent</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.culater.SIMBL_Agent</string>
+	<string>org.w0lf.SIMBLAgent</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>SIMBL Agent</string>
+	<string>SIMBLAgent</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.10.2</string>
+	<string>1.0</string>
 	<key>CFBundleSignature</key>
-	<string>SIMa</string>
+	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0.10.2</string>
+	<string>1</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
@@ -40,10 +40,14 @@
 	<string>0800</string>
 	<key>DTXcodeBuild</key>
 	<string>8S128d</string>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.developer-tools</string>
+	<key>LSBackgroundOnly</key>
+	<true/>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.12</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2016 Wolfgang Baird. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>

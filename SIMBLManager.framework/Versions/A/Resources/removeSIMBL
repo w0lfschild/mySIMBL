@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Update SIMBL.osax and remove possible old or alternate version
+
+function nukeFiles() {
+	if [[ -f "$1" ]]; then
+		rm -v "$1"
+	else
+		rm -vr "$1"
+	fi
+}
+
+function createFolder() {
+	if [[ ! -e "$1" ]]; then 
+		mkdir -pv "$1"
+	fi
+	chmod 777 "$1"
+}
+
+log_dir="$HOME"/Library/"Application Support"/mySIMBL/logs
+createFolder "$log_dir"
+exec &>"$log_dir"/update.log
+ 
+cleanupFiles=(
+	"/Library/Application Support/SIMBL"
+	"/Library/LaunchAgents/net.culater.SIMBL.Agent.plist"
+	"/Library/ScriptingAdditions/SIMBL.osax"
+	"/Library/ScriptingAdditions/EasySIMBL.osax"
+	"$HOME/Library/ScriptingAdditions/SIMBL.osax"
+	"$HOME/Library/ScriptingAdditions/EasySIMBL.osax"
+	"/System/Library/ScriptingAdditions/SIMBL.osax"
+	"/System/Library/LaunchAgents/net.culater.SIMBL.Agent.plist"
+	)
+
+echo "Removing files"
+
+for i in "${cleanupFiles[@]}"; do
+    echo Removing: "$i"
+    nukeFiles "$i"
+done
+
+echo "Killing Agent"
+
+killall SIMBLAgent
+
+echo "Done"

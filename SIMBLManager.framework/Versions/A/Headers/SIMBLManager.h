@@ -23,11 +23,19 @@ FOUNDATION_EXPORT const unsigned char SIMBLManagerVersionString[];
 
 + (SIMBLManager *)sharedInstance;
 - (Boolean)SIP_enabled;
+
 - (void)SIMBL_injectAll;
-- (void)SIMBL_injectApp:(NSString *)appName :(BOOL)restart;
-- (Boolean)SIMBL_install;
-- (Boolean)SIMBL_installed;
-- (NSDictionary*)SIMBL_versions;
+- (void)SIMBL_injectApp:(NSString *)appName :(Boolean)restart;
+
+- (Boolean)AGENT_install;
+- (Boolean)AGENT_installed;
+- (NSDictionary*)AGENT_versions;
+
+- (Boolean)OSAX_install;
+- (Boolean)OSAX_installed;
+- (NSDictionary*)OSAX_versions;
+
+- (Boolean)SIMBL_remove;
 
 @end
 

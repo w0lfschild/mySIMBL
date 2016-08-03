@@ -6,59 +6,76 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		ZUcTpottQvgarg2lBNRWFlMnC4Y=
+		u20J7l7oa1xAks4LfrYHmo1qe4g=
 		</data>
 		<key>Resources/SIMBL.osax/Contents/Info.plist</key>
 		<data>
-		jDi1jLPKarOiOqlAXg13iRQ3wpc=
+		w8hAyVTClGJvYMtBhfJFYLFsAv4=
 		</data>
 		<key>Resources/SIMBL.osax/Contents/MacOS/SIMBL</key>
 		<data>
-		8VnRzf45DBJwBvwB0t6tanYJAxU=
-		</data>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/Info.plist</key>
-		<data>
-		wVBxMpecwfE47fWSdiRkkEDGKD4=
-		</data>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/MacOS/SIMBL Agent</key>
-		<data>
-		Da36eCqFQDWhOUheHcUYnQ8cwjo=
-		</data>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/PkgInfo</key>
-		<data>
-		9ZIHSRd1hCaqrHUsIHNf/SS9x+0=
-		</data>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/Resources/Info.plist</key>
-		<data>
-		QeNvXi7+FJ8IVRc8g+Tbhf81oqg=
-		</data>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/Resources/MainMenu.nib</key>
-		<data>
-		pq5pH8iIi2J+2B3+oMov59pDqKA=
-		</data>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/Resources/net.culater.SIMBL.Agent.plist</key>
-		<data>
-		avsDZuNJVa9B/jKBXG7GvfMgAxQ=
+		N0v1OtSEAwfhVPz7l2kI2dlw7fs=
 		</data>
 		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL.rsrc</key>
 		<data>
-		3626rrWuSaDi9lB/ea+jdjODvjI=
+		I+cxeCTKDErtGJTTLS9rNdfy0k4=
 		</data>
 		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL.sdef</key>
 		<data>
 		BNObSap+PHdU3zRhPEKLTwcGnF8=
 		</data>
-		<key>Resources/install</key>
+		<key>Resources/SIMBL.osax/Contents/_CodeSignature/CodeResources</key>
 		<data>
-		F5lo+ckrBWQX6J7aUwSAXeSO69k=
+		xJ1ShJp6J6jvtNFpA1pNJfeOpG8=
+		</data>
+		<key>Resources/SIMBLAgent.app/Contents/Info.plist</key>
+		<data>
+		4W6luLa7KaGqyvGdyN5NjgLK0xQ=
+		</data>
+		<key>Resources/SIMBLAgent.app/Contents/MacOS/SIMBLAgent</key>
+		<data>
+		EjopUGZrh3bTqDjTIIEQlFYm/xc=
+		</data>
+		<key>Resources/SIMBLAgent.app/Contents/PkgInfo</key>
+		<data>
+		n57qDP4tZfLD1rCS43W0B4LQjzE=
+		</data>
+		<key>Resources/SIMBLAgent.app/Contents/Resources/Base.lproj/MainMenu.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			QaVK43d6zlkR69ztWmGYsytgGp0=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>Resources/SIMBLAgent.app/Contents/Resources/net.culater.SIMBL.Agent.plist</key>
+		<data>
+		wYFzYNfsP7GiAQTHdDl8wxzApgg=
+		</data>
+		<key>Resources/SIMBLAgent.app/Contents/_CodeSignature/CodeResources</key>
+		<data>
+		ZIQKypxJNxa/HVEIJ6HNxDeziG8=
+		</data>
+		<key>Resources/installAgent</key>
+		<data>
+		I3Lg0a7NAG9vBUi5Qle7OFjFi/w=
+		</data>
+		<key>Resources/installOSAX</key>
+		<data>
+		zeoBubRWlHlZBSRRvTFrGhLAW3s=
+		</data>
+		<key>Resources/removeSIMBL</key>
+		<data>
+		CM6UZSkZmR2ctUZYELVUNPXCkfE=
 		</data>
 		<key>Resources/sim_c.nib</key>
 		<data>
-		fvytOJqTuig3lHpnvSFosY3b40c=
+		JCzIEYPqn0xRUn5w1f0JleWHllU=
 		</data>
 		<key>Resources/sip_c.nib</key>
 		<data>
-		qy0T43DPjetw+13vQRb/p7JwD9Q=
+		vNOf+9ThjFzTH7t4qvDtEwrDXKk=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -67,11 +84,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			P/qzTgV+INhRc3aKIt4wU0+i++M=
+			E8tsukvVu308MuEPNMSrfQAZkk4=
 			</data>
 			<key>hash2</key>
 			<data>
-			wtMIxfls4kPtLMoSwpNN5GydVigdcwCxag7l+VCpsKc=
+			sGSUL7ElKo21aXmQnOnEgKn9LSRuxJyKjmQ4eLDdxd8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -89,110 +106,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ZUcTpottQvgarg2lBNRWFlMnC4Y=
+			u20J7l7oa1xAks4LfrYHmo1qe4g=
 			</data>
 			<key>hash2</key>
 			<data>
-			vxUTcpSMfOZa6gimDXr+BRoGG3yE8Vs/qAMFz1jvO3A=
+			vb3+jQgrQ1wo1e7peVbaShINPdU5DWcmujlh7wVmIKg=
 			</data>
 		</dict>
 		<key>Resources/SIMBL.osax/Contents/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			jDi1jLPKarOiOqlAXg13iRQ3wpc=
+			w8hAyVTClGJvYMtBhfJFYLFsAv4=
 			</data>
 			<key>hash2</key>
 			<data>
-			Dxvs+/MgcGmvmDGt3uqSc86e++Fuv4TjP6L9jHfK9ow=
+			a/Rh1a3dC6XdsxN2HWrJKgHnWDMjok2PNtVG68VZiyE=
 			</data>
 		</dict>
 		<key>Resources/SIMBL.osax/Contents/MacOS/SIMBL</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			8VnRzf45DBJwBvwB0t6tanYJAxU=
+			N0v1OtSEAwfhVPz7l2kI2dlw7fs=
 			</data>
 			<key>hash2</key>
 			<data>
-			03TG1t44AApnOoeXV9KnJcnr5MwM7Lqg68ua3sgVlFM=
-			</data>
-		</dict>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			wVBxMpecwfE47fWSdiRkkEDGKD4=
-			</data>
-			<key>hash2</key>
-			<data>
-			UyVIUGfwg2bAR3mqZ5fBtrWeIwygdqDCHyiKv+TZUKs=
-			</data>
-		</dict>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/MacOS/SIMBL Agent</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Da36eCqFQDWhOUheHcUYnQ8cwjo=
-			</data>
-			<key>hash2</key>
-			<data>
-			Bge/mKVdrL8+bJTl6OaoLa8SxPi5fvS0mmsAwFT+lC8=
-			</data>
-		</dict>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/PkgInfo</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			9ZIHSRd1hCaqrHUsIHNf/SS9x+0=
-			</data>
-			<key>hash2</key>
-			<data>
-			yBHRauafRQKD0fRcTxTD8yo8Hk96oseqSspYayXnNKs=
-			</data>
-		</dict>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/Resources/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			QeNvXi7+FJ8IVRc8g+Tbhf81oqg=
-			</data>
-			<key>hash2</key>
-			<data>
-			MsYvqFjA72mAFk2XqnQqbqu1bl2PcHky9lyHpcMR2B0=
-			</data>
-		</dict>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/Resources/MainMenu.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			pq5pH8iIi2J+2B3+oMov59pDqKA=
-			</data>
-			<key>hash2</key>
-			<data>
-			L3p/Xj2Ilv6PZt1LhvQQdRsGCJUrmPdayGyYafJrPQg=
-			</data>
-		</dict>
-		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL Agent.app/Contents/Resources/net.culater.SIMBL.Agent.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			avsDZuNJVa9B/jKBXG7GvfMgAxQ=
-			</data>
-			<key>hash2</key>
-			<data>
-			SixLyN/7JVu3GVqX9/ujH/ZBbHxrnij+qWkd2XXteng=
+			QTCi8ipUUfFnzACh0gE+MxBa63jlFfSrrMni20Df+Bs=
 			</data>
 		</dict>
 		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL.rsrc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			3626rrWuSaDi9lB/ea+jdjODvjI=
+			I+cxeCTKDErtGJTTLS9rNdfy0k4=
 			</data>
 			<key>hash2</key>
 			<data>
-			pANa9I6zD2VTbWaUOec9U5op283zdvWKUzPRFsHuNx0=
+			g+/hRsEvYUk+HSpBFlGR0BaJKbVsccWq2cQU4r10K1o=
 			</data>
 		</dict>
 		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL.sdef</key>
@@ -206,37 +157,138 @@
 			7TDBjOJ+M0pPZ0FiAzjkuyqpTI5ELKQ35Qk0L/ajo+M=
 			</data>
 		</dict>
-		<key>Resources/install</key>
+		<key>Resources/SIMBL.osax/Contents/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			F5lo+ckrBWQX6J7aUwSAXeSO69k=
+			xJ1ShJp6J6jvtNFpA1pNJfeOpG8=
 			</data>
 			<key>hash2</key>
 			<data>
-			J/J7n4oUIc45fcXep1DhPVi4X07OiUrAk3BNVG8+9mw=
+			LrJPaq46H0y3Ui722DgB99lkTjLp4ZXo/8Hz5npVzHo=
+			</data>
+		</dict>
+		<key>Resources/SIMBLAgent.app/Contents/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			4W6luLa7KaGqyvGdyN5NjgLK0xQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			jyeiQ32tpWAnajRjmxXFSPJFtG61D7ZLe+rbaI9CUKA=
+			</data>
+		</dict>
+		<key>Resources/SIMBLAgent.app/Contents/MacOS/SIMBLAgent</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			EjopUGZrh3bTqDjTIIEQlFYm/xc=
+			</data>
+			<key>hash2</key>
+			<data>
+			7mFgAU2Vf+Xy9gzVZ02i1PvvNqEJYm6hJ2Ht2FHNO+c=
+			</data>
+		</dict>
+		<key>Resources/SIMBLAgent.app/Contents/PkgInfo</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			n57qDP4tZfLD1rCS43W0B4LQjzE=
+			</data>
+			<key>hash2</key>
+			<data>
+			glAhkclISwTWhTdPmHmgBmBpxJuKyuegSwHTjQfo7KA=
+			</data>
+		</dict>
+		<key>Resources/SIMBLAgent.app/Contents/Resources/Base.lproj/MainMenu.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			QaVK43d6zlkR69ztWmGYsytgGp0=
+			</data>
+			<key>hash2</key>
+			<data>
+			EI0STntEjmJvPGlK6a7TfG+EDCAIxJsZ8g0B05WhE0w=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>Resources/SIMBLAgent.app/Contents/Resources/net.culater.SIMBL.Agent.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			wYFzYNfsP7GiAQTHdDl8wxzApgg=
+			</data>
+			<key>hash2</key>
+			<data>
+			cjBLFtUTpJsZSau/7GLvKx7IUyjFNULBDK/BcvJEbVE=
+			</data>
+		</dict>
+		<key>Resources/SIMBLAgent.app/Contents/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ZIQKypxJNxa/HVEIJ6HNxDeziG8=
+			</data>
+			<key>hash2</key>
+			<data>
+			9i7qiAHYaASnaZSDCoMfdRKmN6LLGO3VjcKDYqjbJ+Q=
+			</data>
+		</dict>
+		<key>Resources/installAgent</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			I3Lg0a7NAG9vBUi5Qle7OFjFi/w=
+			</data>
+			<key>hash2</key>
+			<data>
+			j4But0/nfB1d4rTwsOTEfNkQceEqVP9Xyo0+fv87FeE=
+			</data>
+		</dict>
+		<key>Resources/installOSAX</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			zeoBubRWlHlZBSRRvTFrGhLAW3s=
+			</data>
+			<key>hash2</key>
+			<data>
+			oAkLoohPHy7SODbB/sNzi5n7sUpzDT07RqGQNS3j6ak=
+			</data>
+		</dict>
+		<key>Resources/removeSIMBL</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			CM6UZSkZmR2ctUZYELVUNPXCkfE=
+			</data>
+			<key>hash2</key>
+			<data>
+			diu9oUVF8w31TW9gyAxL5QtS+/Ed1GFAQ360IOmaN04=
 			</data>
 		</dict>
 		<key>Resources/sim_c.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			fvytOJqTuig3lHpnvSFosY3b40c=
+			JCzIEYPqn0xRUn5w1f0JleWHllU=
 			</data>
 			<key>hash2</key>
 			<data>
-			j6C87ZE5u3UF8vwYogvu50D+l81WLIvic1EICKHIr8Q=
+			v2K1cQg6p7uCFRjCc7b4kQ0swOCOpSC/38xAoIP4Jmw=
 			</data>
 		</dict>
 		<key>Resources/sip_c.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			qy0T43DPjetw+13vQRb/p7JwD9Q=
+			vNOf+9ThjFzTH7t4qvDtEwrDXKk=
 			</data>
 			<key>hash2</key>
 			<data>
-			yDO/kUB12WF37gmTH+EqC/5GXwbYee/cXQH+dvbRwFI=
+			3MCh1ZWHAWuThndnDjsdjxOxQ6tnr2jHUhtKrXH2pZM=
 			</data>
 		</dict>
 	</dict>

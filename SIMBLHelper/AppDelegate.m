@@ -10,16 +10,18 @@
 @import SIMBLManager;
 #import "AppDelegate.h"
 
-@interface AppDelegate ()
+AppDelegate* this;
 
-@property (weak) IBOutlet NSWindow *window;
+@interface AppDelegate ()
 @end
 
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    [[SIMBLManager sharedInstance] SIMBL_injectAll];
+    /* Check if SIMBL.osax is up to date */
     [self checkSIMBL];
+    
+    /* Check for updates for mySIMBL */
     [self checkForUpdates];
 }
 
@@ -27,34 +29,48 @@
 }
 
 - (void)checkForUpdates {
-    NSString *path = [[NSBundle mainBundle] bundlePath];
-    path = [[[path stringByDeletingLastPathComponent] stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
-    NSBundle *GUIBundle = [NSBundle bundleWithPath:path];
+    NSURL *appurl = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:@"org.w0lf.mySIMBL"];
+    NSBundle *GUIBundle = [NSBundle bundleWithURL:appurl];
     SUUpdater *myUpdater = [SUUpdater updaterForBundle:GUIBundle];
-    NSDictionary *GUIDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"org.w0lf.mySIMBL"];
-    
-    if (![[GUIDefaults objectForKey:@"SUHasLaunchedBefore"] boolValue])
+    if ([myUpdater feedURL])
     {
-        [myUpdater setAutomaticallyChecksForUpdates:true];
-        [myUpdater setAutomaticallyDownloadsUpdates:true];
-        [myUpdater setUpdateCheckInterval:86400];
+        NSDictionary *GUIDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"org.w0lf.mySIMBL"];
+        if (![[GUIDefaults objectForKey:@"SUHasLaunchedBefore"] boolValue])
+        {
+            [myUpdater setAutomaticallyChecksForUpdates:true];
+            [myUpdater setAutomaticallyDownloadsUpdates:true];
+            [myUpdater setUpdateCheckInterval:86400];
+        }
+        if ([[GUIDefaults objectForKey:@"SUEnableAutomaticChecks"] boolValue])
+            [myUpdater checkForUpdatesInBackground];
     }
-    
-    if ([[GUIDefaults objectForKey:@"SUEnableAutomaticChecks"] boolValue])
-        [myUpdater checkForUpdatesInBackground];
 }
 
 - (void)checkSIMBL {
+    Boolean openAPP = false;
+    
     SIMBLManager *sim_m = [SIMBLManager sharedInstance];
-    NSDictionary* key = [sim_m SIMBL_versions];
     id <SUVersionComparison> comparator = [SUStandardVersionComparator defaultComparator];
-    NSInteger result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
-    NSLog(@"\nOld: %@\nNew: %@", [key objectForKey:@"localVersion"], [key objectForKey:@"newestVersion"]);
-    if (result == NSOrderedDescending) {
+    NSDictionary* key = [[NSDictionary alloc] init];
+    NSInteger result = 0;
+    
+    key = [sim_m OSAX_versions];
+    result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
+    NSLog(@"-- SIMBL.osax --\nOld: %@\nNew: %@", [key objectForKey:@"localVersion"], [key objectForKey:@"newestVersion"]);
+    if (result == NSOrderedDescending)
+        openAPP = true;
+    
+    key = [sim_m AGENT_versions];
+    result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
+    NSLog(@"-- SIMBLAgent --\nOld: %@\nNew: %@", [key objectForKey:@"localVersion"], [key objectForKey:@"newestVersion"]);
+    if (result == NSOrderedDescending)
+        openAPP = true;
+    
+    if (openAPP)
+    {
         if (![[[NSWorkspace sharedWorkspace] runningApplications] containsObject:[[NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.mySIMBL"] objectAtIndex:0]])
         {
             NSString *path = [[NSBundle bundleWithIdentifier:@"org.w0lf.mySIMBL"] bundlePath];
-            NSLog(@"%@", path);
             [[NSWorkspace sharedWorkspace] launchApplication:path];
         }
     }

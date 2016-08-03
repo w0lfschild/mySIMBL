@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FB0CF69A1C61D1E8002CF3DE"
-               BuildableName = "SIMBLHelper.app"
-               BlueprintName = "SIMBLHelper"
+               BuildableName = "mySIMBLAgent.app"
+               BlueprintName = "mySIMBLAgent"
                ReferencedContainer = "container:mySIMBL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
