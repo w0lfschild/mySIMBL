@@ -8,10 +8,6 @@
 		<data>
 		I+cxeCTKDErtGJTTLS9rNdfy0k4=
 		</data>
-		<key>Resources/SIMBL.sdef</key>
-		<data>
-		BNObSap+PHdU3zRhPEKLTwcGnF8=
-		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
@@ -24,17 +20,6 @@
 			<key>hash2</key>
 			<data>
 			g+/hRsEvYUk+HSpBFlGR0BaJKbVsccWq2cQU4r10K1o=
-			</data>
-		</dict>
-		<key>Resources/SIMBL.sdef</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			BNObSap+PHdU3zRhPEKLTwcGnF8=
-			</data>
-			<key>hash2</key>
-			<data>
-			7TDBjOJ+M0pPZ0FiAzjkuyqpTI5ELKQ35Qk0L/ajo+M=
 			</data>
 		</dict>
 	</dict>

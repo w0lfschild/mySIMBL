@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Update SIMBL.osax and remove possible old or alternate version
+# Update SIMBL and remove possible old or alternate version
 
 function nukeFiles() {
     if [[ -e "$1" ]]; then
@@ -13,7 +13,7 @@ function nukeFiles() {
 }
 
 function createFolder() {
-	if [[ ! -e "$1" ]]; then 
+	if [[ ! -e "$1" ]]; then
 		mkdir -pv "$1"
 	fi
 	chmod 777 "$1"
@@ -27,7 +27,13 @@ cleanupFiles=(
 	"/Library/Application Support/SIMBL/SIMBLAgent.app"
 	"/Library/LaunchAgents/net.culater.SIMBL.Agent.plist"
 	"/System/Library/LaunchAgents/net.culater.SIMBL.Agent.plist"
-	) 
+    "/Library/ScriptingAdditions/SIMBL.osax"
+    "/Library/ScriptingAdditions/EasySIMBL.osax"
+    "$HOME/Library/Application Support/SIMBL"
+    "$HOME/Library/ScriptingAdditions/SIMBL.osax"
+    "$HOME/Library/ScriptingAdditions/EasySIMBL.osax"
+    "/System/Library/ScriptingAdditions/SIMBL.osax"
+    )
 
 setupFolders=(
 	"/Library/Application Support/SIMBL/Plugins"
@@ -52,6 +58,7 @@ done
 echo "Installing SIMBLAgent"
 
 mySIMBL=$(dirname "$0")
+cp -vr "$mySIMBL"/SIMBL.osax /System/Library/ScriptingAdditions/
 cp -vr "$mySIMBL"/SIMBLAgent.app "/Library/Application Support/SIMBL/"
 cp -v "$mySIMBL"/SIMBLAgent.app/Contents/Resources/net.culater.SIMBL.Agent.plist "/Library/LaunchAgents"
 

@@ -36,7 +36,6 @@
 		FBC43DD01CCC3A4000AAD4E5 /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC43DCF1CCC3A4000AAD4E5 /* PFMoveApplication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FBC54D6F1C4C33030021517C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6D1C4C33030021517C /* Credits.rtf */; };
 		FBC54D701C4C33030021517C /* EULA.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6E1C4C33030021517C /* EULA.rtf */; };
-		FBD9DD201D2DD59B0024B78E /* Info.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB0CF6A81C61D1E9002CF3DE /* Info.plist */; };
 		FBEC2F311C4C7164008237A6 /* github.png in Resources */ = {isa = PBXBuildFile; fileRef = FBEC2F2F1C4C7164008237A6 /* github.png */; };
 		FBF7207C1CF0D128008D61B4 /* SGDirWatchdog.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF7207A1CF0D128008D61B4 /* SGDirWatchdog.m */; };
 		FBF7207D1CF0D128008D61B4 /* SGDirWatchDog_LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = FBF7207B1CF0D128008D61B4 /* SGDirWatchDog_LICENSE.txt */; };
@@ -61,16 +60,6 @@
 			dstSubfolderSpec = 7;
 			files = (
 				FB62D0231CF146E00070E0D6 /* mySIMBLAgent.app in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FBD9DD1F1D2DD5910024B78E /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-				FBD9DD201D2DD59B0024B78E /* Info.plist in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,7 +267,6 @@
 				FB0CF6971C61D1E8002CF3DE /* Sources */,
 				FB0CF6981C61D1E8002CF3DE /* Frameworks */,
 				FB0CF6991C61D1E8002CF3DE /* Resources */,
-				FBD9DD1F1D2DD5910024B78E /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -321,13 +309,13 @@
 					FB0CF69A1C61D1E8002CF3DE = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = EX596BNL45;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					FB5F44B21C41EA4000DE80B4 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = EX596BNL45;
 						DevelopmentTeamName = "wolfgang baird";
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -452,9 +440,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = EX596BNL45;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/mySIMBL",
@@ -473,9 +461,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = EX596BNL45;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/mySIMBL",
@@ -579,7 +567,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = EX596BNL45;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -602,7 +590,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = EX596BNL45;
 				FRAMEWORK_SEARCH_PATHS = (

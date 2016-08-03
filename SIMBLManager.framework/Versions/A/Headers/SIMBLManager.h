@@ -24,6 +24,7 @@ FOUNDATION_EXPORT const unsigned char SIMBLManagerVersionString[];
 + (SIMBLManager *)sharedInstance;
 - (Boolean)SIP_enabled;
 
+- (Boolean)SIMBL_install;
 - (void)SIMBL_injectAll;
 - (void)SIMBL_injectApp:(NSString *)appName :(Boolean)restart;
 

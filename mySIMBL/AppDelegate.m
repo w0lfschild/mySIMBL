@@ -315,8 +315,7 @@ sip_c *sipc;
 
 - (void)confirmSIMBLInstall {
     [self closeWarning];
-    [SIMBLFramework OSAX_install];
-    [SIMBLFramework AGENT_install];
+    [SIMBLFramework SIMBL_install];
     [SIMBLFramework SIMBL_injectAll];
 }
 
@@ -348,6 +347,7 @@ sip_c *sipc;
 }
 
 - (IBAction)simblInstall:(id)sender {
+    /*
     if ([SIMBLFramework OSAX_installed])
         return;
     
@@ -356,11 +356,12 @@ sip_c *sipc;
         [self showSIPWarning];
         return;
     }
+     */
     
     dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(myQueue, ^{
         // Insert code to be executed on another thread here
-        [SIMBLFramework OSAX_install];
+        [self checkSIMBL];
         while(![SIMBLFramework OSAX_installed])
             usleep(100000);
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -729,33 +730,50 @@ sip_c *sipc;
     NSDictionary* key = [[NSDictionary alloc] init];
     NSInteger result = 0;
     
+    Boolean agentUpdate = false;
+    Boolean osaxUpdate = false;
+    Boolean sipStatus = false;
+    
     if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/Application Support/SIMBL/SIMBLAgent.app"])
     {
-        [sim_m AGENT_install];
+        agentUpdate = true;
     } else {
         key = [sim_m AGENT_versions];
         result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
         if (result == NSOrderedDescending)
-            [sim_m AGENT_install];
+            agentUpdate = true;
     }
     
-    key = [sim_m OSAX_versions];
-    result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
-    if (result == NSOrderedDescending)
+    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/ScriptingAdditions/SIMBL.osax"])
     {
-        if ([sim_m SIP_enabled])
+        osaxUpdate = true;
+    } else {
+        key = [sim_m OSAX_versions];
+        result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
+        if (result == NSOrderedDescending)
         {
-            [self showSIPWarning];
-        } else {
-            [self showSIMBLWarning];
+            osaxUpdate = true;
+            if ([sim_m SIP_enabled])
+                sipStatus = true;
         }
     }
+    
+    if (sipStatus) { [self showSIPWarning]; }
+    if (agentUpdate || osaxUpdate) { [self showSIMBLWarning]; }
+    
+    if (agentUpdate && osaxUpdate)
+    {
+        [[simc accept] setAction:@selector(confirmSIMBLInstall)];
+    }
+    else if (agentUpdate)
+    {
+        [[simc accept] setAction:@selector(confirmAGENTInstall)];
+    }
+    else
+    {
+        [[simc accept] setAction:@selector(confirmOSAXInstall)];
+    }
 }
-
-//- (BOOL)splitView:(NSSplitView *)splitView shouldAdjustSizeOfSubview:(NSView *)subview
-//{
-//    return NO;
-//}
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMinimumPosition ofSubviewAt:(NSInteger)dividerIndex {
     if (proposedMinimumPosition < 125) {

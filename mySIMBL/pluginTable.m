@@ -115,7 +115,7 @@ NSInteger previusRow = -1;
 {
     NSImage* result = nil;
     NSDictionary* info = [plist objectForKey:@"bundleInfo"];
-    
+ 
     NSString* iconPath = [NSString stringWithFormat:@"%@/Contents/icon.icns", [plist objectForKey:@"path"]];
     if ([iconPath length])
     {

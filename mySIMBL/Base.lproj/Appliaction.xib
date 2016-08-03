@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11129.15" systemVersion="16A270f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11185.3" systemVersion="16A270f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment version="1090" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11129.15"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="11129.15"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11185.3"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="11185.3"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -13,15 +13,15 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <window title="mySIMBL" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" unifiedTitleAndToolbar="YES" fullSizeContentView="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" unifiedTitleAndToolbar="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="730" height="500"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
-            <value key="minSize" type="size" width="600" height="500"/>
-            <value key="maxSize" type="size" width="600" height="500"/>
+            <value key="minSize" type="size" width="730" height="500"/>
+            <value key="maxSize" type="size" width="730" height="500"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="730" height="500"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <splitView dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uVp-Pt-hev">
                         <rect key="frame" x="0.0" y="0.0" width="730" height="500"/>
@@ -121,7 +121,7 @@
                                     <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DG1-q5-lL2">
                                         <rect key="frame" x="74" y="454" width="20" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="inline" title="10" bezelStyle="inline" image="FF87EC14-A9BD-481B-B14A-93F6BE24FEC4" imagePosition="overlaps" alignment="center" enabled="NO" borderStyle="border" inset="2" id="h9l-5b-d5p">
+                                        <buttonCell key="cell" type="inline" title="10" bezelStyle="inline" image="38C01CD6-5360-4EA2-A316-F61FD6BE521A" imagePosition="overlaps" alignment="center" enabled="NO" borderStyle="border" inset="2" id="h9l-5b-d5p">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="smallSystemBold"/>
                                         </buttonCell>
@@ -139,6 +139,7 @@
                                         <tabViewItems>
                                             <tabViewItem label="Tab" identifier="1" id="gnm-tf-ZzF">
                                                 <view key="view" ambiguous="YES" id="gAJ-Cn-qX0">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </view>
                                             </tabViewItem>
@@ -235,15 +236,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="560" height="250"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView ambiguous="YES" editable="NO" drawsBackground="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="aw3-Mi-1zf">
+                            <textView ambiguous="YES" editable="NO" drawsBackground="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="aw3-Mi-1zf">
                                 <rect key="frame" x="0.0" y="0.0" width="558" height="250"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <size key="minSize" width="558" height="250"/>
+                                <size key="minSize" width="560" height="250"/>
                                 <size key="maxSize" width="896" height="10000000"/>
                                 <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="558" height="250"/>
-                                <size key="maxSize" width="896" height="10000000"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -583,7 +582,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="40" rowSizeStyle="automatic" viewBased="YES" id="E3Q-ip-sqv">
-                                <rect key="frame" x="0.0" y="0.0" width="558" height="0.0"/>
+                                <rect key="frame" x="0.0" y="0.0" width="558" height="433"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -731,19 +730,13 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="lxA-1w-F1m">
+                <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="lxA-1w-F1m">
                     <rect key="frame" x="252" y="477" width="5" height="177"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
-                <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="eiW-1m-7jH">
+                <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="eiW-1m-7jH">
                     <rect key="frame" x="252" y="18" width="96" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EKf-xn-hvp">
                     <rect key="frame" x="198" y="310" width="200" height="18"/>
@@ -1039,7 +1032,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="40" rowSizeStyle="automatic" viewBased="YES" id="hCk-bO-Pf9" customClass="sourcesTable">
-                        <rect key="frame" x="0.0" y="0.0" width="558" height="0.0"/>
+                        <rect key="frame" x="0.0" y="0.0" width="558" height="420"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <size key="intercellSpacing" width="3" height="2"/>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1109,7 +1102,6 @@ Would you like to install SIMBL now and start using plugins?</string>
                         </connections>
                     </tableView>
                 </subviews>
-                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
             </clipView>
             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="q7h-ee-o6j">
                 <rect key="frame" x="1" y="-15" width="0.0" height="16"/>
@@ -1129,7 +1121,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="60" rowSizeStyle="automatic" viewBased="YES" id="rOu-dT-UNS" customClass="repopluginTable">
-                        <rect key="frame" x="0.0" y="0.0" width="558" height="0.0"/>
+                        <rect key="frame" x="0.0" y="0.0" width="558" height="420"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <size key="intercellSpacing" width="3" height="2"/>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1150,7 +1142,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                 <prototypeCellViews>
                                     <tableCellView identifier="psView" id="I7m-gy-ZZc" customClass="repopluginTableCell">
-                                        <rect key="frame" x="1" y="1" width="556" height="60"/>
+                                        <rect key="frame" x="1" y="1" width="555" height="60"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kQJ-vI-qaI">
@@ -1191,9 +1183,9 @@ Would you like to install SIMBL now and start using plugins?</string>
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSApplicationIcon" id="Gxr-sB-25v"/>
                                             </imageView>
                                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pn2-LQ-3Ra">
-                                                <rect key="frame" x="462" y="20" width="50" height="19"/>
+                                                <rect key="frame" x="437" y="20" width="75" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                <buttonCell key="cell" type="roundRect" title="Get" bezelStyle="roundedRect" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7r3-SY-viw">
+                                                <buttonCell key="cell" type="roundRect" title="Install" bezelStyle="roundedRect" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7r3-SY-viw">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="cellTitle"/>
                                                 </buttonCell>
@@ -1217,7 +1209,6 @@ Would you like to install SIMBL now and start using plugins?</string>
                         </connections>
                     </tableView>
                 </subviews>
-                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
             </clipView>
             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="tjs-vr-CWO">
                 <rect key="frame" x="1" y="405" width="558" height="16"/>
@@ -1284,12 +1275,9 @@ Would you like to install SIMBL now and start using plugins?</string>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Eyy-oV-tcb">
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Eyy-oV-tcb">
                             <rect key="frame" x="12" y="180" width="176" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                            <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <font key="titleFont" metaFont="system"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Ld-q8-PJG">
                             <rect key="frame" x="77" y="116" width="110" height="14"/>
@@ -1448,7 +1436,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nQ-4A-9s5">
                     <rect key="frame" x="39" y="261" width="22" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSUserAccounts" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="MXY-3W-iRf">
+                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSUserAccounts" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="MXY-3W-iRf">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -1480,7 +1468,7 @@ Would you like to install SIMBL now and start using plugins?</string>
         </customView>
     </objects>
     <resources>
-        <image name="FF87EC14-A9BD-481B-B14A-93F6BE24FEC4" width="1" height="1">
+        <image name="38C01CD6-5360-4EA2-A316-F61FD6BE521A" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
