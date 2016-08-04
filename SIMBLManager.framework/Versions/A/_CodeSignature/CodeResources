@@ -4,37 +4,37 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Resources/.DS_Store</key>
-		<data>
-		WGjVinDPlXUQOSD15h6FCCaWfMs=
-		</data>
 		<key>Resources/Info.plist</key>
 		<data>
-		/AuThwwYqBDaFoiGMHuYSgrYWh4=
+		xYh9cbqotkoA0XQLFBU5wvR2hG0=
 		</data>
 		<key>Resources/SIMBL.osax/Contents/Info.plist</key>
 		<data>
-		52AF6blO4Q2OdZcyOaW3IssbKLE=
+		bvPQ8GRG54D2MRKz8vTHUvF9HtM=
 		</data>
 		<key>Resources/SIMBL.osax/Contents/MacOS/SIMBL</key>
 		<data>
-		Zp58/hS9hbLRpqcPp/QSnH65Cak=
+		yiME5gh9tdAf6Fn+/FhHYvPuNIU=
 		</data>
 		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL.rsrc</key>
 		<data>
 		I+cxeCTKDErtGJTTLS9rNdfy0k4=
 		</data>
+		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL.sdef</key>
+		<data>
+		BNObSap+PHdU3zRhPEKLTwcGnF8=
+		</data>
 		<key>Resources/SIMBL.osax/Contents/_CodeSignature/CodeResources</key>
 		<data>
-		tTOKVROnysg6Smh6H8gDaBzT5bs=
+		B5fmCUtU2tfxIMlutxQ1LtMuQIQ=
 		</data>
 		<key>Resources/SIMBLAgent.app/Contents/Info.plist</key>
 		<data>
-		NyXhisnDXmeuh0Tg+4jiqRPPul0=
+		Y72IpeT4Ns+9wREMwFHpJndddpc=
 		</data>
 		<key>Resources/SIMBLAgent.app/Contents/MacOS/SIMBLAgent</key>
 		<data>
-		J60nKr9ptBdF9+w+/9jOPG1tMRc=
+		rjzGJMYMraRZKvTRPg8nUCdNOgM=
 		</data>
 		<key>Resources/SIMBLAgent.app/Contents/PkgInfo</key>
 		<data>
@@ -44,7 +44,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			7Ct4afxHwI3yTxv1RzNBSUzvw18=
+			um9oKRTN5N62p1EAj6BgH/W1+s4=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -55,7 +55,7 @@
 		</data>
 		<key>Resources/SIMBLAgent.app/Contents/_CodeSignature/CodeResources</key>
 		<data>
-		T14cjoDdUw5945VY4xUJshDpGag=
+		5+lJvAoOFOkw+UxdrGtauO4f5jo=
 		</data>
 		<key>Resources/installAgent</key>
 		<data>
@@ -75,226 +75,100 @@
 		</data>
 		<key>Resources/sim_c.nib</key>
 		<data>
-		hzyQQjjwcZcRaQ7B/tA0PWSHywo=
+		ltRse08M6hUIoyIp2qup+Mwcn6Q=
 		</data>
 		<key>Resources/sip_c.nib</key>
 		<data>
-		GWrO+ni6iPw0cdcQL1fCeVFyHjA=
+		/EcEsQTvlwbwO++CtDNU/9lYDy0=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
 		<key>Headers/SIMBLManager.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			LZi0fYsExgR3Gh0VZ+5geXnol34=
-			</data>
-			<key>hash2</key>
-			<data>
-			J7kdBscBjzu+s1gBtNhgPRRqB0QLnjlodHl822j+Gls=
-			</data>
-		</dict>
+		<data>
+		LZi0fYsExgR3Gh0VZ+5geXnol34=
+		</data>
 		<key>Modules/module.modulemap</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			iOTlNz7L9hKykFUZ1e+ZQP9ac4s=
-			</data>
-			<key>hash2</key>
-			<data>
-			HYc5sWaf5IIw1Fs7O9VsDjTwGTim6EnYOs4kUZ4JUjQ=
-			</data>
-		</dict>
+		<data>
+		iOTlNz7L9hKykFUZ1e+ZQP9ac4s=
+		</data>
 		<key>Resources/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			/AuThwwYqBDaFoiGMHuYSgrYWh4=
-			</data>
-			<key>hash2</key>
-			<data>
-			uLdW60z42uTgE2Pe0Q4Qmsg/nRi91ZB3AKQvlGo2bAI=
-			</data>
-		</dict>
+		<data>
+		xYh9cbqotkoA0XQLFBU5wvR2hG0=
+		</data>
 		<key>Resources/SIMBL.osax/Contents/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			52AF6blO4Q2OdZcyOaW3IssbKLE=
-			</data>
-			<key>hash2</key>
-			<data>
-			2MVRa64KWqAGZ1vnbUzOAg/9aQCpAccachzBEDte3gc=
-			</data>
-		</dict>
+		<data>
+		bvPQ8GRG54D2MRKz8vTHUvF9HtM=
+		</data>
 		<key>Resources/SIMBL.osax/Contents/MacOS/SIMBL</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Zp58/hS9hbLRpqcPp/QSnH65Cak=
-			</data>
-			<key>hash2</key>
-			<data>
-			4rUUEju1jYWL0RMiN8w5jUwVjCc9TytNS6NH1DkwDi4=
-			</data>
-		</dict>
+		<data>
+		yiME5gh9tdAf6Fn+/FhHYvPuNIU=
+		</data>
 		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL.rsrc</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			I+cxeCTKDErtGJTTLS9rNdfy0k4=
-			</data>
-			<key>hash2</key>
-			<data>
-			g+/hRsEvYUk+HSpBFlGR0BaJKbVsccWq2cQU4r10K1o=
-			</data>
-		</dict>
+		<data>
+		I+cxeCTKDErtGJTTLS9rNdfy0k4=
+		</data>
+		<key>Resources/SIMBL.osax/Contents/Resources/SIMBL.sdef</key>
+		<data>
+		BNObSap+PHdU3zRhPEKLTwcGnF8=
+		</data>
 		<key>Resources/SIMBL.osax/Contents/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			tTOKVROnysg6Smh6H8gDaBzT5bs=
-			</data>
-			<key>hash2</key>
-			<data>
-			5/t1RRZ6GxQkL9hqD63NCbPoR4frGUsVK/V02o8DdIk=
-			</data>
-		</dict>
+		<data>
+		B5fmCUtU2tfxIMlutxQ1LtMuQIQ=
+		</data>
 		<key>Resources/SIMBLAgent.app/Contents/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			NyXhisnDXmeuh0Tg+4jiqRPPul0=
-			</data>
-			<key>hash2</key>
-			<data>
-			gdU5RMpOTZdARbQcINcTHTTgcuVnUaItuME6c8hxwZo=
-			</data>
-		</dict>
+		<data>
+		Y72IpeT4Ns+9wREMwFHpJndddpc=
+		</data>
 		<key>Resources/SIMBLAgent.app/Contents/MacOS/SIMBLAgent</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			J60nKr9ptBdF9+w+/9jOPG1tMRc=
-			</data>
-			<key>hash2</key>
-			<data>
-			yTtaPdzM5snAgF0QRw4Bqf46Fo3GR2LH71yRY/GiTKg=
-			</data>
-		</dict>
+		<data>
+		rjzGJMYMraRZKvTRPg8nUCdNOgM=
+		</data>
 		<key>Resources/SIMBLAgent.app/Contents/PkgInfo</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			n57qDP4tZfLD1rCS43W0B4LQjzE=
-			</data>
-			<key>hash2</key>
-			<data>
-			glAhkclISwTWhTdPmHmgBmBpxJuKyuegSwHTjQfo7KA=
-			</data>
-		</dict>
+		<data>
+		n57qDP4tZfLD1rCS43W0B4LQjzE=
+		</data>
 		<key>Resources/SIMBLAgent.app/Contents/Resources/Base.lproj/MainMenu.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			7Ct4afxHwI3yTxv1RzNBSUzvw18=
-			</data>
-			<key>hash2</key>
-			<data>
-			MQY+/ZjFbpQzVlPh2l6VQeBWxc4gYhME4wsxig5GRLE=
+			um9oKRTN5N62p1EAj6BgH/W1+s4=
 			</data>
 			<key>optional</key>
 			<true/>
 		</dict>
 		<key>Resources/SIMBLAgent.app/Contents/Resources/net.culater.SIMBL.Agent.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			wYFzYNfsP7GiAQTHdDl8wxzApgg=
-			</data>
-			<key>hash2</key>
-			<data>
-			cjBLFtUTpJsZSau/7GLvKx7IUyjFNULBDK/BcvJEbVE=
-			</data>
-		</dict>
+		<data>
+		wYFzYNfsP7GiAQTHdDl8wxzApgg=
+		</data>
 		<key>Resources/SIMBLAgent.app/Contents/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			T14cjoDdUw5945VY4xUJshDpGag=
-			</data>
-			<key>hash2</key>
-			<data>
-			OsA7m9N58F6A2wfERZdP7fjZuy+N1oaxd2iDRtlCdgg=
-			</data>
-		</dict>
+		<data>
+		5+lJvAoOFOkw+UxdrGtauO4f5jo=
+		</data>
 		<key>Resources/installAgent</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			ZRNShmdF+iKuqRWqiXHeZXJB9C4=
-			</data>
-			<key>hash2</key>
-			<data>
-			04aTZIh/CpuQvq+S7xphASX1k5dCetb7/Tk+f6PUHyQ=
-			</data>
-		</dict>
+		<data>
+		ZRNShmdF+iKuqRWqiXHeZXJB9C4=
+		</data>
 		<key>Resources/installOSAX</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Ip6L7plAceObRHjzkae1jY5S5rY=
-			</data>
-			<key>hash2</key>
-			<data>
-			8EI2CXq4fsUEpW7G1WCWRg/AZonEQ+bmDWqsz7gWaq4=
-			</data>
-		</dict>
+		<data>
+		Ip6L7plAceObRHjzkae1jY5S5rY=
+		</data>
 		<key>Resources/installSIMBL</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			i/SxjUJ8zodMKNzeLZppgJMWals=
-			</data>
-			<key>hash2</key>
-			<data>
-			h/Mj8lslKFVUX7ZACPvwqRhP2hp4EZZ8phceVwjS8cA=
-			</data>
-		</dict>
+		<data>
+		i/SxjUJ8zodMKNzeLZppgJMWals=
+		</data>
 		<key>Resources/removeSIMBL</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			tkDC5Khw9kd64EDEE56uKQNAfp8=
-			</data>
-			<key>hash2</key>
-			<data>
-			T+yY+M+vJtWbEeygBOgpPFA63gc7Y9QhDMZz+cTrj3A=
-			</data>
-		</dict>
+		<data>
+		tkDC5Khw9kd64EDEE56uKQNAfp8=
+		</data>
 		<key>Resources/sim_c.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			hzyQQjjwcZcRaQ7B/tA0PWSHywo=
-			</data>
-			<key>hash2</key>
-			<data>
-			MIKV6T/qJSpW7vlLsFvZjt1I8kFYCm7OAzW8OQqrVWo=
-			</data>
-		</dict>
+		<data>
+		ltRse08M6hUIoyIp2qup+Mwcn6Q=
+		</data>
 		<key>Resources/sip_c.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			GWrO+ni6iPw0cdcQL1fCeVFyHjA=
-			</data>
-			<key>hash2</key>
-			<data>
-			yjSrTZnCcFgwFl958cYOhMmdZNZfg8XZ0y3f/TLQjWM=
-			</data>
-		</dict>
+		<data>
+		/EcEsQTvlwbwO++CtDNU/9lYDy0=
+		</data>
 	</dict>
 	<key>rules</key>
 	<dict>
@@ -313,11 +187,6 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
-		</dict>
-		<key>^Resources/Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -377,11 +246,6 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
-		</dict>
-		<key>^Resources/Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
 		</dict>
 		<key>^[^/]+$</key>
 		<dict>

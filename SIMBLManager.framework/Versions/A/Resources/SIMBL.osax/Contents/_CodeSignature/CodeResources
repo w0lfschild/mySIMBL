@@ -8,20 +8,21 @@
 		<data>
 		I+cxeCTKDErtGJTTLS9rNdfy0k4=
 		</data>
+		<key>Resources/SIMBL.sdef</key>
+		<data>
+		BNObSap+PHdU3zRhPEKLTwcGnF8=
+		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
 		<key>Resources/SIMBL.rsrc</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			I+cxeCTKDErtGJTTLS9rNdfy0k4=
-			</data>
-			<key>hash2</key>
-			<data>
-			g+/hRsEvYUk+HSpBFlGR0BaJKbVsccWq2cQU4r10K1o=
-			</data>
-		</dict>
+		<data>
+		I+cxeCTKDErtGJTTLS9rNdfy0k4=
+		</data>
+		<key>Resources/SIMBL.sdef</key>
+		<data>
+		BNObSap+PHdU3zRhPEKLTwcGnF8=
+		</data>
 	</dict>
 	<key>rules</key>
 	<dict>
@@ -40,11 +41,6 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
-		</dict>
-		<key>^Resources/Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -104,11 +100,6 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
-		</dict>
-		<key>^Resources/Base\.lproj/</key>
-		<dict>
-			<key>weight</key>
-			<real>1010</real>
 		</dict>
 		<key>^[^/]+$</key>
 		<dict>

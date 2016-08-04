@@ -33,7 +33,7 @@ sip_c *sipc;
 }
 
 // Install bundle files
-- (void)application:(NSApplication *)sender openFiles:(NSArray<NSString *> *)filenames {
+- (void)application:(NSApplication *)sender openFiles:(NSArray*)filenames {
     [_sharedMethods installBundles:filenames];
 }
 
@@ -624,12 +624,15 @@ sip_c *sipc;
         else
         {
             [_sourcesPush setEnabled:true];
-//            NSTableView *t = [[[_sourcesRoot.subviews objectAtIndex:0].subviews objectAtIndex:0].subviews objectAtIndex:0];
-//            [t deselectAll:nil];
-            [[[[_sourcesRoot.subviews objectAtIndex:0].subviews objectAtIndex:0].subviews objectAtIndex:0] reloadData];
+//            dumpViews(_sourcesRoot, 0);
+            if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion > 9)
+            {
+                [[[[[[[_sourcesRoot subviews] firstObject] subviews] firstObject] subviews] firstObject] reloadData];
+            } else {
+                [[[[[[[_sourcesRoot subviews] firstObject] subviews] firstObject] subviews] lastObject] reloadData];
+            }
         }
     }
-    //    [_sourcesRoot setSubviews:[[NSArray alloc] initWithObjects:_sourcesPlugins, nil]];
 }
 
 - (IBAction)popView:(id)sender {
@@ -643,19 +646,16 @@ sip_c *sipc;
         
     if ((cur - 1) >= 0)
     {
+//        dumpViews(_sourcesRoot, 0);
         [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[sourceItems objectAtIndex:cur - 1]];
         [self.window makeFirstResponder: [sourceItems objectAtIndex:cur - 1]];
-//        [[[[_sourcesRoot.subviews objectAtIndex:0].subviews objectAtIndex:0].subviews objectAtIndex:0] reloadData];
     }
-//    [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:_sourcesURLS];
-//    [_sourcesRoot setSubviews:[[NSArray alloc] initWithObjects:_sourcesPlugins, nil]];
 }
 
 - (IBAction)rootView:(id)sender {
     [_sourcesPush setEnabled:true];
     [_sourcesPop setEnabled:false];
     [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:_sourcesURLS];
-    //    [_sourcesRoot setSubviews:[[NSArray alloc] initWithObjects:_sourcesPlugins, nil]];
 }
 
 - (IBAction)selectView:(id)sender {
