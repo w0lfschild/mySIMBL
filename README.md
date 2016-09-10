@@ -6,7 +6,7 @@ mySIMBL is a successor to the application EasySIMBL. This application uses my ow
 
 # Installation
 
-- Download the latest release
+- Download the [latest release](https://github.com/w0lfschild/app_updates/tree/master/mySIMBL) from my app_updates repo.
 - Unzip the download if your browser does not do so automatically
 - Open mySIMBL
     - mySIMBL will ask to be moved to /Applications
