@@ -71,7 +71,7 @@ long selectedRow;
     NSString *bInfo = [NSString stringWithFormat:@"%@ - %@", [item objectForKey:@"version"], [item objectForKey:@"package"]];
     result.bundleInfo.stringValue = bInfo;
     result.bundleDescription.toolTip = [item objectForKey:@"description"];
-    result.bundleImage.image = [self getbundleIcon:item];
+    result.bundleImage.image = [_sharedMethods getbundleIcon:item];
     [result.bundleImage.cell setImageScaling:NSImageScaleProportionallyUpOrDown];
     return result;
 }
@@ -143,26 +143,6 @@ long selectedRow;
 - (void)tableViewSelectionIsChanging:(NSNotification *)aNotification
 {
     [self tableChange:aNotification];
-}
-
-- (NSImage*)getbundleIcon:(NSDictionary*)plist
-{
-    NSImage* result = nil;
-    NSArray* targets = [plist objectForKey:@"targets"];
-    NSString* iconPath = @"";
-    for (NSDictionary* targetApp in targets)
-    {
-        iconPath = [targetApp objectForKey:@"BundleIdentifier"];
-        iconPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:iconPath];
-        if ([iconPath length])
-        {
-            result = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
-            if (result) return result;
-        }
-    }
-    
-    result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/KEXT.icns"];
-    return result;
 }
 
 @end

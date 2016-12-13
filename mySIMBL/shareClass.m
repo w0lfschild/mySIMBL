@@ -136,4 +136,88 @@ extern NSMutableArray *confirmDelete;
     [pluginTable reloadData];
 }
 
+- (void)pluginInstall:(NSDictionary*)item :(NSString*)repo {
+    NSURL *installURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", repo, [item objectForKey:@"filename"]]];
+    NSData *myData = [NSData dataWithContentsOfURL:installURL];
+    NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
+    [myData writeToFile:temp atomically:YES];
+    NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
+    NSString* libSupport = [[libDomain objectAtIndex:0] path];
+    NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
+    NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
+    [task waitUntilExit];
+    shareClass* t = [[shareClass alloc] init];
+    [t readPlugins:nil];
+}
+
+- (void)pluginUpdate:(NSDictionary*)item :(NSString*)repo {
+    NSURL *installURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", repo, [item objectForKey:@"filename"]]];
+    NSData *myData = [NSData dataWithContentsOfURL:installURL];
+    NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
+    [myData writeToFile:temp atomically:YES];
+    NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
+    NSString* libSupport = [[libDomain objectAtIndex:0] path];
+    NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
+    NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
+    [task waitUntilExit];
+    shareClass* t = [[shareClass alloc] init];
+    [t readPlugins:nil];
+}
+
+- (void)pluginDelete:(NSDictionary*)item {
+    int pos = 0;
+    bool found = false;
+    for (NSDictionary* dict in pluginsArray)
+    {
+        if ([[dict objectForKey:@"bundleId"] isEqualToString:[item objectForKey:@"package"]])
+        {
+            found = true;
+            break;
+        }
+        pos += 1;
+    }
+    if (found)
+    {
+        NSDictionary* obj = [pluginsArray objectAtIndex:pos];
+        NSString* path = [obj objectForKey:@"path"];
+        NSURL* url = [NSURL fileURLWithPath:path];
+        NSURL* trash;
+        NSError* error;
+        [[NSFileManager defaultManager] trashItemAtURL:url resultingItemURL:&trash error:&error];
+    }
+}
+
+- (NSImage*)getbundleIcon:(NSDictionary*)plist {
+    NSImage* result = nil;
+    NSArray* targets = [[NSArray alloc] init];
+    if ([plist objectForKey:@"targets"])
+    {
+        targets = [plist objectForKey:@"targets"];
+    } else {
+        NSDictionary* info = [plist objectForKey:@"bundleInfo"];
+        targets = [info objectForKey:@"SIMBLTargetApplications"];
+    }
+    
+    NSString* iconPath = [NSString stringWithFormat:@"%@/Contents/icon.icns", [plist objectForKey:@"path"]];
+    if ([iconPath length])
+    {
+        result = [[NSImage alloc] initWithContentsOfFile:iconPath];
+        if (result) return result;
+    }
+    
+    for (NSDictionary* targetApp in targets)
+    {
+        iconPath = [targetApp objectForKey:@"BundleIdentifier"];
+        iconPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:iconPath];
+        if ([iconPath length])
+        {
+            result = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
+            if (result) return result;
+        }
+    }
+    
+    result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/KEXT.icns"];
+    return result;
+}
+
 @end

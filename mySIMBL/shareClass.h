@@ -12,4 +12,10 @@
 - (void)replaceFile:(NSString*)start :(NSString*)end;
 - (void)installBundles:(NSArray*)pathArray;
 
+- (void)pluginInstall:(NSDictionary*)item :(NSString*)repo;
+- (void)pluginUpdate:(NSDictionary*)item :(NSString*)repo;
+- (void)pluginDelete:(NSDictionary*)item;
+
+- (NSImage*)getbundleIcon:(NSDictionary*)plist;
+
 @end

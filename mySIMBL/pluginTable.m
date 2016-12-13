@@ -111,34 +111,6 @@ NSInteger previusRow = -1;
     [self tableChange:aNotification];
 }
 
-- (NSImage*)getbundleIcon:(NSDictionary*)plist
-{
-    NSImage* result = nil;
-    NSDictionary* info = [plist objectForKey:@"bundleInfo"];
- 
-    NSString* iconPath = [NSString stringWithFormat:@"%@/Contents/icon.icns", [plist objectForKey:@"path"]];
-    if ([iconPath length])
-    {
-        result = [[NSImage alloc] initWithContentsOfFile:iconPath];
-        if (result) return result;
-    }
-    
-    NSArray* SIMBLTargets = [info objectForKey:@"SIMBLTargetApplications"];
-    for (NSDictionary* targetApp in SIMBLTargets)
-    {
-        iconPath = [targetApp objectForKey:@"BundleIdentifier"];
-        iconPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:iconPath];
-        if ([iconPath length])
-        {
-            result = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
-            if (result) return result;
-        }
-    }
-    
-    result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/KEXT.icns"];
-    return result;
-}
-
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     
     CustomTableCell *result = (CustomTableCell*)[tableView makeViewWithIdentifier:@"MyView" owner:self];
@@ -159,7 +131,7 @@ NSInteger previusRow = -1;
     }
     
     result.pluginDescription.stringValue = [item objectForKey:@"description"];
-    result.pluginImage.image = [self getbundleIcon:item];
+    result.pluginImage.image = [_sharedMethods getbundleIcon:item];
     
     if ([[confirmDelete objectAtIndex:row] boolValue])
         [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashFull"]];

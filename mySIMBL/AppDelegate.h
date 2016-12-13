@@ -12,6 +12,7 @@
 @import SIMBLManager;
 #import "SGDirWatchdog.h"
 #import "PFMoveApplication.h"
+#import "StartAtLoginController.h"
 #import "shareClass.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
@@ -24,16 +25,18 @@
 @property IBOutlet NSWindow *window;
 @property IBOutlet NSWindow *srcWin;
 @property IBOutlet SUUpdater *updater;
-@property IBOutlet NSTabView *tabView;
 
 // Tab views
+@property IBOutlet NSView *tabMain;
+
 @property IBOutlet NSView *tabAbout;
 @property IBOutlet NSView *tabPlugins;
 @property IBOutlet NSView *tabSIMBL;
 @property IBOutlet NSView *tabPreferences;
 @property IBOutlet NSView *tabSIP;
 @property IBOutlet NSView *tabSources;
-@property IBOutlet NSView *tabDiscover;
+@property IBOutlet NSView *tabChanges;
+@property IBOutlet NSView *tabSIMBLInfo;
 
 // Plugins view
 @property IBOutlet NSTableView *tblView;
@@ -59,9 +62,12 @@
 @property IBOutlet NSButton *viewPlugins;
 @property IBOutlet NSButton *viewPreferences;
 @property IBOutlet NSButton *viewSources;
-@property IBOutlet NSButton *viewDiscover;
 @property IBOutlet NSButton *viewAbout;
+@property IBOutlet NSButton *viewChanges;
+@property IBOutlet NSButton *viewSIMBL;
 @property IBOutlet NSButton *donateButton;
+@property IBOutlet NSButton *reportButton;
+
 
 // About view
 @property IBOutlet NSTextField *appName;
@@ -74,6 +80,7 @@
 @property IBOutlet NSButton *showCredits;
 @property IBOutlet NSButton *showChanges;
 @property IBOutlet NSButton *showEULA;
+@property IBOutlet NSTextView *changeLog;
 
 // Preferences view
 @property IBOutlet NSButton         *prefVibrant;
@@ -83,8 +90,12 @@
 @property IBOutlet NSPopUpButton    *prefUpdateAuto;
 @property IBOutlet NSPopUpButton    *prefUpdateInterval;
 @property IBOutlet NSPopUpButton    *prefStartTab;
+
+// SIMBL View
+@property IBOutlet NSButton         *SIMBLAgentToggle;
+@property IBOutlet NSButton         *SIMBLTogggle;
 @property IBOutlet NSPopUpButton    *SIMBLLogging;
-@property IBOutlet NSTextView *changeLog;
+@property IBOutlet NSImage          *SIPStatus;
 
 - (void)setupEventListener;
 - (IBAction)pushView:(id)sender;

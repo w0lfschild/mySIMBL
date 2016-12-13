@@ -13,18 +13,28 @@
 
 @interface bundlePage : NSView
 
+// Bundle Display
 @property IBOutlet NSTextField*  bundleName;
+@property IBOutlet NSTextView*  bundleDesc;
+@property IBOutlet NSImageView*  bundleImage;
+
+// Bundle Infobox
+@property IBOutlet NSTextField*  bundleTarget;
+@property IBOutlet NSTextField*  bundleDate;
 @property IBOutlet NSTextField*  bundleVersion;
+@property IBOutlet NSTextField*  bundlePrice;
 @property IBOutlet NSTextField*  bundleSize;
 @property IBOutlet NSTextField*  bundleID;
 @property IBOutlet NSTextField*  bundleDev;
-@property IBOutlet NSTextField*  bundleTarget;
-@property IBOutlet NSTextField*  bundleDescription;
-@property IBOutlet NSImageView*  bundleImage;
+@property IBOutlet NSTextField*  bundleCompat;
+
+// Bundle Buttons
 @property IBOutlet NSButton*  bundleInstall;
 @property IBOutlet NSButton*  bundleDelete;
 @property IBOutlet NSButton*  bundleContact;
 @property IBOutlet NSButton*  bundleDonate;
+
+// Bundle Webview
 @property IBOutlet WebView*  bundleWebView;
 
 @end
@@ -39,6 +49,21 @@ extern long selectedRow;
     bool doOnce;
     NSMutableDictionary* installedPlugins;
     NSDictionary* item;
+}
+
+-(NSFont*)calcFontSizeToFitRect:(NSRect)r :(NSString*)string :(NSString*)currentFontName {
+    float targetWidth = r.size.width - 1;
+    float targetHeight = r.size.height - 1;
+    
+    // the strategy is to start with a small font size and go larger until I'm larger than one of the target sizes
+    int i;
+    for (i=8; i<36; i++) {
+        NSDictionary* attrs = [[NSDictionary alloc] initWithObjectsAndKeys:[NSFont fontWithName:currentFontName size:i], NSFontAttributeName, nil];
+        NSSize strSize = [string sizeWithAttributes:attrs];
+        if (strSize.width > targetWidth || strSize.height > targetHeight) break;
+    }
+    NSFont *result = [NSFont fontWithName:currentFontName size:i-1];
+    return result;
 }
 
 -(void)viewWillDraw
@@ -62,28 +87,45 @@ extern long selectedRow;
     NSString* newString;
     
     newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"name"]];
+    [self.bundleName setFont:[self calcFontSizeToFitRect:self.bundleName.frame :newString :self.bundleName.font.fontName]];
     self.bundleName.stringValue = newString;
     
-    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"version"]];
-    self.bundleVersion.stringValue = newString;
-    
-//    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"size"]];
-    long long bundlesize = [[item objectForKey:@"size"] integerValue];
-//    [NSByteCountFormatter stringFromByteCount:bundlesize countStyle:NSByteCountFormatterCountStyleFile];
-    self.bundleSize.stringValue = [NSByteCountFormatter stringFromByteCount:bundlesize countStyle:NSByteCountFormatterCountStyleFile];
-    
     newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"description"]];
-    self.bundleDescription.stringValue = newString;
-    self.bundleDescription.toolTip = newString;
+    [[self.bundleDesc textStorage] setAttributedString:[[NSMutableAttributedString alloc] initWithString:newString]];
     
-    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"package"]];
-    self.bundleID.stringValue = newString;
-    
+    //Target
     newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"apps"]];
     self.bundleTarget.stringValue = newString;
     
+    //Date
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"date"]];
+    self.bundleDate.stringValue = newString;
+    
+    //Version
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"version"]];
+    self.bundleVersion.stringValue = newString;
+    
+    //Price
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"price"]];
+    self.bundlePrice.stringValue = newString;
+    
+    //Size
+    long long bundlesize = [[item objectForKey:@"size"] integerValue];
+    self.bundleSize.stringValue = [NSByteCountFormatter stringFromByteCount:bundlesize countStyle:NSByteCountFormatterCountStyleFile];
+    
+    //Bundle
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"package"]];
+    [self.bundleID setFont:[self calcFontSizeToFitRect:self.bundleID.frame :newString :self.bundleID.font.fontName]];
+    self.bundleID.stringValue = newString;
+    
+    //Developer
     newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"author"]];
     self.bundleDev.stringValue = newString;
+    
+    //Compatibility
+    newString = [NSString stringWithFormat:@"%@", [item objectForKey:@"compat"]];
+    self.bundleCompat.stringValue = newString;
+    
     
     if ([[item objectForKey:@"webpage"] length])
     {
@@ -159,7 +201,8 @@ extern long selectedRow;
         [self.bundleInstall setAction:@selector(pluginInstall)];
     }
     
-    self.bundleImage.image = [self getbundleIcon:item];
+    shareClass* t = [[shareClass alloc] init];
+    self.bundleImage.image = [t getbundleIcon:item];
     [self.bundleImage.cell setImageScaling:NSImageScaleProportionallyUpOrDown];
 }
 
@@ -270,26 +313,6 @@ extern long selectedRow;
     [self.bundleInstall setEnabled:true];
     self.bundleInstall.title = @"Install";
     [self.bundleInstall setAction:@selector(pluginInstall)];
-}
-
-- (NSImage*)getbundleIcon:(NSDictionary*)plist
-{
-    NSImage* result = nil;
-    NSArray* targets = [plist objectForKey:@"targets"];
-    NSString* iconPath = @"";
-    for (NSDictionary* targetApp in targets)
-    {
-        iconPath = [targetApp objectForKey:@"BundleIdentifier"];
-        iconPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:iconPath];
-        if ([iconPath length])
-        {
-            result = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
-            if (result) return result;
-        }
-    }
-    
-    result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/KEXT.icns"];
-    return result;
 }
 
 @end

@@ -12,7 +12,6 @@ AppDelegate* myDelegate;
 NSMutableDictionary *myPreferences;
 NSMutableArray *pluginsArray;
 NSMutableArray *confirmDelete;
-NSArray *tabs;
 NSArray *sourceItems;
 NSDate *appStart;
 SIMBLManager *SIMBLFramework;
@@ -21,9 +20,31 @@ sip_c *sipc;
 
 @implementation AppDelegate
 
+NSUInteger osx_ver;
+NSArray *tabViewButtons;
+NSArray *tabViews;
+
+- (void)setupVariables {
+    osx_ver = [[NSProcessInfo processInfo] operatingSystemVersion].minorVersion;
+    SIMBLFramework = [SIMBLManager sharedInstance];
+}
+
+- (void)setupDefaults {
+    NSArray *defaultRepos = [[NSArray alloc] initWithObjects:@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks",
+                             @"https://github.com/w0lfschild/myRepo/raw/master/urtweaks", nil];
+    NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
+    for (NSString *item in defaultRepos)
+        if (![[myPreferences objectForKey:@"sources"] containsObject:item])
+            [newArray addObject:item];
+    [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
+    [myPreferences setObject:newArray forKey:@"sources"];
+}
+
+// Startup
 - (instancetype)init {
     appStart = [NSDate date];
-    SIMBLFramework = [SIMBLManager sharedInstance];
+    [self setupVariables];
+    [self setupDefaults];
     return self;
 }
 
@@ -37,11 +58,10 @@ sip_c *sipc;
     [_sharedMethods installBundles:filenames];
 }
 
-// App opened
+// Loading
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
     myDelegate = self;
     
-    tabs = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewPreferences, _viewAbout, nil];
     sourceItems = [NSArray arrayWithObjects:_sourcesURLS, _sourcesPlugins, _sourcesBundle, nil];
     [_sourcesPush setEnabled:true];
     [_sourcesPop setEnabled:false];
@@ -64,136 +84,32 @@ sip_c *sipc;
     
     [self.window makeKeyAndOrderFront:self];
     
+    [self setupSIMBLview];
+    
     NSDate *methodFinish = [NSDate date];
     NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:appStart];
     NSLog(@"executionTime = %f", executionTime);
 }
 
+// Cleanup
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
 }
 
-- (NSString*) runCommand:(NSString*)commandToRun {
-    NSTask *task = [[NSTask alloc] init];
-    [task setLaunchPath:@"/bin/sh"];
-    
-    NSArray *arguments = [NSArray arrayWithObjects:
-                          @"-c" ,
-                          [NSString stringWithFormat:@"%@", commandToRun],
-                          nil];
-    //    NSLog(@"run command:%@", commandToRun);
-    [task setArguments:arguments];
-    
-    NSPipe *pipe = [NSPipe pipe];
-    [task setStandardOutput:pipe];
-    
-    NSFileHandle *file = [pipe fileHandleForReading];
-    
-    [task launch];
-    
-    NSData *data = [file readDataToEndOfFile];
-    
-    NSString *output = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    return output;
-}
-
-- (void) runScript:(NSString*)scriptName {
-    NSTask *task;
-    task = [[NSTask alloc] init];
-    [task setLaunchPath: @"/bin/bash"];
-    
-    NSArray *arguments;
-    NSLog(@"shell script path: %@",scriptName);
-    arguments = [NSArray arrayWithObjects:scriptName, nil];
-    [task setArguments: arguments];
-    
-    NSPipe *pipe;
-    pipe = [NSPipe pipe];
-    [task setStandardOutput: pipe];
-    
-    NSFileHandle *file;
-    file = [pipe fileHandleForReading];
-    
-    [task launch];
-    
-    NSData *data;
-    data = [file readDataToEndOfFile];
-    
-    NSString *string;
-    string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-    NSLog (@"script returned:\n%@", string);
-}
-
-- (BOOL) runProcessAsAdministrator:(NSString*)scriptPath
-                     withArguments:(NSArray *)arguments
-                            output:(NSString **)output
-                  errorDescription:(NSString **)errorDescription {
-    
-    NSString * allArgs = [arguments componentsJoinedByString:@" "];
-    NSString * fullScript = [NSString stringWithFormat:@"'%@' %@", scriptPath, allArgs];
-    
-    NSDictionary *errorInfo = [NSDictionary new];
-    NSString *script =  [NSString stringWithFormat:@"do shell script \"%@\" with administrator privileges", fullScript];
-    
-    NSAppleScript *appleScript = [[NSAppleScript new] initWithSource:script];
-    NSAppleEventDescriptor * eventResult = [appleScript executeAndReturnError:&errorInfo];
-    
-    // Check errorInfo
-    if (! eventResult)
-    {
-        // Describe common errors
-        *errorDescription = nil;
-        if ([errorInfo valueForKey:NSAppleScriptErrorNumber])
-        {
-            NSNumber * errorNumber = (NSNumber *)[errorInfo valueForKey:NSAppleScriptErrorNumber];
-            if ([errorNumber intValue] == -128)
-                *errorDescription = @"The administrator password is required to do this.";
-        }
-        
-        // Set error message from provided message
-        if (*errorDescription == nil)
-        {
-            if ([errorInfo valueForKey:NSAppleScriptErrorMessage])
-                *errorDescription =  (NSString *)[errorInfo valueForKey:NSAppleScriptErrorMessage];
-        }
-        
-        return NO;
-    }
-    else
-    {
-        // Set output to the AppleScript's output
-        *output = [eventResult stringValue];
-        
-        return YES;
-    }
-}
-
 - (NSMutableDictionary *)getmyPrefs {
     return [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
-//    return [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] persistentDomainForName:@"org.w0lf.mySIMBL"]];
-//    return [NSMutableDictionary dictionaryWithContentsOfFile:plist_Dock];
 }
 
 - (void)setupWindow {
-    if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion < 10)
+    [_window setTitle:@""];
+    [_window setMovableByWindowBackground:YES];
+    
+    if (osx_ver > 9)
     {
-//        _window.centerTrafficLightButtons = false;
-//        _window.showsBaselineSeparator = false;
-//        _window.titleBarHeight = 0.0;
-    } else {
         [_window setTitlebarAppearsTransparent:true];
         _window.styleMask |= NSFullSizeContentViewWindowMask;
     }
     
-    [_window setTitle:@""];
-    NSArray *defaultRepos = [[NSArray alloc] initWithObjects:@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks", @"https://github.com/w0lfschild/myRepo/raw/master/urtweaks", nil];
-    NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
-    for (NSString *item in defaultRepos)
-        if (![[myPreferences objectForKey:@"sources"] containsObject:item])
-            [newArray addObject:item];
-    [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
-    [myPreferences setObject:newArray forKey:@"sources"];
-
     Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
     if (vibrantClass)
     {
@@ -204,98 +120,100 @@ sip_c *sipc;
     } else {
         [_window setBackgroundColor:[NSColor whiteColor]];
     }
- 
-    [_window setMovableByWindowBackground:YES];
     
-    // Setup tab view
+    tabViewButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAbout, _viewPreferences, nil];
+    for (NSButton *btn in tabViewButtons)
+    {
+        NSRect frame = [btn frame];
+        frame.size.height = 1;
+        frame.origin.y += 30;
+        NSBox *line = [[NSBox alloc] initWithFrame:frame];
+        [line setBoxType:NSBoxSeparator];
+        [_window.contentView addSubview:line];
+        [btn setWantsLayer:YES];
+        [btn setTarget:self];
+        [btn setAction:@selector(selectView:)];
+    }
+    
+    NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, 357, 125, 1)];
+    [line setBoxType:NSBoxSeparator];
+    [_window.contentView addSubview:line];
+    
+    [_donateButton setWantsLayer:YES];
+    [_reportButton setWantsLayer:YES];
+    [_donateButton.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
+    [_reportButton.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
+    
+    tabViews = [NSArray arrayWithObjects:_tabPlugins, _tabSources, [[NSView alloc] init], _tabSIMBLInfo, _tabAbout, _tabPreferences, nil];
+    
+    
+    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
+    [_appName setStringValue:[infoDict objectForKey:@"CFBundleExecutable"]];
+    [_appVersion setStringValue:[NSString stringWithFormat:@"Version %@ (%@)",
+                                 [infoDict objectForKey:@"CFBundleShortVersionString"],
+                                 [infoDict objectForKey:@"CFBundleVersion"]]];
+    [_appCopyright setStringValue:@"Copyright © 2015 - 2016 Wolfgang Baird"];
+    [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
+    
+    // Select tab view
     if ([[myPreferences valueForKey:@"prefStartTab"] integerValue] >= 0)
     {
         NSInteger tab = [[myPreferences valueForKey:@"prefStartTab"] integerValue];
-        [self selectView:[tabs objectAtIndex:tab]];
+        [self selectView:[tabViewButtons objectAtIndex:tab]];
         [_prefStartTab selectItemAtIndex:tab];
     } else {
         [self selectView:_viewPlugins];
         [_prefStartTab selectItemAtIndex:0];
     }
     
-    [[_tabView tabViewItemAtIndex:0] setView:_tabPlugins];
-    [[_tabView tabViewItemAtIndex:1] setView:_tabSources];
-    [[_tabView tabViewItemAtIndex:2] setView:_tabPreferences];
-    [[_tabView tabViewItemAtIndex:3] setView:_tabAbout];
-    
-    NSTabViewItem* tabItem1 = [_tabView tabViewItemAtIndex:0];
     if (![SIMBLFramework OSAX_installed])
     {
         if ([SIMBLFramework SIP_enabled])
         {
-            [tabItem1 setView:_tabSIP];
+            [_tabMain setSubviews:[NSArray arrayWithObject:_tabSIP]];
             [self showSIMBLWarning];
         }
         else
         {
-            [tabItem1 setView:_tabSIMBL];
+            [_tabMain setSubviews:[NSArray arrayWithObject:_tabSIMBL]];
             dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(myQueue, ^{
-                // Insert code to be executed on another thread here
                 while(![SIMBLFramework OSAX_installed])
                     usleep(250000);
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    // Insert code to be executed on the main thread here
-                    [[_tabView tabViewItemAtIndex:0] setView:_tabPlugins];
+                    [_tabMain setSubviews:[NSArray arrayWithObject:_tabPlugins]];
                 });
             });
         }
     }
     [self checkSIMBL];
-    
-    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-    [_appName setStringValue:[infoDict objectForKey:@"CFBundleExecutable"]];
-    [_appVersion setStringValue:[NSString stringWithFormat:@"Version %@ (%@)", [infoDict objectForKey:@"CFBundleShortVersionString"], [infoDict objectForKey:@"CFBundleVersion"]]];
-    [_appCopyright setStringValue:@"Copyright © 2015 - 2016 Wolfgang Baird"];
-    
-    [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
 }
 
 - (void)showSIPWarning {
-    if (!sipc) {
-        sipc = [[sip_c alloc] initWithWindowNibName:@"sip_c"];
-    }
-    
+    if (!sipc) { sipc = [[sip_c alloc] initWithWindowNibName:@"sip_c"]; }
     CGRect dlframe = [[sipc window] frame];
     CGRect apframe = [self.window frame];
-    
     int xloc = NSMidX(apframe) - (dlframe.size.width / 2);
     int yloc = NSMidY(apframe) - (dlframe.size.height / 2);
-    
     dlframe = CGRectMake(xloc, yloc, dlframe.size.width, dlframe.size.height);
-    
     [[sipc confirm] setTarget:self];
     [[sipc confirm] setAction:@selector(closeWarning)];
-    
     [[sipc window] setFrame:dlframe display:true];
     [self.window setLevel:NSFloatingWindowLevel];
     [self.window addChildWindow:[sipc window] ordered:NSWindowAbove];
 }
 
 - (void)showSIMBLWarning {
-    if (!simc) {
-        simc = [[sim_c alloc] initWithWindowNibName:@"sim_c"];
-    }
-    
+    if (!simc) { simc = [[sim_c alloc] initWithWindowNibName:@"sim_c"]; }
     CGRect dlframe = [[simc window] frame];
     CGRect apframe = [self.window frame];
-    
     int xloc = NSMidX(apframe) - (dlframe.size.width / 2);
     int yloc = NSMidY(apframe) - (dlframe.size.height / 2);
-    
     dlframe = CGRectMake(xloc, yloc, dlframe.size.width, dlframe.size.height);
-    
     [[simc cancel] setTarget:self];
     [[simc cancel] setAction:@selector(closeWarning)];
-    
     [[simc accept] setTarget:self];
     [[simc accept] setAction:@selector(confirmSIMBLInstall)];
-    
     [[simc window] setFrame:dlframe display:true];
     [self.window setLevel:NSFloatingWindowLevel];
     [self.window addChildWindow:[simc window] ordered:NSWindowAbove];
@@ -305,18 +223,21 @@ sip_c *sipc;
     [self closeWarning];
     [SIMBLFramework OSAX_install];
     [SIMBLFramework SIMBL_injectAll];
+    [self.window setLevel:NSNormalWindowLevel];
 }
 
 - (void)confirmAGENTInstall {
     [self closeWarning];
     [SIMBLFramework AGENT_install];
     [SIMBLFramework SIMBL_injectAll];
+    [self.window setLevel:NSNormalWindowLevel];
 }
 
 - (void)confirmSIMBLInstall {
     [self closeWarning];
     [SIMBLFramework SIMBL_install];
     [SIMBLFramework SIMBL_injectAll];
+    [self.window setLevel:NSNormalWindowLevel];
 }
 
 - (void)closeWarning {
@@ -325,39 +246,20 @@ sip_c *sipc;
 }
 
 - (void)addLoginItem {
-    dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(myQueue, ^{
-        NSMutableDictionary *SIMBLPrefs = [NSMutableDictionary dictionaryWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/net.culater.SIMBL_Agent.plist"]];
-        [SIMBLPrefs setObject:[NSArray arrayWithObjects:@"com.skype.skype", @"com.FilterForge.FilterForge4", @"com.apple.logic10", nil] forKey:@"SIMBLApplicationIdentifierBlacklist"];
-        [SIMBLPrefs writeToFile:[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Preferences/net.culater.SIMBL_Agent.plist"] atomically:YES];
-        
-        // Lets stick to the classics. Same method as cDock uses...
-        NSString *nullString;
-        NSString *loginAgent = [[NSBundle mainBundle] pathForResource:@"mySIMBLAgent" ofType:@"app"];
-        nullString = [self runCommand:@"osascript -e \"tell application \\\"System Events\\\" to delete login items \\\"SIMBLHelper\\\"\""];
-        nullString = [self runCommand:@"osascript -e \"tell application \\\"System Events\\\" to delete login items \\\"mySIMBLAgent\\\"\""];
-        nullString = [self runCommand:[NSString stringWithFormat:@"osascript -e \"tell application \\\"System Events\\\" to make new login item at end of login items with properties {path:\\\"%@\\\", hidden:false}\"", loginAgent]];
-    });
+    StartAtLoginController *loginController = [[StartAtLoginController alloc] initWithIdentifier:@"org.w0lf.mySIMBLAgent"];
+    BOOL startsAtLogin = [loginController startAtLogin];
+    if (!startsAtLogin)
+        loginController.startAtLogin = YES;
 }
 
 - (void)launchHelper {
-    system("killall mySIMBLAgent");
+    for (NSRunningApplication *run in [NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.mySIMBLAgent"])
+        [run terminate];
     NSString *path = [[NSBundle mainBundle] pathForResource:@"mySIMBLAgent" ofType:@"app"];
     [[NSWorkspace sharedWorkspace] launchApplication:path];
 }
 
 - (IBAction)simblInstall:(id)sender {
-    /*
-    if ([SIMBLFramework OSAX_installed])
-        return;
-    
-    if ([SIMBLFramework SIP_enabled])
-    {
-        [self showSIPWarning];
-        return;
-    }
-     */
-    
     dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(myQueue, ^{
         // Insert code to be executed on another thread here
@@ -368,20 +270,21 @@ sip_c *sipc;
             // Insert code to be executed on the main thread here
             [self launchHelper];
             if ([SIMBLFramework OSAX_installed])
-                [[_tabView tabViewItemAtIndex:0] setView:_tabPlugins];
+                [_tabMain setSubviews:[NSArray arrayWithObject:_tabPlugins]];
         });
     });
 }
 
 - (void)setupPrefstab {
-    NSString *res = [self runCommand:@"defaults read net.culater.SIMBL SIMBLLogLevel"];
-    [_SIMBLLogging selectItemAtIndex:[res integerValue]];
+    NSString *plist = [NSString stringWithFormat:@"%@/Library/Preferences/net.culater.SIMBL.plist", NSHomeDirectory()];
+    NSUInteger logLevel = [[[NSDictionary dictionaryWithContentsOfFile:plist] objectForKey:@"SIMBLLogLevel"] integerValue];
+    [_SIMBLLogging selectItemAtIndex:logLevel];
     [_prefDonate setState:[[myPreferences objectForKey:@"prefDonate"] boolValue]];
     [_prefTips setState:[[myPreferences objectForKey:@"prefTips"] boolValue]];
     [_prefVibrant setState:[[myPreferences objectForKey:@"prefVibrant"] boolValue]];
     [_prefWindow setState:[[myPreferences objectForKey:@"prefWindow"] boolValue]];
     
-    if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion < 10)
+    if (osx_ver < 10)
         [_prefVibrant setEnabled:false];
     
     if ([[myPreferences objectForKey:@"prefWindow"] boolValue])
@@ -393,7 +296,6 @@ sip_c *sipc;
         [test setInitialToolTipDelay:0.1];
     }
     
-//    [_donateButton setHidden:[[myPreferences objectForKey:@"prefDonate"] boolValue]];
     [_donateButton.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SUAutomaticallyUpdate"]) {
@@ -419,8 +321,12 @@ sip_c *sipc;
     [_emailButton setAction:@selector(sendEmail)];
 }
 
-- (void)donate {
+- (IBAction)donate:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://goo.gl/DSyEFR"]];
+}
+
+- (IBAction)report:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/w0lfschild/mySIMBL/issues/new"]];
 }
 
 - (void)sendEmail {
@@ -482,8 +388,11 @@ sip_c *sipc;
 }
 
 - (IBAction)changeSIMBLLogging:(id)sender {
-    NSString *logLevel = [NSString stringWithFormat:@"defaults write net.culater.SIMBL SIMBLLogLevel -int %ld", [_SIMBLLogging indexOfSelectedItem]];
-    logLevel = [self runCommand:logLevel];
+    NSString *plist = [NSString stringWithFormat:@"%@/Library/Preferences/net.culater.SIMBL.plist", NSHomeDirectory()];
+    NSMutableDictionary *dict = [[NSDictionary dictionaryWithContentsOfFile:plist] mutableCopy];
+    NSString *logLevel = [NSString stringWithFormat:@"%ld", [_SIMBLLogging indexOfSelectedItem]];
+    [dict setObject:logLevel forKey:@"SIMBLLogLevel"];
+    [dict writeToFile:plist atomically:YES];
 }
 
 - (IBAction)toggleTips:(id)sender {
@@ -512,7 +421,6 @@ sip_c *sipc;
 
 - (IBAction)toggleDonateButton:(id)sender {
     NSButton *btn = sender;
-    //    [myPreferences setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefDonate"];
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefDonate"];
     if ([btn state])
     {
@@ -538,66 +446,31 @@ sip_c *sipc;
 }
 
 - (IBAction)showAbout:(id)sender {
-    [_tabView selectTabViewItemAtIndex:3];
-    for (NSButton *g in tabs) {
-        if (![g isEqualTo:_viewAbout])
-            g.layer.backgroundColor = [NSColor clearColor].CGColor;
-        else
-            g.layer.backgroundColor = [NSColor colorWithCalibratedRed:0.121f green:0.4375f blue:0.1992f alpha:0.2578f].CGColor;
-    }
+    [self selectView:_viewAbout];
 }
 
 - (IBAction)showPrefs:(id)sender {
-    [_tabView selectTabViewItemAtIndex:2];
-    for (NSButton *g in tabs) {
-        if (![g isEqualTo:_viewPreferences])
-            g.layer.backgroundColor = [NSColor clearColor].CGColor;
-        else
-            g.layer.backgroundColor = [NSColor colorWithCalibratedRed:0.121f green:0.4375f blue:0.1992f alpha:0.2578f].CGColor;
-    }
-}
-
-- (IBAction)donate:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://goo.gl/DSyEFR"]];
+    [self selectView:_viewPreferences];
 }
 
 - (IBAction)aboutInfo:(id)sender {
-    if ([sender isEqualTo:_showChanges])
-    {
-        [_changeLog setEditable:true];
-        [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
-        [_changeLog selectAll:self];
-        [_changeLog alignLeft:nil];
-        [_changeLog setSelectedRange:NSMakeRange(0,0)];
-        [_changeLog setEditable:false];
-        
-        [NSAnimationContext beginGrouping];
-        NSClipView* clipView = [[_changeLog enclosingScrollView] contentView];
-        NSPoint newOrigin = [clipView bounds].origin;
-        newOrigin.y = 0;
-        [[clipView animator] setBoundsOrigin:newOrigin];
-        [NSAnimationContext endGrouping];
-    }
-    if ([sender isEqualTo:_showCredits])
-    {
-        [_changeLog setEditable:true];
-        [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"] documentAttributes:nil]];
-        [_changeLog selectAll:self];
-        [_changeLog alignCenter:nil];
-        [_changeLog setSelectedRange:NSMakeRange(0,0)];
-        [_changeLog setEditable:false];
-    }
-    if ([sender isEqualTo:_showEULA])
-    {
-        [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"EULA" ofType:@"rtf"] documentAttributes:nil]];
-        
-        [NSAnimationContext beginGrouping];
-        NSClipView* clipView = [[_changeLog enclosingScrollView] contentView];
-        NSPoint newOrigin = [clipView bounds].origin;
-        newOrigin.y = 0;
-        [[clipView animator] setBoundsOrigin:newOrigin];
-        [NSAnimationContext endGrouping];
-    }
+    NSString *rsc = @"";
+    if ([sender isEqualTo:_showChanges]) rsc=@"Changelog";
+    if ([sender isEqualTo:_showCredits]) rsc=@"Credits";
+    if ([sender isEqualTo:_showEULA]) rsc=@"EULA";
+    [_changeLog setEditable:true];
+    [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:rsc ofType:@"rtf"] documentAttributes:nil]];
+    [_changeLog selectAll:self];
+    [_changeLog alignLeft:nil];
+    if ([sender isEqualTo:_showCredits]) [_changeLog alignCenter:nil];
+    [_changeLog setSelectedRange:NSMakeRange(0,0)];
+    [_changeLog setEditable:false];
+    [NSAnimationContext beginGrouping];
+    NSClipView* clipView = [[_changeLog enclosingScrollView] contentView];
+    NSPoint newOrigin = [clipView bounds].origin;
+    newOrigin.y = 0;
+    [[clipView animator] setBoundsOrigin:newOrigin];
+    [NSAnimationContext endGrouping];
 }
 
 - (IBAction)toggleStartTab:(id)sender {
@@ -625,7 +498,7 @@ sip_c *sipc;
         {
             [_sourcesPush setEnabled:true];
 //            dumpViews(_sourcesRoot, 0);
-            if ([[NSProcessInfo processInfo] operatingSystemVersion].minorVersion > 9)
+            if (osx_ver > 9)
             {
                 [[[[[[[_sourcesRoot subviews] firstObject] subviews] firstObject] subviews] firstObject] reloadData];
             } else {
@@ -659,13 +532,13 @@ sip_c *sipc;
 }
 
 - (IBAction)selectView:(id)sender {
-    if ([tabs containsObject:sender])
-        [_tabView selectTabViewItemAtIndex:[tabs indexOfObject:sender]];
-    for (NSButton *g in tabs) {
+    if ([tabViewButtons containsObject:sender])
+        [_tabMain setSubviews:[NSArray arrayWithObject:[tabViews objectAtIndex:[tabViewButtons indexOfObject:sender]]]];
+    for (NSButton *g in tabViewButtons) {
         if (![g isEqualTo:sender])
-            g.layer.backgroundColor = [NSColor clearColor].CGColor;
+            [[g layer] setBackgroundColor:[NSColor clearColor].CGColor];
         else
-            g.layer.backgroundColor = [NSColor colorWithCalibratedRed:0.121f green:0.4375f blue:0.1992f alpha:0.2578f].CGColor;
+            [[g layer] setBackgroundColor:[NSColor colorWithCalibratedRed:0.121f green:0.4375f blue:0.1992f alpha:0.2578f].CGColor];
     }
 }
 
@@ -673,10 +546,6 @@ sip_c *sipc;
     NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
     NSString *input = _addsourcesTextFiled.stringValue;
     NSArray *arr = [input componentsSeparatedByString:@"\n"];
-    
-//    NSLog(@"%@", arr);
-//    NSLog(@"%@", newArray);
-    
     for (NSString* item in arr)
     {
         if ([item length])
@@ -686,16 +555,6 @@ sip_c *sipc;
                 [newArray removeObject:item];
             } else {
                 [newArray addObject:item];
-//                NSString* content = [item stringByAppendingString:@"/resource.plist"];
-//                NSURL *theURL = [NSURL fileURLWithPath:content
-//                                           isDirectory:NO];
-//                
-//                NSLog(@"%@", theURL);
-//                NSError *err;
-//                if ([theURL checkResourceIsReachableAndReturnError:&err] == NO)
-//                    [[NSAlert alertWithError:err] runModal];
-//                else
-//                    [newArray addObject:item];
             }
         }
     }
@@ -787,6 +646,28 @@ sip_c *sipc;
         proposedMaximumPosition = 125;
     }
     return proposedMaximumPosition;
+}
+
+- (void)setupSIMBLview {
+    SIMBLManager *sim_m = [SIMBLManager sharedInstance];
+    if ([[sim_m OSAX_versions] objectForKey:@"localVersion"])
+    {
+        [self.SIMBLTogggle setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+    } else {
+        [self.SIMBLTogggle setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+    }
+    
+    if ([[sim_m AGENT_versions] objectForKey:@"localVersion"])
+    {
+        if ([NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.SIMBLAgent"])
+        {
+            [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+        } else {
+            [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
+        }
+    } else {
+        [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+    }
 }
 
 @end
