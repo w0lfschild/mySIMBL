@@ -2,30 +2,24 @@
 
 # mySIMBL
 
-mySIMBL is a successor to the application EasySIMBL. It is designed to make managing SIMBL plugins easy. This appication uses the older version of SIMBL.osax (0.9.9) since EasySIMBL.osax no longer works on OS X 10.9+ and the original developer does not seem like they are going to update their application or script.
+mySIMBL is a successor to the application EasySIMBL. This application uses my own version of SIMBL since both EasySIMBL and the original SIMBL no longer work properly on macOS 10.9 and above due to changes made by Apple. Since both projects seem to have been abandoned or left unsupported I have created mySIMBL. It is designed to make finding, updating and installing SIMBL plugins easier then ever.
 
 # Installation
 
-- Download the latest release of mySIMBL
+- Download the [latest release](https://github.com/w0lfschild/app_updates/tree/master/mySIMBL) from my app_updates repo.
+- Unzip the download if your browser does not do so automatically
 - Open mySIMBL
-    - You may be required to install SIMBL, mySIMBL will do this for you
+    - mySIMBL will ask to be moved to /Applications
+    - mySIMBL may ask to install or update SIMBL
     - You may be required to disable System Integrity Protection, mySIMBL will inform you but cannot automate this process
 
-# Current Funtions
+# Features
 
-- Repositories
-- Download and Update bundles
-- Drag and drop bundles to install in `/Library/Application Support/SIMBL/Plugins`
-- Open bundles with mySIMBL to install in `/Library/Application Support/SIMBL/Plugins`
-- Delete bundle (Trash can)
-- Show bundle in Finder (Magnifying Glass)
-- Move bundles between (Colored Circle Icon)
-    -	`/Library/Application Support/SIMBL/Plugins`
-    -	`/Library/Application Support/SIMBL/Plugins (Disabled)`
-    -	`~/Library/Application Support/SIMBL/Plugins`
-- Show bundle developer page (Globe Icon)
-    -	Must have url included in <bundle>/Contents/Info.plist
-    -	plist value is string 'DevURL'
-- Automatically watches for bundles in
-    -	`/Library/Application Support/SIMBL/Plugins`
-    -	`~/Library/Application Support/SIMBL/Plugins`
+- Repositories to find, download and update plugins
+- Drag and drop plugins onto mySIMBL to install them
+- Open bundles with mySIMBL to install them
+- Delete plugins (Trash can)
+- Show plugins in Finder (Magnifying Glass)
+- Enable/Disable plugins (Colored Circle Icon)
+- Show plugin developer page (Globe Icon)
+- Scan for existing plugins
