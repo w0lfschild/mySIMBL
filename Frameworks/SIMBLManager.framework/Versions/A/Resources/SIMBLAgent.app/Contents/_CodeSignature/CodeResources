@@ -4,15 +4,10 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Resources/Base.lproj/MainMenu.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			um9oKRTN5N62p1EAj6BgH/W1+s4=
-			</data>
-			<key>optional</key>
-			<true/>
-		</dict>
+		<key>Resources/MainMenu.nib</key>
+		<data>
+		4s8FP9aSu1+MA9hZHkcLhbGyigw=
+		</data>
 		<key>Resources/net.culater.SIMBL.Agent.plist</key>
 		<data>
 		wYFzYNfsP7GiAQTHdDl8wxzApgg=
@@ -20,19 +15,28 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Resources/Base.lproj/MainMenu.nib</key>
+		<key>Resources/MainMenu.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			um9oKRTN5N62p1EAj6BgH/W1+s4=
+			4s8FP9aSu1+MA9hZHkcLhbGyigw=
 			</data>
-			<key>optional</key>
-			<true/>
+			<key>hash2</key>
+			<data>
+			XmSc8bAP4dwT78dgOKEmC3HsfVrvXvlTiwXv7sZFrJE=
+			</data>
 		</dict>
 		<key>Resources/net.culater.SIMBL.Agent.plist</key>
-		<data>
-		wYFzYNfsP7GiAQTHdDl8wxzApgg=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			wYFzYNfsP7GiAQTHdDl8wxzApgg=
+			</data>
+			<key>hash2</key>
+			<data>
+			cjBLFtUTpJsZSau/7GLvKx7IUyjFNULBDK/BcvJEbVE=
+			</data>
+		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>
@@ -51,6 +55,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -110,6 +119,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^[^/]+$</key>
 		<dict>

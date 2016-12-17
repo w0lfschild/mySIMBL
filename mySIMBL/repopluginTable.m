@@ -26,6 +26,7 @@ long selectedRow;
 @property (weak) IBOutlet NSTextField*  bundleInfo;
 @property (weak) IBOutlet NSTextField*  bundleRepo;
 @property (weak) IBOutlet NSImageView*  bundleImage;
+@property (weak) IBOutlet NSImageView*  bundleImageInstalled;
 @property (weak) IBOutlet NSImageView*  bundleIndicator;
 @end
 
@@ -38,8 +39,10 @@ long selectedRow;
     if (_sharedMethods == nil)
         _sharedMethods = [shareClass alloc];
     
-    NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages.plist", repoPackages]];
-    allPlugins = [[NSArray alloc] initWithContentsOfURL:dicURL];
+    NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", repoPackages]];
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
+    allPlugins = [dic allValues];
+//    allPlugins = [[NSArray alloc] initWithContentsOfURL:dicURL];
     
 //    NSLog(@"url: %@", dicURL);
     
@@ -73,6 +76,12 @@ long selectedRow;
     result.bundleDescription.toolTip = [item objectForKey:@"description"];
     result.bundleImage.image = [_sharedMethods getbundleIcon:item];
     [result.bundleImage.cell setImageScaling:NSImageScaleProportionallyUpOrDown];
+
+    NSBundle *dank = [NSBundle bundleWithIdentifier:[item objectForKey:@"package"]];
+    result.bundleImageInstalled.hidden = true;
+    if (dank.bundlePath.length)
+        if ([dank.bundlePath containsString:@"/Library/Application Support/SIMBL/Plugins"])
+            result.bundleImageInstalled.hidden = false;
     return result;
 }
 

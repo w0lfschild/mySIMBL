@@ -7,10 +7,16 @@
 //
 
 @import AppKit;
-#import "shareClass.h"
+@import Sparkle;
 
+#import "shareClass.h"
+#import "AppDelegate.h"
+
+extern AppDelegate* myDelegate;
 extern NSMutableArray *pluginsArray;
 extern NSMutableArray *confirmDelete;
+extern NSMutableDictionary *installedPluginDICT;
+extern NSMutableDictionary *needsUpdate;
 
 @implementation shareClass
 
@@ -56,15 +62,19 @@ extern NSMutableArray *confirmDelete;
         if ([fileName hasSuffix:@".bundle"]) {
             NSString* path=[str stringByAppendingPathComponent:fileName];
             NSString* name=[fileName stringByDeletingPathExtension];
+            
             //check Info.plist
-            NSBundle* bundle = [NSBundle bundleWithPath:path];
-            NSDictionary* info=[bundle infoDictionary];
-            //            NSDictionary* info=nil;
+            NSBundle        *bundle = [NSBundle bundleWithPath:path];
+            
+            NSString        *plistPath = [bundle bundlePath];
+            plistPath = [NSString stringWithFormat:@"%@/Contents/Info.plist", plistPath];
+            
+            NSDictionary    *info = [[NSDictionary alloc] initWithContentsOfFile:plistPath];
             NSString* bundleIdentifier=[bundle bundleIdentifier];
             if(![bundleIdentifier length])bundleIdentifier=@"(null)";
             
-            NSString* bundleVersion=[bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-            if(![bundleVersion length])bundleVersion=[bundle objectForInfoDictionaryKey:@"CFBundleVersion"];
+            NSString* bundleVersion=[info objectForKey:@"CFBundleShortVersionString"];
+            if(![bundleVersion length])bundleVersion=[info objectForKey:@"CFBundleVersion"];
             
             NSString* description=bundleIdentifier;
             if([bundleVersion length]){
@@ -129,9 +139,12 @@ extern NSMutableArray *confirmDelete;
     
     for (NSString *app in sortedKeys)
     {
-        [pluginsArray addObject:[myDict valueForKey:app]];
+        [pluginsArray addObject:[myDict objectForKey:app]];
         [confirmDelete addObject:[NSNumber numberWithBool:false]];
     }
+    
+    installedPluginDICT = [[NSMutableDictionary alloc] init];
+    installedPluginDICT = myDict;
     
     [pluginTable reloadData];
 }
@@ -219,5 +232,55 @@ extern NSMutableArray *confirmDelete;
     result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/KEXT.icns"];
     return result;
 }
+
+- (void)checkforPluginUpdates :(NSTableView*)table {
+    [self readPlugins:nil];
+    
+    NSDictionary *plugins = [[NSDictionary alloc] initWithDictionary:[installedPluginDICT copy]];
+    NSArray *sourceURLS = [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:@"sources"];
+    
+    NSMutableDictionary *sourceDICTS = [[NSMutableDictionary alloc] init];
+    for (NSString *source in sourceURLS)
+    {
+        NSURL* data = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", source]];
+        NSMutableDictionary* dic = [[NSMutableDictionary alloc] initWithContentsOfURL:data];
+        if (dic != nil)
+        {
+            for (NSString *key in dic)
+            {
+                NSMutableDictionary *bundle = [dic objectForKey:key];
+                [bundle setObject:source forKey:@"sourceURL"];
+            }
+            [sourceDICTS addEntriesFromDictionary:[dic copy]];
+        }
+    }
+    
+    for (NSString* key in plugins) {
+        id value = [plugins objectForKey:key];
+        id bundleID = [value objectForKey:@"bundleId"];
+        id localVersion = [value objectForKey:@"version"];
+        if ([sourceDICTS objectForKey:bundleID])
+        {
+            NSDictionary *bundleInfo = [[NSDictionary alloc] initWithDictionary:[sourceDICTS objectForKey:bundleID]];
+            id updateVersion = [bundleInfo objectForKey:@"version"];
+            id <SUVersionComparison> comparator = [SUStandardVersionComparator defaultComparator];
+            NSInteger result = [comparator compareVersion:localVersion toVersion:updateVersion];
+            if (result == NSOrderedAscending)
+                [needsUpdate setObject:bundleInfo forKey:bundleID];
+        }
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        NSString *udCount = [NSString stringWithFormat:@"%ld", (unsigned long)[needsUpdate count]];
+        NSDockTile *myTile = [NSApp dockTile];
+        if ((unsigned long)[needsUpdate count] > 0)
+            [myTile setBadgeLabel:udCount];
+        else
+            [myTile setBadgeLabel:@""];
+        [myDelegate setBadge:udCount];
+        [table reloadData];
+    });
+}
+
 
 @end

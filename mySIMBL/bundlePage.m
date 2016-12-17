@@ -73,8 +73,12 @@ extern long selectedRow;
 //    self.layer.borderWidth = 1.0f;
 //    [self.layer setBorderColor:[NSColor grayColor].CGColor];
     
-    NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages.plist", repoPackages]];
-    NSArray *allPlugins = [[NSArray alloc] initWithContentsOfURL:dicURL];
+    NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", repoPackages]];
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
+    NSArray *allPlugins = [dict allValues];
+    
+//    NSArray *allPlugins = [[NSArray alloc] initWithContentsOfURL:dicURL];
     
     NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];

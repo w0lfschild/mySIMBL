@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Update SIMBL.osax and remove possible old or alternate version
 
@@ -35,6 +35,9 @@ setupFolders=(
 	"/Library/Application Support/SIMBL"
 	)
 
+launchctl unload /Library/LaunchAgents/net.culater.SIMBL.Agent.plist
+killall SIMBLAgent
+
 echo "Removing old files"
 
 for i in "${cleanupFiles[@]}"; do
@@ -52,6 +55,7 @@ done
 echo "Installing SIMBLAgent"
 
 mySIMBL=$(dirname "$0")
+echo "$mySIMBL"
 cp -vr "$mySIMBL"/SIMBLAgent.app "/Library/Application Support/SIMBL/"
 cp -v "$mySIMBL"/SIMBLAgent.app/Contents/Resources/net.culater.SIMBL.Agent.plist "/Library/LaunchAgents"
 

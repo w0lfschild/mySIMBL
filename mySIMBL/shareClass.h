@@ -8,6 +8,8 @@
 
 @interface shareClass : NSObject
 
+- (void)checkforPluginUpdates:(NSTableView*)table;
+
 - (void)readPlugins:(NSTableView *)pluginTable;
 - (void)replaceFile:(NSString*)start :(NSString*)end;
 - (void)installBundles:(NSArray*)pathArray;

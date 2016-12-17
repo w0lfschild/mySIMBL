@@ -11,6 +11,10 @@
 AppDelegate* myDelegate;
 NSMutableDictionary *myPreferences;
 NSMutableArray *pluginsArray;
+
+NSMutableDictionary *installedPluginDICT;
+NSMutableDictionary *needsUpdate;
+
 NSMutableArray *confirmDelete;
 NSArray *sourceItems;
 NSDate *appStart;
@@ -18,11 +22,27 @@ SIMBLManager *SIMBLFramework;
 sim_c *simc;
 sip_c *sipc;
 
+NSButton *selectedView;
+
+NSMutableDictionary *myDict;
+NSUserDefaults *sharedPrefs;
+NSDictionary *sharedDict;
+
 @implementation AppDelegate
 
 NSUInteger osx_ver;
 NSArray *tabViewButtons;
 NSArray *tabViews;
+
++ (AppDelegate*) sharedInstance
+{
+    static AppDelegate* myDelegate = nil;
+    
+    if (myDelegate == nil)
+        myDelegate = [[AppDelegate alloc] init];
+    
+    return myDelegate;
+}
 
 - (void)setupVariables {
     osx_ver = [[NSProcessInfo processInfo] operatingSystemVersion].minorVersion;
@@ -42,6 +62,7 @@ NSArray *tabViews;
 
 // Startup
 - (instancetype)init {
+    myDelegate = self;
     appStart = [NSDate date];
     [self setupVariables];
     [self setupDefaults];
@@ -58,10 +79,26 @@ NSArray *tabViews;
     [_sharedMethods installBundles:filenames];
 }
 
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    // Loop looking for bundle updates
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+//            while(true)
+//            {
+//                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    NSLog(@"checking for bundle updates...");
+                    NSButton *lastView = selectedView;
+                    [self selectView:_viewChanges];
+                    [self selectView:lastView];
+//                });
+//                [NSThread sleepForTimeInterval:300.0f];
+//            }
+//        });
+    });
+}
+
 // Loading
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
-    myDelegate = self;
-    
     sourceItems = [NSArray arrayWithObjects:_sourcesURLS, _sourcesPlugins, _sourcesBundle, nil];
     [_sourcesPush setEnabled:true];
     [_sourcesPop setEnabled:false];
@@ -110,6 +147,8 @@ NSArray *tabViews;
         _window.styleMask |= NSFullSizeContentViewWindowMask;
     }
     
+    [self getBlacklistAPPList];
+
     Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
     if (vibrantClass)
     {
@@ -135,16 +174,20 @@ NSArray *tabViews;
         [btn setAction:@selector(selectView:)];
     }
     
-    NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, 357, 125, 1)];
+    NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, _viewSIMBL.frame.origin.y - 1, 125, 1)];
     [line setBoxType:NSBoxSeparator];
     [_window.contentView addSubview:line];
+    
+    NSBox *line2 = [[NSBox alloc] initWithFrame:CGRectMake(125, 0, 1, 500)];
+    [line2 setBoxType:NSBoxSeparator];
+    [_window.contentView addSubview:line2];
     
     [_donateButton setWantsLayer:YES];
     [_reportButton setWantsLayer:YES];
     [_donateButton.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
     [_reportButton.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
     
-    tabViews = [NSArray arrayWithObjects:_tabPlugins, _tabSources, [[NSView alloc] init], _tabSIMBLInfo, _tabAbout, _tabPreferences, nil];
+    tabViews = [NSArray arrayWithObjects:_tabPlugins, _tabSources, _tabUpdates, _tabSIMBLInfo, _tabAbout, _tabPreferences, nil];
     
     
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
@@ -454,23 +497,68 @@ NSArray *tabViews;
 }
 
 - (IBAction)aboutInfo:(id)sender {
-    NSString *rsc = @"";
-    if ([sender isEqualTo:_showChanges]) rsc=@"Changelog";
-    if ([sender isEqualTo:_showCredits]) rsc=@"Credits";
-    if ([sender isEqualTo:_showEULA]) rsc=@"EULA";
-    [_changeLog setEditable:true];
-    [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:rsc ofType:@"rtf"] documentAttributes:nil]];
-    [_changeLog selectAll:self];
-    [_changeLog alignLeft:nil];
-    if ([sender isEqualTo:_showCredits]) [_changeLog alignCenter:nil];
-    [_changeLog setSelectedRange:NSMakeRange(0,0)];
-    [_changeLog setEditable:false];
-    [NSAnimationContext beginGrouping];
-    NSClipView* clipView = [[_changeLog enclosingScrollView] contentView];
-    NSPoint newOrigin = [clipView bounds].origin;
-    newOrigin.y = 0;
-    [[clipView animator] setBoundsOrigin:newOrigin];
-    [NSAnimationContext endGrouping];
+    if ([sender isEqualTo:_showChanges])
+    {
+        [_changeLog setEditable:true];
+        [_changeLog.textStorage setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
+        [_changeLog selectAll:self];
+        [_changeLog alignLeft:nil];
+        [_changeLog setSelectedRange:NSMakeRange(0,0)];
+        [_changeLog setEditable:false];
+        
+        [NSAnimationContext beginGrouping];
+        NSClipView* clipView = _changeLog.enclosingScrollView.contentView;
+        NSPoint newOrigin = [clipView bounds].origin;
+        newOrigin.y = 0;
+        [[clipView animator] setBoundsOrigin:newOrigin];
+        [NSAnimationContext endGrouping];
+    }
+    if ([sender isEqualTo:_showCredits])
+    {
+        [_changeLog setEditable:true];
+        [_changeLog.textStorage setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"] documentAttributes:nil]];
+        [_changeLog selectAll:self];
+        [_changeLog alignCenter:nil];
+        [_changeLog setSelectedRange:NSMakeRange(0,0)];
+        [_changeLog setEditable:false];
+    }
+    if ([sender isEqualTo:_showEULA])
+    {
+        NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
+        NSAttributedString *newAttString = nil;
+        newAttString = [[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"EULA" ofType:@"rtf"] documentAttributes:nil];
+        [mutableAttString appendAttributedString:newAttString];
+        newAttString = [[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"STPrivilegedTask_LICENSE" ofType:@"txt"] documentAttributes:nil];
+        [mutableAttString appendAttributedString:newAttString];
+        newAttString = [[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"SGDirWatchDog_LICENSE" ofType:@"txt"] documentAttributes:nil];
+        [mutableAttString appendAttributedString:newAttString];
+        
+        [_changeLog.textStorage setAttributedString:mutableAttString];
+        [NSAnimationContext beginGrouping];
+        NSClipView* clipView = _changeLog.enclosingScrollView.contentView;
+        NSPoint newOrigin = [clipView bounds].origin;
+        newOrigin.y = 0;
+        [[clipView animator] setBoundsOrigin:newOrigin];
+        [NSAnimationContext endGrouping];
+    }
+    
+//    NSString *rsc = @"";
+//    if ([sender isEqualTo:_showChanges]) rsc=@"Changelog";
+//    if ([sender isEqualTo:_showCredits]) rsc=@"Credits";
+//    if ([sender isEqualTo:_showEULA]) rsc=@"EULA";
+//    [_changeLog setEditable:true];
+//    [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:rsc ofType:@"rtf"] documentAttributes:nil]];
+//    [_changeLog selectAll:self];
+//    [_changeLog alignLeft:nil];
+//    if ([sender isEqualTo:_showCredits]) [_changeLog alignCenter:nil];
+//    [_changeLog setSelectedRange:NSMakeRange(0,0)];
+//    [_changeLog setEditable:false];
+//    [NSAnimationContext beginGrouping];
+//    NSClipView* clipView = [[_changeLog enclosingScrollView] contentView];
+//    NSPoint newOrigin = [clipView bounds].origin;
+//    newOrigin.y = 0;
+//    [[clipView animator] setBoundsOrigin:newOrigin];
+//    [NSAnimationContext endGrouping];
 }
 
 - (IBAction)toggleStartTab:(id)sender {
@@ -532,6 +620,7 @@ NSArray *tabViews;
 }
 
 - (IBAction)selectView:(id)sender {
+    selectedView = sender;
     if ([tabViewButtons containsObject:sender])
         [_tabMain setSubviews:[NSArray arrayWithObject:[tabViews objectAtIndex:[tabViewButtons indexOfObject:sender]]]];
     for (NSButton *g in tabViewButtons) {
@@ -668,6 +757,98 @@ NSArray *tabViews;
     } else {
         [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
     }
+}
+
+- (void)readAppFolders:(NSString *)str :(NSMutableDictionary *)dict {
+    NSArray *appFolderContents = [[NSArray alloc] init];
+    appFolderContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:str error:nil];
+    for (NSString *app in appFolderContents) {
+        if ([app containsString:@".app"])
+        {
+            NSString *appName = [[app lastPathComponent] stringByDeletingPathExtension];
+            NSString *appPath = [NSString stringWithFormat:@"%@/%@", str, app];
+            NSString *appBundle = [[NSBundle bundleWithPath:appPath] bundleIdentifier];
+            NSArray *jumboTron = [NSArray arrayWithObjects:appName, appPath, appBundle, nil];
+            [dict setObject:jumboTron forKey:appName];
+        }
+    }
+}
+
+- (void)getBlacklistAPPList {
+    myDict = [[NSMutableDictionary alloc] init];
+    
+    [self readAppFolders:@"/Applications" :myDict];
+    [self readAppFolders:@"/Applications/Utilities" :myDict];
+    [self readAppFolders:@"/System/Library/CoreServices" :myDict];
+    [self readAppFolders:@"/System/Library/CoreServices/Applications" :myDict];
+    [self readAppFolders:[NSString stringWithFormat:@"%@/Applications", NSHomeDirectory()] :myDict];
+    [self readAppFolders:[NSString stringWithFormat:@"%@/Library/Printers", NSHomeDirectory()] :myDict];
+    
+    NSArray *keys = [myDict allKeys];
+    NSArray *sortedKeys = [keys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    sortedKeys = [[sortedKeys reverseObjectEnumerator] allObjects];
+    
+    sharedPrefs = [[NSUserDefaults alloc] initWithSuiteName:@"org.w0lf.SIMBLAgent"];
+    sharedDict = [sharedPrefs dictionaryRepresentation];
+    
+    NSArray *blacklisted = [sharedDict objectForKey:@"SIMBLApplicationIdentifierBlacklist"];
+    
+    CGRect frame = _blacklistScroll.frame;
+    frame.size.height = 0;
+    int count = 0;
+    for (NSString *app in sortedKeys)
+    {
+        NSArray *myApp = [myDict valueForKey:app];
+        if ([myApp count] == 3)
+        {
+            CGRect buttonFrame = CGRectMake(10, (25 * count), 150, 22);
+            NSButton *newButton = [[NSButton alloc] initWithFrame:buttonFrame];
+            [newButton setButtonType:NSSwitchButton];
+            [newButton setTitle:[myApp objectAtIndex:0]];
+            [newButton sizeToFit];
+            [newButton setAction:@selector(toggleBlacklistItem:)];
+//            [sharedDict valueForKey:[myApp objectAtIndex:2]] == [NSNumber numberWithUnsignedInteger:0]
+            if ([blacklisted containsObject:[myApp objectAtIndex:2]]) {
+                //                NSLog(@"\n\nApplication: %@\nBundle ID: %@\n\n", app, bundleString);
+                [newButton setState:NSOnState];
+            } else {
+                [newButton setState:NSOffState];
+            }
+            [_blacklistScroll.documentView addSubview:newButton];
+            count += 1;
+            frame.size.height += 25;
+        }
+    }
+    frame.size.width = 272;
+    [_blacklistScroll.documentView setFrame:frame];
+    [_blacklistScroll.contentView scrollToPoint:NSMakePoint(0, ((NSView*)_blacklistScroll.documentView).frame.size.height - _blacklistScroll.contentSize.height)];
+    [_blacklistScroll setHasHorizontalScroller:NO];
+}
+
+- (IBAction)toggleBlacklistItem:(NSButton*)btn {
+    if ([sharedPrefs isEqual:nil])
+    {
+        sharedPrefs = [[NSUserDefaults alloc] initWithSuiteName:@"org.w0lf.SIMBLAgent"];
+        sharedDict = [sharedPrefs dictionaryRepresentation];
+    }
+    NSString *bundleString = [[myDict objectForKey:btn.title] objectAtIndex:2];
+    NSMutableArray *newBlacklist = [[NSMutableArray alloc] initWithArray:[sharedPrefs objectForKey:@"SIMBLApplicationIdentifierBlacklist"]];
+    if (btn.state == NSOnState)
+    {
+        NSLog(@"Adding key: %@", bundleString);
+        [newBlacklist addObject:bundleString];
+        [sharedPrefs setObject:[newBlacklist copy] forKey:@"SIMBLApplicationIdentifierBlacklist"];
+    } else {
+        NSLog(@"Deleting key: %@", bundleString);
+        [newBlacklist removeObject:bundleString];
+        [sharedPrefs setObject:[newBlacklist copy] forKey:@"SIMBLApplicationIdentifierBlacklist"];
+    }
+    [sharedPrefs synchronize];
+}
+
+- (void)setBadge :(NSString*)toValue
+{
+    [_viewUpdateCounter setTitle:toValue];
 }
 
 @end

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Update SIMBL.osax and remove possible old or alternate version
 

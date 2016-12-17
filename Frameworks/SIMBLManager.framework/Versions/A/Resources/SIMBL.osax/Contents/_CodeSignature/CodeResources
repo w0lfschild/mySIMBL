@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/SIMBL.rsrc</key>
 		<data>
-		I+cxeCTKDErtGJTTLS9rNdfy0k4=
+		3626rrWuSaDi9lB/ea+jdjODvjI=
 		</data>
 		<key>Resources/SIMBL.sdef</key>
 		<data>
@@ -16,13 +16,27 @@
 	<key>files2</key>
 	<dict>
 		<key>Resources/SIMBL.rsrc</key>
-		<data>
-		I+cxeCTKDErtGJTTLS9rNdfy0k4=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			3626rrWuSaDi9lB/ea+jdjODvjI=
+			</data>
+			<key>hash2</key>
+			<data>
+			pANa9I6zD2VTbWaUOec9U5op283zdvWKUzPRFsHuNx0=
+			</data>
+		</dict>
 		<key>Resources/SIMBL.sdef</key>
-		<data>
-		BNObSap+PHdU3zRhPEKLTwcGnF8=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			BNObSap+PHdU3zRhPEKLTwcGnF8=
+			</data>
+			<key>hash2</key>
+			<data>
+			7TDBjOJ+M0pPZ0FiAzjkuyqpTI5ELKQ35Qk0L/ajo+M=
+			</data>
+		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>
@@ -41,6 +55,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -100,6 +119,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^[^/]+$</key>
 		<dict>

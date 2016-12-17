@@ -30,10 +30,12 @@ FOUNDATION_EXPORT const unsigned char SIMBLManagerVersionString[];
 
 - (Boolean)AGENT_install;
 - (Boolean)AGENT_installed;
+- (Boolean)AGENT_needsUpdate;
 - (NSDictionary*)AGENT_versions;
 
 - (Boolean)OSAX_install;
 - (Boolean)OSAX_installed;
+- (Boolean)OSAX_needsUpdate;
 - (NSDictionary*)OSAX_versions;
 
 - (Boolean)SIMBL_remove;

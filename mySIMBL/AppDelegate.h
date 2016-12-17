@@ -19,7 +19,6 @@
 {
     NSMutableArray *watchdogs;
     shareClass *_sharedMethods;
-    IBOutlet NSSplitView *_splitView;
 }
 
 @property IBOutlet NSWindow *window;
@@ -37,6 +36,7 @@
 @property IBOutlet NSView *tabSources;
 @property IBOutlet NSView *tabChanges;
 @property IBOutlet NSView *tabSIMBLInfo;
+@property IBOutlet NSView *tabUpdates;
 
 // Plugins view
 @property IBOutlet NSTableView *tblView;
@@ -64,6 +64,7 @@
 @property IBOutlet NSButton *viewSources;
 @property IBOutlet NSButton *viewAbout;
 @property IBOutlet NSButton *viewChanges;
+@property IBOutlet NSButton *viewUpdateCounter;
 @property IBOutlet NSButton *viewSIMBL;
 @property IBOutlet NSButton *donateButton;
 @property IBOutlet NSButton *reportButton;
@@ -96,7 +97,9 @@
 @property IBOutlet NSButton         *SIMBLTogggle;
 @property IBOutlet NSPopUpButton    *SIMBLLogging;
 @property IBOutlet NSImage          *SIPStatus;
+@property IBOutlet NSScrollView     *blacklistScroll;
 
+- (void)setBadge :(NSString*)toValue;
 - (void)setupEventListener;
 - (IBAction)pushView:(id)sender;
 - (IBAction)popView:(id)sender;

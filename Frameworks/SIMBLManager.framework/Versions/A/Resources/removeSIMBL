@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 function nukeFiles() {
     if [[ -e "$1" ]]; then
@@ -32,15 +32,14 @@ cleanupFiles=(
 "$HOME/Library/ScriptingAdditions/EasySIMBL.osax"
 )
 
+launchctl unload /Library/LaunchAgents/net.culater.SIMBL.Agent.plist
+killall SIMBLAgent
+
 echo "Removing files"
 
 for i in "${cleanupFiles[@]}"; do
     echo Removing: "$i"
     nukeFiles "$i"
 done
-
-echo "Killing Agent"
-
-killall SIMBLAgent
 
 echo "Done"

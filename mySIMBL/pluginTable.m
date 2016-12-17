@@ -34,7 +34,7 @@ NSInteger previusRow = -1;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     if (_sharedMethods == nil)
         _sharedMethods = [shareClass alloc];
-    [tableView setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleNone];
+//    [tableView setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleNone];
     return [pluginsArray count];
 }
 
@@ -63,53 +63,53 @@ NSInteger previusRow = -1;
     return YES;
 }
 
--(NSColor*)inverseColor:(NSColor*)color
-{
-    CGFloat r,g,b,a;
-    [color getRed:&r green:&g blue:&b alpha:&a];
-    return [NSColor colorWithRed:1.-r green:1.-g blue:1.-b alpha:a];
-}
-
--(void)tableChange:(NSNotification *)aNotification
-{
-    id sender = [aNotification object];
-    NSInteger selectedRow = [sender selectedRow];
-    if (selectedRow != -1) {
-        if (selectedRow != previusRow)
-        {
-            NSColor *aColor = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-            if (aColor) {
-                CustomTableCell *ctc = [sender viewAtColumn:0 row:selectedRow makeIfNecessary:YES];
-                aColor = [self inverseColor:aColor];
-                //            [ctc.pluginName setFont:[NSFont boldSystemFontOfSize:13]];
-                [ctc.pluginName setTextColor:aColor];
-                [ctc.pluginDescription setTextColor:aColor];
-                if (previusRow != -1)
-                {
-                    CustomTableCell *ctc = [sender viewAtColumn:0 row:previusRow makeIfNecessary:YES];
-                    //                [ctc.pluginName setFont:[NSFont systemFontOfSize:13]];
-                    [ctc.pluginName setTextColor:[NSColor blackColor]];
-                    [ctc.pluginDescription setTextColor:[NSColor grayColor]];
-                }
-                previusRow = selectedRow;
-            }
-            
-        }
-    }
-    else {
-        // No row was selected
-    }
-}
-
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
-{
-    [self tableChange:aNotification];
-}
-
-- (void)tableViewSelectionIsChanging:(NSNotification *)aNotification
-{
-    [self tableChange:aNotification];
-}
+//-(NSColor*)inverseColor:(NSColor*)color
+//{
+//    CGFloat r,g,b,a;
+//    [color getRed:&r green:&g blue:&b alpha:&a];
+//    return [NSColor colorWithRed:1.-r green:1.-g blue:1.-b alpha:a];
+//}
+//
+//-(void)tableChange:(NSNotification *)aNotification
+//{
+//    id sender = [aNotification object];
+//    NSInteger selectedRow = [sender selectedRow];
+//    if (selectedRow != -1) {
+//        if (selectedRow != previusRow)
+//        {
+//            NSColor *aColor = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+//            if (aColor) {
+//                CustomTableCell *ctc = [sender viewAtColumn:0 row:selectedRow makeIfNecessary:YES];
+//                aColor = [self inverseColor:aColor];
+//                //            [ctc.pluginName setFont:[NSFont boldSystemFontOfSize:13]];
+//                [ctc.pluginName setTextColor:aColor];
+//                [ctc.pluginDescription setTextColor:aColor];
+//                if (previusRow != -1)
+//                {
+//                    CustomTableCell *ctc = [sender viewAtColumn:0 row:previusRow makeIfNecessary:YES];
+//                    //                [ctc.pluginName setFont:[NSFont systemFontOfSize:13]];
+//                    [ctc.pluginName setTextColor:[NSColor blackColor]];
+//                    [ctc.pluginDescription setTextColor:[NSColor grayColor]];
+//                }
+//                previusRow = selectedRow;
+//            }
+//            
+//        }
+//    }
+//    else {
+//        // No row was selected
+//    }
+//}
+//
+//- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+//{
+//    [self tableChange:aNotification];
+//}
+//
+//- (void)tableViewSelectionIsChanging:(NSNotification *)aNotification
+//{
+//    [self tableChange:aNotification];
+//}
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     
@@ -132,6 +132,8 @@ NSInteger previusRow = -1;
     
     result.pluginDescription.stringValue = [item objectForKey:@"description"];
     result.pluginImage.image = [_sharedMethods getbundleIcon:item];
+    
+    [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashEmpty"]];
     
     if ([[confirmDelete objectAtIndex:row] boolValue])
         [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashFull"]];
