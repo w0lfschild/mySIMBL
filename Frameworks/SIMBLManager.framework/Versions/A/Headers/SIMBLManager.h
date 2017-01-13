@@ -40,6 +40,9 @@ FOUNDATION_EXPORT const unsigned char SIMBLManagerVersionString[];
 
 - (Boolean)SIMBL_remove;
 
+- (Boolean)unsign_XCODE;
+- (Boolean)restore_XCODE;
+
 @end
 
 @interface sip_c : NSWindowController

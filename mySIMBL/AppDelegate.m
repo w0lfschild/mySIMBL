@@ -149,16 +149,19 @@ NSArray *tabViews;
     
     [self getBlacklistAPPList];
 
-    Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
-    if (vibrantClass)
-    {
-        NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
-        [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-        [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-        [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
-    } else {
-        [_window setBackgroundColor:[NSColor whiteColor]];
-    }
+//    Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
+//    if (vibrantClass)
+//    {
+//        NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
+//        [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
+//        [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
+//        [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
+//    } else {
+//        [_window setBackgroundColor:[NSColor whiteColor]];
+//    }
+    
+//    [self.window.contentView setWantsLayer:YES];
+//    self.window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
     
     tabViewButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAbout, _viewPreferences, nil];
     for (NSButton *btn in tabViewButtons)
@@ -298,7 +301,8 @@ NSArray *tabViews;
 - (void)launchHelper {
     for (NSRunningApplication *run in [NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.mySIMBLAgent"])
         [run terminate];
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"mySIMBLAgent" ofType:@"app"];
+    NSString *path = [NSString stringWithFormat:@"%@/Contents/Library/LoginItems/mySIMBLAgent.app", [[NSBundle mainBundle] bundlePath]];
+    //    NSString *path = [[NSBundle mainBundle] pathForResource:@"mySIMBLAgent" ofType:@"app"];
     [[NSWorkspace sharedWorkspace] launchApplication:path];
 }
 
@@ -763,7 +767,7 @@ NSArray *tabViews;
     NSArray *appFolderContents = [[NSArray alloc] init];
     appFolderContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:str error:nil];
     for (NSString *app in appFolderContents) {
-        if ([app containsString:@".app"])
+        if ([app rangeOfString:@".app"].length != 0)
         {
             NSString *appName = [[app lastPathComponent] stringByDeletingPathExtension];
             NSString *appPath = [NSString stringWithFormat:@"%@/%@", str, app];

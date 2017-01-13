@@ -21,7 +21,7 @@ function createFolder() {
 
 log_dir="$HOME"/Library/"Application Support"/SIMBL/logs
 createFolder "$log_dir"
-exec &>"$log_dir"/update.log
+exec &>"$log_dir"/installOSAX.log
  
 cleanupFiles=(
 	"/Library/ScriptingAdditions/SIMBL.osax"
@@ -56,5 +56,11 @@ echo "Installing SIMBL.osax"
 
 mySIMBL=$(dirname "$0")
 cp -vr "$mySIMBL"/SIMBL.osax /System/Library/ScriptingAdditions/
+
+echo "Restarting SIMBLAgent"
+
+launchctl unload /Library/LaunchAgents/net.culater.SIMBL.Agent.plist
+killall SIMBLAgent
+launchctl load /Library/LaunchAgents/net.culater.SIMBL.Agent.plist
 
 echo "Done"

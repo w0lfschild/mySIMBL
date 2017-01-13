@@ -21,7 +21,7 @@ function createFolder() {
 
 log_dir="$HOME"/Library/"Application Support"/mySIMBL/logs
 createFolder "$log_dir"
-exec &>"$log_dir"/update.log
+exec &>"$log_dir"/installAgent.log
  
 cleanupFiles=(
 	"/Library/Application Support/SIMBL/SIMBLAgent.app"
@@ -61,6 +61,6 @@ cp -v "$mySIMBL"/SIMBLAgent.app/Contents/Resources/net.culater.SIMBL.Agent.plist
 
 echo "Launching Agent"
 
-open -a "/Library/Application Support/SIMBL/SIMBLAgent.app"
+launchctl load /Library/LaunchAgents/net.culater.SIMBL.Agent.plist
 
 echo "Done"

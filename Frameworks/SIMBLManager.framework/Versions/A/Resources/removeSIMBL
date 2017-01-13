@@ -19,7 +19,7 @@ function createFolder() {
 
 log_dir="$HOME"/Library/"Application Support"/mySIMBL/logs
 createFolder "$log_dir"
-exec &>"$log_dir"/removal.log
+exec &>"$log_dir"/removeSIMBL.log
  
 cleanupFiles=(
 "/Library/Application Support/SIMBL"
