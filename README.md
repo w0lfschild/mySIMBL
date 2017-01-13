@@ -1,22 +1,32 @@
-# mySIMBL
+![Banner](web/banner.png)
 
-![Preview](preview.png)
+mySIMBL is an open-source plugin manager for macOS. It lets you discover and install plugins to improve the user experience of macOS without the need for manually cloning or copying files.
 
-mySIMBL is a plugin manager for macOS.
+[![Chate](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mySIMBL/Lobby)
 
-mySIMBL uses a modified version of SIMBL to load plugins into applications. With mySIMBL it is easy to find and update plugins to improve the user experience of macOS. This project was designed as a successor to the application EasySIMBL since both EasySIMBL and the original SIMBL no longer work properly on macOS 10.9 and above due to changes made by Apple. With both projects appearing to be abandoned or left unsupported I decided to create mySIMBL.
+![Preview](web/preview.png)
 
-# Installation
+## Installation
 
 - Download the [latest release](https://github.com/w0lfschild/app_updates/raw/master/mySIMBL/mySIMBL_master.zip)
 - Unzip the download if your browser does not do so automatically
 - Open mySIMBL
-    - mySIMBL will ask to be moved to /Applications
-    - mySIMBL may ask to install or update SIMBL
-    - You may be required to disable System Integrity Protection, mySIMBL will inform you but cannot automate this process
+- mySIMBL will ask to be moved to /Applications
+- mySIMBL may ask to install or update SIMBL
+- You may be required to disable System Integrity Protection, mySIMBL will inform you but cannot automate this process
 - Start installing and using plugins
 
-# Features
+## Requirements
+
+mySIMBL supports macOS 10.9 and above.
+
+## Usage
+
+Select `Discover` from the sidebar, then check or uncheck packages to install or remove them. You'll need to restart affected applications after installing or removing a plugin. Installed plugins are checked for updates each time mySIMBL is launched, but updating is left up to the user.
+
+![Updates](web/discover.png)
+
+## Features
 
 - Repositories to find, download and update plugins
 - Drag and drop plugins onto mySIMBL to install them
@@ -28,5 +38,29 @@ mySIMBL uses a modified version of SIMBL to load plugins into applications. With
 - Detects existing plugins
 - Update plugins with ease
 
-# License
+## I want to submit my plugin!
+
+Fork the [mySIMBL plugin repository]() and include your package with `name`, `description`, `URL`, and optional `screenshot`. Don't forget to submit a pull request. Further instructions are included in the package repository documentation.
+
+## Development
+
+mySIMBL has a few [contribution guidelines](), for anyone looking to make it more awesome.
+
+## Troubleshooting
+
+Having problems? Submit an issue here: 
+
+## Uninstall
+
+Select `SIMBL` from the sidebar, then click `unistall`. Log out and back in for changes to fully apply.
+
+![Uninstall](web/uninstall.png)
+
+## Team
+
+[Wolfgang Baird](https://github.com/w0lfschild) ([@w0lfschild](https://github.com/w0lfschild))
+
+## Contribtors
+
+
 
