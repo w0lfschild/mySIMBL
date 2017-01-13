@@ -98,7 +98,7 @@
 		FB9BF3691CA6801F00A63718 /* loading_mini.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_mini.gif; sourceTree = "<group>"; };
 		FBA9EB331C965E9F00511BE3 /* sourcesTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = sourcesTable.m; sourceTree = "<group>"; };
 		FBABE8C21D552713009191FE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../GitHub/wb_mySIMBL/README.md; sourceTree = "<group>"; };
-		FBABE8C31D55271D009191FE /* preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = preview.png; path = ../../GitHub/wb_mySIMBL/preview.png; sourceTree = "<group>"; };
+		FBABE8C31D55271D009191FE /* web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = web; sourceTree = "<group>"; };
 		FBB793511C7AB7BC006BF301 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		FBB793531C7AB7C5006BF301 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		FBBF6AF51DFFA6B300BBCF28 /* updatesTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = updatesTable.m; sourceTree = "<group>"; };
@@ -173,7 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				FBABE8C21D552713009191FE /* README.md */,
-				FBABE8C31D55271D009191FE /* preview.png */,
+				FBABE8C31D55271D009191FE /* web */,
 				FBBF6AF31DFF9EE800BBCF28 /* Frameworks */,
 				FB5F44B51C41EA4000DE80B4 /* mySIMBL */,
 				FB0CF69C1C61D1E9002CF3DE /* mySIMBLHelper */,
