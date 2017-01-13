@@ -4,10 +4,6 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Resources/MainMenu.nib</key>
-		<data>
-		4s8FP9aSu1+MA9hZHkcLhbGyigw=
-		</data>
 		<key>Resources/net.culater.SIMBL.Agent.plist</key>
 		<data>
 		wYFzYNfsP7GiAQTHdDl8wxzApgg=
@@ -15,17 +11,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Resources/MainMenu.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			4s8FP9aSu1+MA9hZHkcLhbGyigw=
-			</data>
-			<key>hash2</key>
-			<data>
-			XmSc8bAP4dwT78dgOKEmC3HsfVrvXvlTiwXv7sZFrJE=
-			</data>
-		</dict>
 		<key>Resources/net.culater.SIMBL.Agent.plist</key>
 		<dict>
 			<key>hash</key>

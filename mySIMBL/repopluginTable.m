@@ -80,7 +80,7 @@ long selectedRow;
     NSBundle *dank = [NSBundle bundleWithIdentifier:[item objectForKey:@"package"]];
     result.bundleImageInstalled.hidden = true;
     if (dank.bundlePath.length)
-        if ([dank.bundlePath containsString:@"/Library/Application Support/SIMBL/Plugins"])
+        if ([dank.bundlePath rangeOfString:@"/Library/Application Support/SIMBL/Plugins"].length != 0)
             result.bundleImageInstalled.hidden = false;
     return result;
 }
