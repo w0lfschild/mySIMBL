@@ -7,7 +7,6 @@
 //
 
 @import AppKit;
-@import Sparkle;
 
 #import "shareClass.h"
 #import "AppDelegate.h"

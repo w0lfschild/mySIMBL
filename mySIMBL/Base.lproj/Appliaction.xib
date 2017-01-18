@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D25a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment version="1090" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
@@ -51,7 +51,7 @@
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b6t-eI-SzM">
                         <rect key="frame" x="0.0" y="448" width="125" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="smallSquare" title=" Plugins" bezelStyle="smallSquare" alignment="left" imageScaling="proportionallyDown" inset="2" id="tee-Mc-XRA">
+                        <buttonCell key="cell" type="smallSquare" title=" Manage" bezelStyle="smallSquare" alignment="left" imageScaling="proportionallyDown" inset="2" id="tee-Mc-XRA">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -262,7 +262,7 @@
                     <autoresizingMask key="autoresizingMask"/>
                     <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="rEO-vG-Jyl">
                         <rect key="frame" x="0.0" y="0.0" width="560" height="265"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textView ambiguous="YES" drawsBackground="NO" importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="Knp-u7-nXC">
                                 <rect key="frame" x="0.0" y="0.0" width="560" height="265"/>
@@ -280,7 +280,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="rMc-YU-J7D">
-                        <rect key="frame" x="544" y="0.0" width="16" height="265"/>
+                        <rect key="frame" x="-16" y="0.0" width="16" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
@@ -504,6 +504,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
+                            <menuItem title="Send feedback" id="gcP-Df-pFQ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showFeedbackDialog:" target="Voe-Tx-rLC" id="eYi-TZ-z7m"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="mySIMBL Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="y7X-2Q-9no"/>
@@ -523,7 +529,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="9sS-3X-65u">
                         <rect key="frame" x="1" y="1" width="558" height="433"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="40" rowSizeStyle="automatic" viewBased="YES" id="E3Q-ip-sqv">
                                 <rect key="frame" x="0.0" y="0.0" width="558" height="433"/>
@@ -675,7 +681,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EKf-xn-hvp">
-                    <rect key="frame" x="242" y="288" width="200" height="18"/>
+                    <rect key="frame" x="254" y="302" width="200" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Instant tooltips" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Bm5-hB-fZO">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -686,7 +692,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gdt-BK-pvR">
-                    <rect key="frame" x="242" y="268" width="200" height="18"/>
+                    <rect key="frame" x="254" y="282" width="200" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Remember window position" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="rL1-ZB-ejc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -697,9 +703,9 @@
                     </connections>
                 </button>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R9Z-Lo-Ufb">
-                    <rect key="frame" x="242" y="204" width="222" height="26"/>
+                    <rect key="frame" x="254" y="218" width="222" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="Automatically check" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="hHj-XR-BrP" id="7fj-eB-NZJ">
+                    <popUpButtonCell key="cell" type="push" title="Don't check for updates" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="cyq-Mj-WYW" id="7fj-eB-NZJ">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" id="KYi-dt-WTL">
@@ -715,7 +721,7 @@
                     </connections>
                 </popUpButton>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bIL-ul-fcu">
-                    <rect key="frame" x="242" y="235" width="222" height="26"/>
+                    <rect key="frame" x="254" y="249" width="222" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Plugins" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="UxD-db-zVg" id="CAk-jg-0bl">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -723,7 +729,7 @@
                         <menu key="menu" id="heT-YW-nan">
                             <items>
                                 <menuItem title="Plugins" state="on" id="UxD-db-zVg"/>
-                                <menuItem title="Sources" id="s3X-Pg-GVa">
+                                <menuItem title="Discover" id="s3X-Pg-GVa">
                                     <modifierMask key="keyEquivalentModifierMask"/>
                                 </menuItem>
                                 <menuItem title="Updates" id="4Va-Ii-uWa">
@@ -740,7 +746,7 @@
                     </connections>
                 </popUpButton>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="icp-Vg-TlK">
-                    <rect key="frame" x="242" y="173" width="222" height="26"/>
+                    <rect key="frame" x="254" y="187" width="222" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Daily" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="86400" imageScaling="proportionallyDown" inset="2" selectedItem="EnQ-eQ-U7d" id="b0e-n8-kKa">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -759,16 +765,16 @@
                     </connections>
                 </popUpButton>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="469-G3-oLR">
-                    <rect key="frame" x="138" y="211" width="100" height="14"/>
+                    <rect key="frame" x="126" y="225" width="124" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Updates" id="qac-8F-mEe">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Application Updates" id="qac-8F-mEe">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OFn-HH-88K">
-                    <rect key="frame" x="138" y="241" width="100" height="14"/>
+                    <rect key="frame" x="150" y="255" width="100" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Default Tab" id="hxI-Qx-6d3">
                         <font key="font" metaFont="smallSystem"/>
@@ -777,16 +783,16 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ulQ-xA-QBB">
-                    <rect key="frame" x="138" y="179" width="100" height="14"/>
+                    <rect key="frame" x="126" y="193" width="124" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Update Interval" id="WNb-ox-dzY">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="App Update Interval" id="WNb-ox-dzY">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eo1-4h-dBz">
-                    <rect key="frame" x="242" y="308" width="200" height="18"/>
+                    <rect key="frame" x="254" y="322" width="200" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Run helper at login" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="KmX-MO-FPE">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -796,6 +802,32 @@
                         <binding destination="urY-gn-4Ef" name="value" keyPath="startAtLogin" id="4bT-jW-wYW"/>
                     </connections>
                 </button>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aoC-Xx-qAw">
+                    <rect key="frame" x="254" y="158" width="222" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="push" title="Automatically check" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Gv4-2N-kHj" id="yJ7-iK-tnK">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="5dk-C5-2N0">
+                            <items>
+                                <menuItem title="Automatically check" state="on" id="Gv4-2N-kHj"/>
+                                <menuItem title="Automatically update" id="GV0-wN-241"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changeAutoUpdates:" target="Voe-Tx-rLC" id="INa-ra-G6X"/>
+                    </connections>
+                </popUpButton>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nyl-hE-CEf">
+                    <rect key="frame" x="126" y="165" width="124" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Plugin Updates" id="UQM-bq-lVA">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <point key="canvasLocation" x="-606" y="-466"/>
         </customView>
@@ -1030,7 +1062,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" ambiguous="YES" id="P5o-0S-gmc">
                         <rect key="frame" x="1" y="1" width="305" height="433"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ngW-H4-AgY">
                                 <rect key="frame" x="0.0" y="0.0" width="290" height="418"/>
@@ -1043,7 +1075,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="yiK-1N-KV7">
-                        <rect key="frame" x="290" y="1" width="16" height="433"/>
+                        <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
@@ -1060,7 +1092,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" ambiguous="YES" id="EZ5-pH-chV">
                         <rect key="frame" x="1" y="1" width="558" height="420"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="60" rowSizeStyle="automatic" viewBased="YES" id="Fv5-QD-pqb" customClass="updatesTable">
                                 <rect key="frame" x="0.0" y="0.0" width="558" height="420"/>
@@ -1212,7 +1244,7 @@ Would you like to install SIMBL now and start using plugins?</string>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <clipView key="contentView" id="KvA-vi-gTU">
                 <rect key="frame" x="1" y="1" width="558" height="420"/>
-                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="40" rowSizeStyle="automatic" viewBased="YES" id="hCk-bO-Pf9" customClass="sourcesTable">
                         <rect key="frame" x="0.0" y="0.0" width="558" height="420"/>
@@ -1300,7 +1332,7 @@ Would you like to install SIMBL now and start using plugins?</string>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <clipView key="contentView" id="Ggo-4i-dDh">
                 <rect key="frame" x="1" y="1" width="558" height="420"/>
-                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="60" rowSizeStyle="automatic" viewBased="YES" id="rOu-dT-UNS" customClass="repopluginTable">
                         <rect key="frame" x="0.0" y="0.0" width="558" height="420"/>
@@ -1615,7 +1647,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nQ-4A-9s5">
                     <rect key="frame" x="5" y="234" width="90" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="recessed" title="Donate" bezelStyle="recessed" image="0CA9C256-9A05-4572-9110-9850DDEC1D82" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="MXY-3W-iRf">
+                    <buttonCell key="cell" type="recessed" title="Donate" bezelStyle="recessed" image="B6DD19DC-727C-44F3-ADDB-9F78F039D0E3" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="MXY-3W-iRf">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                         <font key="font" metaFont="systemBold" size="12"/>
                     </buttonCell>
@@ -1642,7 +1674,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="os7-ks-4ch">
                         <rect key="frame" x="0.0" y="0.0" width="244" height="147"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textView ambiguous="YES" editable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="TUJ-w8-YmA">
                                 <rect key="frame" x="0.0" y="0.0" width="244" height="147"/>
@@ -1660,7 +1692,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="AYe-0Q-Npg">
-                        <rect key="frame" x="228" y="0.0" width="16" height="147"/>
+                        <rect key="frame" x="-16" y="0.0" width="16" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
@@ -1687,7 +1719,7 @@ Would you like to install SIMBL now and start using plugins?</string>
         </customView>
     </objects>
     <resources>
-        <image name="0CA9C256-9A05-4572-9110-9850DDEC1D82" width="1" height="1">
+        <image name="B6DD19DC-727C-44F3-ADDB-9F78F039D0E3" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

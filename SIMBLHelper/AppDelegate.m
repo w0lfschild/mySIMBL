@@ -6,9 +6,9 @@
 //  Copyright © 2016 Wolfgang Baird. All rights reserved.
 //
 
-@import Sparkle;
 @import SIMBLManager;
 #import "AppDelegate.h"
+#import <DevMateKit/DevMateKit.h>
 
 AppDelegate* this;
 

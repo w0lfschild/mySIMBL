@@ -8,8 +8,8 @@
 
 @import Foundation;
 @import AppKit;
-@import Sparkle;
 @import SIMBLManager;
+#import <DevMateKit/DevMateKit.h>
 #import "SGDirWatchdog.h"
 #import "PFMoveApplication.h"
 #import "StartAtLoginController.h"

@@ -44,14 +44,19 @@ NSArray *tabViews;
     return myDelegate;
 }
 
+- (IBAction)showFeedbackDialog:(id)sender {
+    [DevMateKit showFeedbackDialog:nil inMode:DMFeedbackDefaultMode];
+}
+
 - (void)setupVariables {
     osx_ver = [[NSProcessInfo processInfo] operatingSystemVersion].minorVersion;
     SIMBLFramework = [SIMBLManager sharedInstance];
 }
 
 - (void)setupDefaults {
-    NSArray *defaultRepos = [[NSArray alloc] initWithObjects:@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks",
-                             @"https://github.com/w0lfschild/myRepo/raw/master/urtweaks", nil];
+    NSArray *defaultRepos = @[@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks",
+                              @"https://github.com/w0lfschild/myRepo/raw/master/urtweaks",
+                              @"https://github.com/w0lfschild/plugins/raw/master"];
     NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
     for (NSString *item in defaultRepos)
         if (![[myPreferences objectForKey:@"sources"] containsObject:item])
@@ -80,6 +85,9 @@ NSArray *tabViews;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    [DevMateKit sendTrackingReport:nil delegate:nil];
+    [DevMateKit setupIssuesController:nil reportingUnhandledIssues:YES];
+    
     // Loop looking for bundle updates
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 //        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
@@ -116,7 +124,6 @@ NSArray *tabViews;
     // Setup plugin table
     [_tblView registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
     
-    PFMoveToApplicationsFolderIfNecessary();
     [self setupEventListener];
     
     [self.window makeKeyAndOrderFront:self];
@@ -126,6 +133,8 @@ NSArray *tabViews;
     NSDate *methodFinish = [NSDate date];
     NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:appStart];
     NSLog(@"executionTime = %f", executionTime);
+    
+    PFMoveToApplicationsFolderIfNecessary();
 }
 
 // Cleanup
@@ -545,24 +554,6 @@ NSArray *tabViews;
         [[clipView animator] setBoundsOrigin:newOrigin];
         [NSAnimationContext endGrouping];
     }
-    
-//    NSString *rsc = @"";
-//    if ([sender isEqualTo:_showChanges]) rsc=@"Changelog";
-//    if ([sender isEqualTo:_showCredits]) rsc=@"Credits";
-//    if ([sender isEqualTo:_showEULA]) rsc=@"EULA";
-//    [_changeLog setEditable:true];
-//    [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:rsc ofType:@"rtf"] documentAttributes:nil]];
-//    [_changeLog selectAll:self];
-//    [_changeLog alignLeft:nil];
-//    if ([sender isEqualTo:_showCredits]) [_changeLog alignCenter:nil];
-//    [_changeLog setSelectedRange:NSMakeRange(0,0)];
-//    [_changeLog setEditable:false];
-//    [NSAnimationContext beginGrouping];
-//    NSClipView* clipView = [[_changeLog enclosingScrollView] contentView];
-//    NSPoint newOrigin = [clipView bounds].origin;
-//    newOrigin.y = 0;
-//    [[clipView animator] setBoundsOrigin:newOrigin];
-//    [NSAnimationContext endGrouping];
 }
 
 - (IBAction)toggleStartTab:(id)sender {

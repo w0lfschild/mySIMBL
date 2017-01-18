@@ -10,7 +10,5 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property IBOutlet SUUpdater *updater;
-
 @end
 
