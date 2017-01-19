@@ -96,7 +96,7 @@
 @property IBOutlet NSButton         *SIMBLAgentToggle;
 @property IBOutlet NSButton         *SIMBLTogggle;
 @property IBOutlet NSPopUpButton    *SIMBLLogging;
-@property IBOutlet NSImage          *SIPStatus;
+@property IBOutlet NSButton         *SIPStatus;
 @property IBOutlet NSScrollView     *blacklistScroll;
 
 - (void)setBadge :(NSString*)toValue;

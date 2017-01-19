@@ -9,8 +9,12 @@ log_dir="$HOME"/Library/"Application Support"/mySIMBL/logs
 createFolder "$log_dir"
 exec &>"$log_dir"/installSIMBL.log
 
-# unsign Xcode
+if [ $# -eq 0 ]; then
+    echo "No arguments supplied"
+fi
+
 if [[ "$1" -eq "-un" ]]; then
+    # unsign application
     SCRIPTPATH=$(dirname "$0")
     sudo "$SCRIPTPATH"/unsign "$binaryPath"
     status=$?
@@ -19,20 +23,25 @@ if [[ "$1" -eq "-un" ]]; then
         sudo mv "$binaryPath.unsigned" "$binaryPath"
         print "Done!"
     fi
-fi
-
-# restore unsigned
-if [[ "$1" -eq "-ru" ]]; then
+elif [[ "$1" -eq "-ru" ]]; then
+    # restore unsigned
     sudo mv "$binaryPath" "$binaryPath.signed"
     sudo mv "$binaryPath.unsigned" "$binaryPath"
     print "Restored unsigned binary"
-fi
-
-#restore signed
-if [[ "$1" -eq "-rs" ]]; then
+elif [[ "$1" -eq "-rs" ]]; then
+    #restore signed
     sudo mv "$binaryPath" "$binaryPath.unsigned"
     sudo mv "$binaryPath.signed" "$binaryPath"
     print "Restored signed binary"
+else
+    SCRIPTPATH=$(dirname "$0")
+    sudo "$SCRIPTPATH"/unsign "$binaryPath"
+    status=$?
+    if [ $status -eq 0 ]; then
+        sudo mv "$binaryPath" "$binaryPath.signed"
+        sudo mv "$binaryPath.unsigned" "$binaryPath"
+        print "Done!"
+    fi
 fi
 
 echo "Done"

@@ -35,20 +35,20 @@ mySIMBL supports macOS 10.9 and above.
 
 ## I want to submit my plugin!
 
-Fork the [mySIMBL plugin repository](https://github.com/w0lfschild/myRepo) and include your package with `name`, `description`, `URL`, and optional `screenshot`. Don't forget to submit a pull request. Further instructions are included in the package repository documentation.
-
-## Development
-
-mySIMBL has a few [contribution guidelines](), for anyone looking to make it more awesome.
+- Head over to the [mySIMBL plugin repository](https://github.com/w0lfschild/macplugins)
+- Fork the project
+- Add your compiled and zipped plugin to the bundles folder
+- Edit packages_v2.plist to include your submission
+- Submit a pull request
 
 ## Troubleshooting
 
-Having problems? Submit an issue here: 
+Having problems? Submit an issue here: [submit](https://github.com/w0lfschild/mySIMBL/issues/new)
 
-## Uninstall
+## Uninstall SIMBL
 
 Select `SIMBL` from the sidebar, then click `unistall`. Log out and back in for changes to fully apply.
 
-## Team
+## Developement
 
 [Wolfgang Baird](https://github.com/w0lfschild) ([@w0lfschild](https://github.com/w0lfschild))

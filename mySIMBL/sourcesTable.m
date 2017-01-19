@@ -59,7 +59,7 @@ NSArray *sourceURLS;
     dispatch_async(backgroundQueue, ^{
         NSArray* sourceURLS = [item objectForKey:@"sources"];
         NSString* source = [sourceURLS objectAtIndex:row];
-        NSURL* data = [NSURL URLWithString:[NSString stringWithFormat:@"%@/resource.plist", source]];
+        NSURL* data = [NSURL URLWithString:[NSString stringWithFormat:@"%@/resource.plist?%@", source, [[NSProcessInfo processInfo] globallyUniqueString]]];
         NSMutableDictionary* dic = [[NSMutableDictionary alloc] initWithContentsOfURL:data];
     
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -70,7 +70,7 @@ NSArray *sourceURLS;
             {
                 if ([dic objectForKey:@"name"])
                     result.sourceName.stringValue = [dic objectForKey:@"name"];
-                result.sourceImage.image = [[NSImage alloc] initByReferencingURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/icon.png", source]]];
+                result.sourceImage.image = [[NSImage alloc] initByReferencingURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/icon.png?%@", source, [[NSProcessInfo processInfo] globallyUniqueString]]]];
             }
             
             [result.sourceIndicator setImage:[NSImage imageNamed:NSImageNameRightFacingTriangleTemplate]];

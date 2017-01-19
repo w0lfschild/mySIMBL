@@ -56,7 +56,7 @@ NSArray *tabViews;
 - (void)setupDefaults {
     NSArray *defaultRepos = @[@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks",
                               @"https://github.com/w0lfschild/myRepo/raw/master/urtweaks",
-                              @"https://github.com/w0lfschild/plugins/raw/master"];
+                              @"https://github.com/w0lfschild/macplugins/raw/master"];
     NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
     for (NSString *item in defaultRepos)
         if (![[myPreferences objectForKey:@"sources"] containsObject:item])
@@ -158,18 +158,18 @@ NSArray *tabViews;
     
     [self getBlacklistAPPList];
 
-//    Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
-//    if (vibrantClass)
-//    {
-//        NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
-//        [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-//        [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
-//        [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
-//    } else {
-//        [_window setBackgroundColor:[NSColor whiteColor]];
-//    }
+    Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
+    if (vibrantClass)
+    {
+        NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
+        [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
+        [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
+        [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
+    } else {
+        [_window setBackgroundColor:[NSColor whiteColor]];
+    }
     
-//    [self.window.contentView setWantsLayer:YES];
+    [self.window.contentView setWantsLayer:YES];
 //    self.window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
     
     tabViewButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAbout, _viewPreferences, nil];
@@ -735,20 +735,20 @@ NSArray *tabViews;
 - (void)setupSIMBLview {
     SIMBLManager *sim_m = [SIMBLManager sharedInstance];
     if ([[sim_m OSAX_versions] objectForKey:@"localVersion"])
-    {
         [self.SIMBLTogggle setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-    } else {
+    else
         [self.SIMBLTogggle setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-    }
     
-    if ([[sim_m AGENT_versions] objectForKey:@"localVersion"])
-    {
+    if ([sim_m SIP_enabled])
+        [self.SIPStatus setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+    else
+        [self.SIPStatus setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+    
+    if ([[sim_m AGENT_versions] objectForKey:@"localVersion"]) {
         if ([NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.SIMBLAgent"])
-        {
             [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-        } else {
+        else
             [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
-        }
     } else {
         [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
     }

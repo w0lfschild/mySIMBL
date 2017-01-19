@@ -295,6 +295,7 @@
                 <outlet property="SIMBLAgentToggle" destination="JqX-49-ZHt" id="PjC-bq-GPe"/>
                 <outlet property="SIMBLLogging" destination="Ih8-xN-FdK" id="EBa-h9-ZvG"/>
                 <outlet property="SIMBLTogggle" destination="jhN-2k-dpe" id="gLe-Kd-qcg"/>
+                <outlet property="SIPStatus" destination="cId-ur-lfv" id="81a-XN-GCm"/>
                 <outlet property="addsourcesAccept" destination="h9f-JZ-b0C" id="kV7-v1-kTF"/>
                 <outlet property="addsourcesTextFiled" destination="E1X-sz-nNM" id="2bD-En-5Ze"/>
                 <outlet property="appCopyright" destination="i4i-aW-H22" id="aUu-y5-198"/>
@@ -529,7 +530,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="9sS-3X-65u">
                         <rect key="frame" x="1" y="1" width="558" height="433"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="40" rowSizeStyle="automatic" viewBased="YES" id="E3Q-ip-sqv">
                                 <rect key="frame" x="0.0" y="0.0" width="558" height="433"/>
@@ -705,13 +706,13 @@
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R9Z-Lo-Ufb">
                     <rect key="frame" x="254" y="218" width="222" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="Don't check for updates" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="cyq-Mj-WYW" id="7fj-eB-NZJ">
+                    <popUpButtonCell key="cell" type="push" title="Don't check for updates" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="cyq-Mj-WYW" id="7fj-eB-NZJ">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" id="KYi-dt-WTL">
                             <items>
-                                <menuItem title="Don't check for updates" id="cyq-Mj-WYW"/>
-                                <menuItem title="Automatically check" state="on" id="hHj-XR-BrP"/>
+                                <menuItem title="Don't check for updates" state="on" id="cyq-Mj-WYW"/>
+                                <menuItem title="Automatically check" id="hHj-XR-BrP"/>
                                 <menuItem title="Automatically update" id="vAF-bm-TXd"/>
                             </items>
                         </menu>
@@ -960,7 +961,7 @@ Would you like to install SIMBL now and start using plugins?</string>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jhN-2k-dpe">
-                    <rect key="frame" x="20" y="297" width="22" height="22"/>
+                    <rect key="frame" x="21" y="433" width="22" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSStatusUnavailable" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyUpOrDown" inset="2" id="9sS-kj-FK7">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -968,7 +969,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                     </buttonCell>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JqX-49-ZHt">
-                    <rect key="frame" x="20" y="267" width="22" height="22"/>
+                    <rect key="frame" x="21" y="403" width="22" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSStatusUnavailable" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyUpOrDown" inset="2" id="7on-1l-JhZ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -976,7 +977,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                     </buttonCell>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cId-ur-lfv">
-                    <rect key="frame" x="20" y="237" width="22" height="22"/>
+                    <rect key="frame" x="21" y="373" width="22" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSStatusUnavailable" imagePosition="only" alignment="center" enabled="NO" imageScaling="proportionallyUpOrDown" inset="2" id="MRe-XZ-mA8">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -984,7 +985,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                     </buttonCell>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TPX-f3-kLl">
-                    <rect key="frame" x="50" y="300" width="75" height="17"/>
+                    <rect key="frame" x="51" y="436" width="75" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="SIMBL.osax" id="4I6-Ko-8c1">
                         <font key="font" metaFont="system"/>
@@ -993,7 +994,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RCk-ks-hJc">
-                    <rect key="frame" x="50" y="270" width="79" height="17"/>
+                    <rect key="frame" x="51" y="406" width="79" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="SIMBLAgent" id="o6D-oL-Tsg">
                         <font key="font" metaFont="system"/>
@@ -1002,7 +1003,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BMv-MC-QgR">
-                    <rect key="frame" x="50" y="240" width="169" height="17"/>
+                    <rect key="frame" x="51" y="376" width="169" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="System Integrity Protection" id="ssk-NN-mLw">
                         <font key="font" metaFont="system"/>
@@ -1010,8 +1011,39 @@ Would you like to install SIMBL now and start using plugins?</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kYU-PJ-PvK">
+                    <rect key="frame" x="271" y="463" width="311" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="SIMBL application blacklist:" id="guI-Kk-zH9">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l5C-Oc-iGL">
+                    <rect key="frame" x="273" y="20" width="307" height="435"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <clipView key="contentView" ambiguous="YES" id="P5o-0S-gmc">
+                        <rect key="frame" x="1" y="1" width="305" height="433"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ngW-H4-AgY">
+                                <rect key="frame" x="0.0" y="0.0" width="290" height="418"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </view>
+                        </subviews>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="E5c-7u-i3Y">
+                        <rect key="frame" x="-100" y="-100" width="305" height="16"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="yiK-1N-KV7">
+                        <rect key="frame" x="290" y="1" width="16" height="433"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ih8-xN-FdK">
-                    <rect key="frame" x="117" y="175" width="135" height="26"/>
+                    <rect key="frame" x="118" y="314" width="135" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Notice" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="bVu-C8-TIp" id="uDQ-CV-J8c">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1029,9 +1061,9 @@ Would you like to install SIMBL now and start using plugins?</string>
                     </connections>
                 </popUpButton>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JiW-cK-Mbc">
-                    <rect key="frame" x="20" y="205" width="230" height="25"/>
+                    <rect key="frame" x="20" y="344" width="230" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="roundTextured" title="Load into all running applications" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UCe-Gz-fuz">
+                    <buttonCell key="cell" type="roundTextured" title="Load into all applications" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UCe-Gz-fuz">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -1039,17 +1071,8 @@ Would you like to install SIMBL now and start using plugins?</string>
                         <action selector="inject:" target="Voe-Tx-rLC" id="yTl-jY-7cW"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kYU-PJ-PvK">
-                    <rect key="frame" x="271" y="463" width="311" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="SIMBL application blacklist:" id="guI-Kk-zH9">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k9r-gh-7ul">
-                    <rect key="frame" x="18" y="180" width="96" height="17"/>
+                    <rect key="frame" x="19" y="319" width="96" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="SIMBL Logging" id="VPX-nI-bzl">
                         <font key="font" metaFont="system"/>
@@ -1057,28 +1080,6 @@ Would you like to install SIMBL now and start using plugins?</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l5C-Oc-iGL">
-                    <rect key="frame" x="273" y="20" width="307" height="435"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <clipView key="contentView" ambiguous="YES" id="P5o-0S-gmc">
-                        <rect key="frame" x="1" y="1" width="305" height="433"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ngW-H4-AgY">
-                                <rect key="frame" x="0.0" y="0.0" width="290" height="418"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </view>
-                        </subviews>
-                    </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="E5c-7u-i3Y">
-                        <rect key="frame" x="-100" y="-100" width="305" height="16"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                    <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="yiK-1N-KV7">
-                        <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                </scrollView>
             </subviews>
             <point key="canvasLocation" x="-1262" y="-466"/>
         </customView>
@@ -1647,7 +1648,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nQ-4A-9s5">
                     <rect key="frame" x="5" y="234" width="90" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="recessed" title="Donate" bezelStyle="recessed" image="B6DD19DC-727C-44F3-ADDB-9F78F039D0E3" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="MXY-3W-iRf">
+                    <buttonCell key="cell" type="recessed" title="Donate" bezelStyle="recessed" image="CCE3FE0D-25BC-410F-820E-52E4405AE9AE" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="MXY-3W-iRf">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                         <font key="font" metaFont="systemBold" size="12"/>
                     </buttonCell>
@@ -1719,7 +1720,7 @@ Would you like to install SIMBL now and start using plugins?</string>
         </customView>
     </objects>
     <resources>
-        <image name="B6DD19DC-727C-44F3-ADDB-9F78F039D0E3" width="1" height="1">
+        <image name="CCE3FE0D-25BC-410F-820E-52E4405AE9AE" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

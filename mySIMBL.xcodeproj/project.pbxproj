@@ -483,11 +483,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
-					"\"$(PROJECT_DIR)/Frameworks/DevMateKit\"",
-					"\"$(PROJECT_DIR)/Frameworks/DevMateKit/DevMateKit.framework/Frameworks\"",
 				);
 				INFOPLIST_FILE = SIMBLHelper/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../../Frameworks/DevMateKit @loader_path/../../../../../Frameworks $(PROJECT_DIR)/Frameworks \"$(PROJECT_DIR)/Frameworks/DevMateKit\" \"$(PROJECT_DIR)/Frameworks/DevMateKit/DevMateKit.framework/Frameworks\"";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../../Frameworks/DevMateKit @loader_path/../../../../../Frameworks $(PROJECT_DIR)/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.w0lf.mySIMBLAgent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -504,11 +502,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
-					"\"$(PROJECT_DIR)/Frameworks/DevMateKit\"",
-					"\"$(PROJECT_DIR)/Frameworks/DevMateKit/DevMateKit.framework/Frameworks\"",
 				);
 				INFOPLIST_FILE = SIMBLHelper/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../../Frameworks/DevMateKit @loader_path/../../../../../Frameworks $(PROJECT_DIR)/Frameworks \"$(PROJECT_DIR)/Frameworks/DevMateKit\" \"$(PROJECT_DIR)/Frameworks/DevMateKit/DevMateKit.framework/Frameworks\"";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../../Frameworks/DevMateKit @loader_path/../../../../../Frameworks $(PROJECT_DIR)/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.w0lf.mySIMBLAgent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -613,10 +609,9 @@
 				DEVELOPMENT_TEAM = EX596BNL45;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/mySIMBL",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/DevMateKit/DevMateKit.framework/Frameworks",
 				);
 				INFOPLIST_FILE = mySIMBL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks $SRCROOT/mySIMBL";
@@ -637,10 +632,9 @@
 				DEVELOPMENT_TEAM = EX596BNL45;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/mySIMBL",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/DevMateKit/DevMateKit.framework/Frameworks",
 				);
 				INFOPLIST_FILE = mySIMBL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks $SRCROOT/mySIMBL";
