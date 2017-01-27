@@ -66,6 +66,7 @@
 @property IBOutlet NSButton *viewChanges;
 @property IBOutlet NSButton *viewUpdateCounter;
 @property IBOutlet NSButton *viewSIMBL;
+@property IBOutlet NSButton *feedbackButton;
 @property IBOutlet NSButton *donateButton;
 @property IBOutlet NSButton *reportButton;
 
@@ -93,6 +94,12 @@
 @property IBOutlet NSPopUpButton    *prefStartTab;
 
 // SIMBL View
+@property IBOutlet NSButton         *libValXcode;
+@property IBOutlet NSButton         *libValSafari;
+
+@property IBOutlet NSTextField      *SIMBLAgentText;
+@property IBOutlet NSTextField      *SIMBLOSAXText;
+    
 @property IBOutlet NSButton         *SIMBLAgentToggle;
 @property IBOutlet NSButton         *SIMBLTogggle;
 @property IBOutlet NSPopUpButton    *SIMBLLogging;

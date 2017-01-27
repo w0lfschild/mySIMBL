@@ -40,8 +40,9 @@ FOUNDATION_EXPORT const unsigned char SIMBLManagerVersionString[];
 
 - (Boolean)SIMBL_remove;
 
-- (Boolean)unsign_XCODE;
-- (Boolean)restore_XCODE;
+- (Boolean)lib_ValidationSatus:(NSString *)bundleID;
+- (Boolean)restValidation:(NSString *)bundleID;
+- (Boolean)remoValidation:(NSString *)bundleID;
 
 @end
 

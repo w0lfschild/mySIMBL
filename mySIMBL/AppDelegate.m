@@ -44,6 +44,26 @@ NSArray *tabViews;
     return myDelegate;
 }
 
+- (NSString*) runCommand: (NSString*)command {
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/bin/sh"];
+    
+    NSArray *arguments = [NSArray arrayWithObjects:@"-c", [NSString stringWithFormat:@"%@", command], nil];
+    [task setArguments:arguments];
+    
+    NSPipe *pipe = [NSPipe pipe];
+    [task setStandardOutput:pipe];
+    
+    NSFileHandle *file = [pipe fileHandleForReading];
+    
+    [task launch];
+    
+    NSData *data = [file readDataToEndOfFile];
+    
+    NSString *output = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return output;
+}
+
 - (IBAction)showFeedbackDialog:(id)sender {
     [DevMateKit showFeedbackDialog:nil inMode:DMFeedbackDefaultMode];
 }
@@ -173,14 +193,15 @@ NSArray *tabViews;
 //    self.window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
     
     tabViewButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAbout, _viewPreferences, nil];
-    for (NSButton *btn in tabViewButtons)
-    {
+    for (NSButton *btn in tabViewButtons) {
         NSRect frame = [btn frame];
-        frame.size.height = 1;
+        frame.size.height = 1;        
         frame.origin.y += 30;
+        
         NSBox *line = [[NSBox alloc] initWithFrame:frame];
         [line setBoxType:NSBoxSeparator];
         [_window.contentView addSubview:line];
+        
         [btn setWantsLayer:YES];
         [btn setTarget:self];
         [btn setAction:@selector(selectView:)];
@@ -189,15 +210,17 @@ NSArray *tabViews;
     NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, _viewSIMBL.frame.origin.y - 1, 125, 1)];
     [line setBoxType:NSBoxSeparator];
     [_window.contentView addSubview:line];
+//
+    NSBox *vert = [[NSBox alloc] initWithFrame:CGRectMake(125, 0, 1, 500)];
+    [vert setBoxType:NSBoxSeparator];
+    [_window.contentView addSubview:vert];
     
-    NSBox *line2 = [[NSBox alloc] initWithFrame:CGRectMake(125, 0, 1, 500)];
-    [line2 setBoxType:NSBoxSeparator];
-    [_window.contentView addSubview:line2];
+    NSArray *bottomButtons = [NSArray arrayWithObjects:_feedbackButton, _donateButton, _reportButton, nil];
     
-    [_donateButton setWantsLayer:YES];
-    [_reportButton setWantsLayer:YES];
-    [_donateButton.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
-    [_reportButton.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
+    for (NSButton *btn in bottomButtons) {
+        [btn setWantsLayer:YES];
+        [btn.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
+    }
     
     tabViews = [NSArray arrayWithObjects:_tabPlugins, _tabSources, _tabUpdates, _tabSIMBLInfo, _tabAbout, _tabPreferences, nil];
     
@@ -207,7 +230,7 @@ NSArray *tabViews;
     [_appVersion setStringValue:[NSString stringWithFormat:@"Version %@ (%@)",
                                  [infoDict objectForKey:@"CFBundleShortVersionString"],
                                  [infoDict objectForKey:@"CFBundleVersion"]]];
-    [_appCopyright setStringValue:@"Copyright © 2015 - 2016 Wolfgang Baird"];
+    [_appCopyright setStringValue:@"Copyright © 2015 - 2017 Wolfgang Baird"];
     [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
     
     // Select tab view
@@ -744,6 +767,19 @@ NSArray *tabViews;
     else
         [self.SIPStatus setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
     
+    dispatch_queue_t bgQueue = dispatch_queue_create("bgQueue", NULL);
+    dispatch_async(bgQueue, ^{
+        //your code here
+        Boolean xcodeState = ![sim_m lib_ValidationSatus:@"com.apple.dt.Xcode"];
+        Boolean safariState = ![sim_m lib_ValidationSatus:@"com.apple.SafariTechnologyPreview"];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Update the UI
+            [self.libValXcode setState:xcodeState];
+            [self.libValSafari setState:safariState];
+        });
+    });
+    
     if ([[sim_m AGENT_versions] objectForKey:@"localVersion"]) {
         if ([NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.SIMBLAgent"])
             [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
@@ -752,84 +788,82 @@ NSArray *tabViews;
     } else {
         [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
     }
-}
-
-- (void)readAppFolders:(NSString *)str :(NSMutableDictionary *)dict {
-    NSArray *appFolderContents = [[NSArray alloc] init];
-    appFolderContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:str error:nil];
-    for (NSString *app in appFolderContents) {
-        if ([app rangeOfString:@".app"].length != 0)
-        {
-            NSString *appName = [[app lastPathComponent] stringByDeletingPathExtension];
-            NSString *appPath = [NSString stringWithFormat:@"%@/%@", str, app];
-            NSString *appBundle = [[NSBundle bundleWithPath:appPath] bundleIdentifier];
-            NSArray *jumboTron = [NSArray arrayWithObjects:appName, appPath, appBundle, nil];
-            [dict setObject:jumboTron forKey:appName];
-        }
-    }
+    
+    [_SIMBLAgentText setStringValue:[NSString stringWithFormat:@"- Version %@", [[sim_m AGENT_versions] objectForKey:@"localVersion"]]];
+    [_SIMBLOSAXText setStringValue:[NSString stringWithFormat:@"- Version %@", [[sim_m OSAX_versions] objectForKey:@"localVersion"]]];
 }
 
 - (void)getBlacklistAPPList {
     myDict = [[NSMutableDictionary alloc] init];
     
-    [self readAppFolders:@"/Applications" :myDict];
-    [self readAppFolders:@"/Applications/Utilities" :myDict];
-    [self readAppFolders:@"/System/Library/CoreServices" :myDict];
-    [self readAppFolders:@"/System/Library/CoreServices/Applications" :myDict];
-    [self readAppFolders:[NSString stringWithFormat:@"%@/Applications", NSHomeDirectory()] :myDict];
-    [self readAppFolders:[NSString stringWithFormat:@"%@/Library/Printers", NSHomeDirectory()] :myDict];
-    
-    NSArray *keys = [myDict allKeys];
-    NSArray *sortedKeys = [keys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    sortedKeys = [[sortedKeys reverseObjectEnumerator] allObjects];
-    
-    sharedPrefs = [[NSUserDefaults alloc] initWithSuiteName:@"org.w0lf.SIMBLAgent"];
-    sharedDict = [sharedPrefs dictionaryRepresentation];
-    
-    NSArray *blacklisted = [sharedDict objectForKey:@"SIMBLApplicationIdentifierBlacklist"];
-    
-    CGRect frame = _blacklistScroll.frame;
-    frame.size.height = 0;
-    int count = 0;
-    for (NSString *app in sortedKeys)
-    {
-        NSArray *myApp = [myDict valueForKey:app];
-        if ([myApp count] == 3)
-        {
-            CGRect buttonFrame = CGRectMake(10, (25 * count), 150, 22);
-            NSButton *newButton = [[NSButton alloc] initWithFrame:buttonFrame];
-            [newButton setButtonType:NSSwitchButton];
-            [newButton setTitle:[myApp objectAtIndex:0]];
-            [newButton sizeToFit];
-            [newButton setAction:@selector(toggleBlacklistItem:)];
-//            [sharedDict valueForKey:[myApp objectAtIndex:2]] == [NSNumber numberWithUnsignedInteger:0]
-            if ([blacklisted containsObject:[myApp objectAtIndex:2]]) {
-                //                NSLog(@"\n\nApplication: %@\nBundle ID: %@\n\n", app, bundleString);
-                [newButton setState:NSOnState];
-            } else {
-                [newButton setState:NSOffState];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        NSString *repin = [self runCommand:@"/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -dump | grep path: | grep .app | sed -e 's/path://g' -e 's/^[ \t]*//' | sort | uniq"];
+        NSArray *ary = [repin componentsSeparatedByString:@"\n"];
+        
+        for (NSString *appPath in ary) {
+            if ([[NSFileManager defaultManager] fileExistsAtPath:appPath]) {
+                NSString *appName = [[appPath lastPathComponent] stringByDeletingPathExtension];
+                NSString *appBundle = [[NSBundle bundleWithPath:appPath] bundleIdentifier];
+                NSArray *jumboTron = [NSArray arrayWithObjects:appName, appPath, appBundle, nil];
+                [myDict setObject:jumboTron forKey:appName];
             }
-            [_blacklistScroll.documentView addSubview:newButton];
-            count += 1;
-            frame.size.height += 25;
         }
-    }
-    frame.size.width = 272;
-    [_blacklistScroll.documentView setFrame:frame];
-    [_blacklistScroll.contentView scrollToPoint:NSMakePoint(0, ((NSView*)_blacklistScroll.documentView).frame.size.height - _blacklistScroll.contentSize.height)];
-    [_blacklistScroll setHasHorizontalScroller:NO];
+        
+        NSArray *keys = [myDict allKeys];
+        NSArray *sortedKeys = [keys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        sortedKeys = [[sortedKeys reverseObjectEnumerator] allObjects];
+        
+        sharedPrefs = [[NSUserDefaults alloc] initWithSuiteName:@"org.w0lf.SIMBLAgent"];
+        sharedDict = [sharedPrefs dictionaryRepresentation];
+        
+        NSArray *blacklisted = [sharedDict objectForKey:@"SIMBLApplicationIdentifierBlacklist"];
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            
+            CGRect frame = _blacklistScroll.frame;
+            frame.size.height = 0;
+            int count = 0;
+            for (NSString *app in sortedKeys)
+            {
+                NSArray *myApp = [myDict valueForKey:app];
+                if ([myApp count] == 3)
+                {
+                    CGRect buttonFrame = CGRectMake(10, (25 * count), 150, 22);
+                    NSButton *newButton = [[NSButton alloc] initWithFrame:buttonFrame];
+                    [newButton setButtonType:NSSwitchButton];
+                    [newButton setTitle:[myApp objectAtIndex:0]];
+                    [newButton sizeToFit];
+                    [newButton setAction:@selector(toggleBlacklistItem:)];
+                    //            [sharedDict valueForKey:[myApp objectAtIndex:2]] == [NSNumber numberWithUnsignedInteger:0]
+                    if ([blacklisted containsObject:[myApp objectAtIndex:2]]) {
+                        //                NSLog(@"\n\nApplication: %@\nBundle ID: %@\n\n", app, bundleString);
+                        [newButton setState:NSOnState];
+                    } else {
+                        [newButton setState:NSOffState];
+                    }
+                    [_blacklistScroll.documentView addSubview:newButton];
+                    count += 1;
+                    frame.size.height += 25;
+                }
+            }
+            
+            frame.size.width = 272;
+            [_blacklistScroll.documentView setFrame:frame];
+            [_blacklistScroll.contentView scrollToPoint:NSMakePoint(0, ((NSView*)_blacklistScroll.documentView).frame.size.height - _blacklistScroll.contentSize.height)];
+            [_blacklistScroll setHasHorizontalScroller:NO];
+            
+        });
+    });
 }
 
 - (IBAction)toggleBlacklistItem:(NSButton*)btn {
-    if ([sharedPrefs isEqual:nil])
-    {
+    if ([sharedPrefs isEqual:nil]) {
         sharedPrefs = [[NSUserDefaults alloc] initWithSuiteName:@"org.w0lf.SIMBLAgent"];
         sharedDict = [sharedPrefs dictionaryRepresentation];
     }
     NSString *bundleString = [[myDict objectForKey:btn.title] objectAtIndex:2];
     NSMutableArray *newBlacklist = [[NSMutableArray alloc] initWithArray:[sharedPrefs objectForKey:@"SIMBLApplicationIdentifierBlacklist"]];
-    if (btn.state == NSOnState)
-    {
+    if (btn.state == NSOnState) {
         NSLog(@"Adding key: %@", bundleString);
         [newBlacklist addObject:bundleString];
         [sharedPrefs setObject:[newBlacklist copy] forKey:@"SIMBLApplicationIdentifierBlacklist"];
@@ -841,9 +875,30 @@ NSArray *tabViews;
     [sharedPrefs synchronize];
 }
 
-- (void)setBadge :(NSString*)toValue
-{
+- (void)setBadge :(NSString*)toValue {
     [_viewUpdateCounter setTitle:toValue];
+}
+
+- (IBAction)uninstallSIMBL:(id)sender {
+    [[SIMBLManager sharedInstance] SIMBL_remove];
+}
+
+- (IBAction)libValXcodeToggle:(id)sender {
+    SIMBLManager *sim_m = [SIMBLManager sharedInstance];
+    if ([sender state] != 0) {
+        [sim_m remoValidation:@"com.apple.dt.Xcode"];
+    } else {
+        [sim_m restValidation:@"com.apple.dt.Xcode"];
+    }
+}
+
+- (IBAction)libValSafariToggle:(id)sender {
+    SIMBLManager *sim_m = [SIMBLManager sharedInstance];
+    if ([sender state] != 0) {
+        [sim_m remoValidation:@"com.apple.SafariTechnologyPreview"];
+    } else {
+        [sim_m restValidation:@"com.apple.SafariTechnologyPreview"];
+    }
 }
 
 @end

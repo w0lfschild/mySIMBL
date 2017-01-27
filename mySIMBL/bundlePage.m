@@ -160,9 +160,14 @@ extern long selectedRow;
     
     if (![[item objectForKey:@"donate"] length])
         [self.bundleDonate setEnabled:false];
+    else
+        [self.bundleDonate setEnabled:true];
+
     
     if (![[item objectForKey:@"contact"] length])
         [self.bundleContact setEnabled:false];
+    else
+        [self.bundleContact setEnabled:true];
     
     [self.bundleContact setTarget:self];
     [self.bundleDonate setTarget:self];
