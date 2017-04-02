@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="sip_c">
+            <connections>
+                <outlet property="confirm" destination="rAi-0L-Pbf" id="Wuc-WU-TCJ"/>
+                <outlet property="window" destination="0P4-CW-hSN" id="InZ-NP-6C7"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="mySIMBL" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="0P4-CW-hSN" userLabel="SIP">
+            <windowStyleMask key="styleMask" closable="YES" unifiedTitleAndToolbar="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="200" y="200" width="440" height="375"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <value key="minSize" type="size" width="440" height="375"/>
+            <value key="maxSize" type="size" width="440" height="375"/>
+            <view key="contentView" id="flF-DP-ZTJ">
+                <rect key="frame" x="0.0" y="0.0" width="440" height="375"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" id="MfS-Kf-3lB">
+                        <rect key="frame" x="18" y="49" width="404" height="306"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="koX-Ir-hF2">
+                            <font key="font" metaFont="system"/>
+                            <mutableString key="title">SIMBL Manager has determined that System Integrity Protection is enabled on your system.  Some components of SIMBL can not be installed or updated while System Integrity Protection is enabled. If these components are not updated, plugins may fail to function or not work properly.  In order to complete the installation follow these instructions:  1 : Restart your computer
+2 : Boot to recovery partition by holding (Command [⌘] +  R)
+3 : Open terminal from the menubar
+4 : Paste this command:  							csrutil disable; reboot
+5 : Press return or enter</mutableString>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" id="rAi-0L-Pbf">
+                        <rect key="frame" x="180" y="13" width="81" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Confirm" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="S8S-pR-p5S">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="iconfirm:" target="-2" id="47u-tK-XX5"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="-114" y="-155.5"/>
+        </window>
+    </objects>
+</document>

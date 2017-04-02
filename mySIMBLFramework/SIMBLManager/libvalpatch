@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# patch Xcode 8+ (or any app with library validation) to allow plugins to be loaded
+
+function createFolder() {
+    if [[ ! -e "$1" ]]; then
+        mkdir -pv "$1"
+    fi
+    chmod 777 "$1"
+}
+
+binaryPath="/Applications/Xcode.app/Contents/MacOS/Xcode"
+log_dir="$HOME"/Library/"Application Support"/mySIMBL/logs
+createFolder "$log_dir"
+exec &>"$log_dir"/unsign.log
+
+if [ $# -ne 0 ]; then
+
+    if [[ "$1" == "-rs" ]]; then
+        #restore signed
+        binaryPath="$2"
+        echo "Restoring signed"
+        if [[ -e "$binaryPath.unsigned" ]]; then
+            sudo rm "$binaryPath.unsigned"
+        fi
+        sudo mv "$binaryPath" "$binaryPath.unsigned"
+        sudo mv "$binaryPath.signed" "$binaryPath"
+        echo "Restored signed binary"
+    else
+        SCRIPTPATH=$(dirname "$0")
+        binaryPath="$1"
+        echo "Unsigning $binaryPath"
+        if [[ -e "$binaryPath.unsigned" ]]; then
+            sudo rm "$binaryPath.unsigned"
+        fi
+        sudo "$SCRIPTPATH"/unsign "$binaryPath"
+        status=$?
+        if [ $status -eq 0 ]; then
+            sudo mv "$binaryPath" "$binaryPath.signed"
+            sudo mv "$binaryPath.unsigned" "$binaryPath"
+            echo "Restored signature of $binaryPath"
+        else
+            echo "Failed";
+        fi
+    fi
+
+fi
+
+echo "Done"

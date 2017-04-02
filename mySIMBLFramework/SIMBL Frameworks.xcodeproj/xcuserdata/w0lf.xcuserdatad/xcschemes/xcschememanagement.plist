@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>SIMBL FrameworksTest.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>SIMBL.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>SIMBLAgent.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>SIMBLManager.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>FB31D4CA1D13ADD30067805D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB31D4E01D13AE770067805D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB4447B41D10BC5900FAEB6E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB8123ED1D343729007DC7FA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB8124021D343744007DC7FA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB8124171D343775007DC7FA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB81243E1D3439C5007DC7FA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB8124531D3439DB007DC7FA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
