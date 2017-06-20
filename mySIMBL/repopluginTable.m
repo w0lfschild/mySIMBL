@@ -70,7 +70,14 @@ long selectedRow;
     repopluginTableCell *result = (repopluginTableCell*)[tableView makeViewWithIdentifier:@"psView" owner:self];
     NSDictionary* item = [[NSMutableDictionary alloc] initWithDictionary:[allPlugins objectAtIndex:row]];
     result.bundleName.stringValue = [item objectForKey:@"name"];
-    result.bundleDescription.stringValue = [item objectForKey:@"description"];
+    NSString *shortDescription = @"";
+    if ([item objectForKey:@"descriptionShort"] != nil) {
+        if (![[item objectForKey:@"descriptionShort"] isEqualToString:@""])
+            shortDescription = [item objectForKey:@"descriptionShort"];
+    }
+    if ([shortDescription isEqualToString:@""])
+        shortDescription = [item objectForKey:@"description"];
+    result.bundleDescription.stringValue = shortDescription;
     NSString *bInfo = [NSString stringWithFormat:@"%@ - %@", [item objectForKey:@"version"], [item objectForKey:@"package"]];
     result.bundleInfo.stringValue = bInfo;
     result.bundleDescription.toolTip = [item objectForKey:@"description"];

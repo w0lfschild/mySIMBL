@@ -51,13 +51,15 @@ extern long selectedRow;
     NSDictionary* item;
 }
 
--(NSFont*)calcFontSizeToFitRect:(NSRect)r :(NSString*)string :(NSString*)currentFontName {
+-(NSFont*)calcFontSizeToFitRect:(NSRect)r :(NSString*)string :(NSString*)currentFontName
+{
     float targetWidth = r.size.width - 1;
     float targetHeight = r.size.height - 1;
     
     // the strategy is to start with a small font size and go larger until I'm larger than one of the target sizes
     int i;
-    for (i=8; i<36; i++) {
+    for (i=8; i<36; i++)
+    {
         NSDictionary* attrs = [[NSDictionary alloc] initWithObjectsAndKeys:[NSFont fontWithName:currentFontName size:i], NSFontAttributeName, nil];
         NSSize strSize = [string sizeWithAttributes:attrs];
         if (strSize.width > targetWidth || strSize.height > targetHeight) break;
@@ -178,9 +180,12 @@ extern long selectedRow;
     [self.bundleInstall setTarget:self];
     [self.bundleDelete setTarget:self];
     [self.bundleDelete setAction:@selector(pluginDelete)];
+    
     if ([installedPlugins objectForKey:[item objectForKey:@"package"]])
     {
         // Pack already exists
+        [self.bundleDelete setEnabled:true];
+        
         NSDictionary* dic = [[installedPlugins objectForKey:[item objectForKey:@"package"]] objectForKey:@"bundleInfo"];
         NSString* cur = [dic objectForKey:@"CFBundleShortVersionString"];
         if ([cur isEqualToString:@""])
@@ -190,9 +195,9 @@ extern long selectedRow;
         NSInteger result = [comparator compareVersion:cur toVersion:new];
         if (result == NSOrderedSame) {
             //versionA == versionB
-            [self.bundleInstall setEnabled:false];
-            self.bundleInstall.title = @"View";
-//            [self.bundleInstall setAction:@selector(pluginUpdate)];
+            [self.bundleInstall setEnabled:true];
+            self.bundleInstall.title = @"Open";
+            [self.bundleInstall setAction:@selector(pluginFinder)];
         } else if (result == NSOrderedAscending) {
             //versionA < versionB
             [self.bundleInstall setEnabled:true];
@@ -202,6 +207,7 @@ extern long selectedRow;
             //versionA > versionB
             [self.bundleInstall setEnabled:false];
             self.bundleInstall.title = @"Downgrade";
+            [self.bundleInstall setAction:@selector(pluginUpdate)];
         }
     } else {
         // Package not installed
@@ -270,8 +276,9 @@ extern long selectedRow;
     NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
     [task waitUntilExit];
     [self.bundleDelete setEnabled:true];
-    [self.bundleInstall setEnabled:false];
-    self.bundleInstall.title = @"View";
+    [self.bundleInstall setEnabled:true];
+    self.bundleInstall.title = @"Open";
+    [self.bundleInstall setAction:@selector(pluginFinder)];
     shareClass* t = [[shareClass alloc] init];
     [t readPlugins:nil];
 }
@@ -288,10 +295,34 @@ extern long selectedRow;
     NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
     [task waitUntilExit];
     [self.bundleDelete setEnabled:true];
-    [self.bundleInstall setEnabled:false];
-    self.bundleInstall.title = @"View";
+    [self.bundleInstall setEnabled:true];
+    self.bundleInstall.title = @"Open";
+    [self.bundleInstall setAction:@selector(pluginFinder)];
     shareClass* t = [[shareClass alloc] init];
     [t readPlugins:nil];
+}
+
+- (void)pluginFinder
+{
+    int pos = 0;
+    bool found = false;
+    for (NSDictionary* dict in pluginsArray)
+    {
+        if ([[dict objectForKey:@"bundleId"] isEqualToString:[item objectForKey:@"package"]])
+        {
+            found = true;
+            break;
+        }
+        pos += 1;
+    }
+    
+    if (found)
+    {
+        NSDictionary* obj = [pluginsArray objectAtIndex:pos];
+        NSString* path = [obj objectForKey:@"path"];
+        NSURL* url = [NSURL fileURLWithPath:path];
+        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:[NSArray arrayWithObject:url]];
+    }
 }
 
 - (void)pluginDelete

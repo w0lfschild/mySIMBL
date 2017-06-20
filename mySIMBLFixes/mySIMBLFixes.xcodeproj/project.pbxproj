@@ -7,18 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FB27D5871E8DB57000DC8037 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB27D5861E8DB57000DC8037 /* AppKit.framework */; };
-		FB27D5891E8DB57000DC8037 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB27D5881E8DB57000DC8037 /* Foundation.framework */; };
-		FB27D58D1E8DB57000DC8037 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB27D58C1E8DB57000DC8037 /* Info.plist */; };
 		FB27D5901E8DB57000DC8037 /* mySIMBLFixes.m in Sources */ = {isa = PBXBuildFile; fileRef = FB27D58F1E8DB57000DC8037 /* mySIMBLFixes.m */; };
 		FB27D5941E8DB57000DC8037 /* ZKSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = FB27D5931E8DB57000DC8037 /* ZKSwizzle.m */; };
-		FB27D5961E8DB57000DC8037 /* PrefixHeader.pch in Resources */ = {isa = PBXBuildFile; fileRef = FB27D5951E8DB57000DC8037 /* PrefixHeader.pch */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		FB27D5831E8DB57000DC8037 /* mySIMBLFixes.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = mySIMBLFixes.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB27D5861E8DB57000DC8037 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
-		FB27D5881E8DB57000DC8037 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		FB27D58C1E8DB57000DC8037 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB27D58E1E8DB57000DC8037 /* mySIMBLFixes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mySIMBLFixes.h; sourceTree = "<group>"; };
 		FB27D58F1E8DB57000DC8037 /* mySIMBLFixes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = mySIMBLFixes.m; sourceTree = "<group>"; };
@@ -32,8 +26,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB27D5871E8DB57000DC8037 /* AppKit.framework in Frameworks */,
-				FB27D5891E8DB57000DC8037 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,7 +36,6 @@
 			isa = PBXGroup;
 			children = (
 				FB27D58A1E8DB57000DC8037 /* mySIMBLFixes */,
-				FB27D5851E8DB57000DC8037 /* Frameworks */,
 				FB27D5841E8DB57000DC8037 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -55,15 +46,6 @@
 				FB27D5831E8DB57000DC8037 /* mySIMBLFixes.bundle */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FB27D5851E8DB57000DC8037 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				FB27D5861E8DB57000DC8037 /* AppKit.framework */,
-				FB27D5881E8DB57000DC8037 /* Foundation.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		FB27D58A1E8DB57000DC8037 /* mySIMBLFixes */ = {
@@ -121,7 +103,7 @@
 		FB27D57B1E8DB57000DC8037 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Wolfgang Baird";
 				TargetAttributes = {
 					FB27D5821E8DB57000DC8037 = {
@@ -153,8 +135,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB27D5961E8DB57000DC8037 /* PrefixHeader.pch in Resources */,
-				FB27D58D1E8DB57000DC8037 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,7 +163,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -191,7 +173,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -228,7 +214,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -236,7 +224,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -259,7 +251,6 @@
 		FB27D59A1E8DB57000DC8037 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;
@@ -279,7 +270,6 @@
 		FB27D59B1E8DB57000DC8037 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;
@@ -315,6 +305,7 @@
 				FB27D59B1E8DB57000DC8037 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

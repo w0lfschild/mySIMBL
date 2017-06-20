@@ -27,8 +27,8 @@
 
 // Tab views
 @property IBOutlet NSView *tabMain;
-
 @property IBOutlet NSView *tabAbout;
+@property IBOutlet NSView *tabAccount;
 @property IBOutlet NSView *tabPlugins;
 @property IBOutlet NSView *tabSIMBL;
 @property IBOutlet NSView *tabPreferences;
@@ -47,42 +47,46 @@
 @property IBOutlet NSButton *addsourcesAccept;
 @property IBOutlet NSTextField *addsourcesTextFiled;
 
-// Sources view
+// Discover view
 @property IBOutlet NSView *sourcesRoot;
 @property IBOutlet NSView *sourcesBundle;
 @property IBOutlet NSScrollView *sourcesURLS;
 @property IBOutlet NSScrollView *sourcesPlugins;
+@property IBOutlet NSScrollView *discoverChanges;
 @property IBOutlet NSButton *sourcesPush;
 @property IBOutlet NSButton *sourcesPop;
 @property IBOutlet NSButton *sourcestoRoot;
 @property IBOutlet NSButton *sourcesAdd;
 @property IBOutlet NSButton *sourcesRefresh;
+@property IBOutlet NSButton *discoverSelectChanges;
+@property IBOutlet NSButton *discoverSelectSources;
 
 // Tab bar items
 @property IBOutlet NSButton *viewPlugins;
 @property IBOutlet NSButton *viewPreferences;
 @property IBOutlet NSButton *viewSources;
 @property IBOutlet NSButton *viewAbout;
+@property IBOutlet NSButton *viewDiscover;
 @property IBOutlet NSButton *viewChanges;
 @property IBOutlet NSButton *viewUpdateCounter;
+@property IBOutlet NSButton *viewAccount;
 @property IBOutlet NSButton *viewSIMBL;
 @property IBOutlet NSButton *feedbackButton;
 @property IBOutlet NSButton *donateButton;
 @property IBOutlet NSButton *reportButton;
 
-
 // About view
-@property IBOutlet NSTextField *appName;
-@property IBOutlet NSTextField *appVersion;
-@property IBOutlet NSTextField *appCopyright;
-@property IBOutlet NSButton *gitButton;
-@property IBOutlet NSButton *sourceButton;
-@property IBOutlet NSButton *emailButton;
-@property IBOutlet NSButton *webButton;
-@property IBOutlet NSButton *showCredits;
-@property IBOutlet NSButton *showChanges;
-@property IBOutlet NSButton *showEULA;
-@property IBOutlet NSTextView *changeLog;
+@property IBOutlet NSTextField      *appName;
+@property IBOutlet NSTextField      *appVersion;
+@property IBOutlet NSTextField      *appCopyright;
+@property IBOutlet NSButton         *gitButton;
+@property IBOutlet NSButton         *sourceButton;
+@property IBOutlet NSButton         *emailButton;
+@property IBOutlet NSButton         *webButton;
+@property IBOutlet NSButton         *showCredits;
+@property IBOutlet NSButton         *showChanges;
+@property IBOutlet NSButton         *showEULA;
+@property IBOutlet NSTextView       *changeLog;
 
 // Preferences view
 @property IBOutlet NSButton         *prefVibrant;
@@ -96,10 +100,8 @@
 // SIMBL View
 @property IBOutlet NSButton         *libValXcode;
 @property IBOutlet NSButton         *libValSafari;
-
 @property IBOutlet NSTextField      *SIMBLAgentText;
 @property IBOutlet NSTextField      *SIMBLOSAXText;
-    
 @property IBOutlet NSButton         *SIMBLAgentToggle;
 @property IBOutlet NSButton         *SIMBLTogggle;
 @property IBOutlet NSPopUpButton    *SIMBLLogging;

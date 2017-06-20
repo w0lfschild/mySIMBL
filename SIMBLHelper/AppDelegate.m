@@ -32,11 +32,9 @@ AppDelegate* this;
     NSURL *appurl = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:@"org.w0lf.mySIMBL"];
     NSBundle *GUIBundle = [NSBundle bundleWithURL:appurl];
     SUUpdater *myUpdater = [SUUpdater updaterForBundle:GUIBundle];
-    if ([myUpdater feedURL])
-    {
+    if ([myUpdater feedURL]) {
         NSDictionary *GUIDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"org.w0lf.mySIMBL"];
-        if (![[GUIDefaults objectForKey:@"SUHasLaunchedBefore"] boolValue])
-        {
+        if (![[GUIDefaults objectForKey:@"SUHasLaunchedBefore"] boolValue]) {
             [myUpdater setAutomaticallyChecksForUpdates:true];
             [myUpdater setAutomaticallyDownloadsUpdates:true];
             [myUpdater setUpdateCheckInterval:86400];
@@ -48,7 +46,6 @@ AppDelegate* this;
 
 - (void)checkSIMBL {
     Boolean openAPP = false;
-    
     SIMBLManager *sim_m = [SIMBLManager sharedInstance];
     id <SUVersionComparison> comparator = [SUStandardVersionComparator defaultComparator];
     NSDictionary* key = [[NSDictionary alloc] init];
@@ -66,10 +63,8 @@ AppDelegate* this;
     if (result == NSOrderedDescending)
         openAPP = true;
     
-    if (openAPP)
-    {
-        if (![[[NSWorkspace sharedWorkspace] runningApplications] containsObject:[[NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.mySIMBL"] objectAtIndex:0]])
-        {
+    if (openAPP) {
+        if (![[[NSWorkspace sharedWorkspace] runningApplications] containsObject:[[NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.mySIMBL"] objectAtIndex:0]]) {
             NSString *path = [[NSBundle bundleWithIdentifier:@"org.w0lf.mySIMBL"] bundlePath];
             [[NSWorkspace sharedWorkspace] launchApplication:path];
         }

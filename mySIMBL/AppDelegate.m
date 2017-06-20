@@ -16,7 +16,11 @@ NSMutableDictionary *installedPluginDICT;
 NSMutableDictionary *needsUpdate;
 
 NSMutableArray *confirmDelete;
+
 NSArray *sourceItems;
+NSArray *discoverItems;
+Boolean isdiscoverView = false;
+
 NSDate *appStart;
 SIMBLManager *SIMBLFramework;
 sim_c *simc;
@@ -34,8 +38,7 @@ NSUInteger osx_ver;
 NSArray *tabViewButtons;
 NSArray *tabViews;
 
-+ (AppDelegate*) sharedInstance
-{
++ (AppDelegate*) sharedInstance {
     static AppDelegate* myDelegate = nil;
     
     if (myDelegate == nil)
@@ -44,6 +47,7 @@ NSArray *tabViews;
     return myDelegate;
 }
 
+// Run bash script
 - (NSString*) runCommand: (NSString*)command {
     NSTask *task = [[NSTask alloc] init];
     [task setLaunchPath:@"/bin/sh"];
@@ -64,16 +68,19 @@ NSArray *tabViews;
     return output;
 }
 
+// Show DevMate feedback
 - (IBAction)showFeedbackDialog:(id)sender {
     [DevMateKit showFeedbackDialog:nil inMode:DMFeedbackDefaultMode];
 }
 
-- (void)setupVariables {
+// Startup
+- (instancetype)init {
+    myDelegate = self;
+    appStart = [NSDate date];
     osx_ver = [[NSProcessInfo processInfo] operatingSystemVersion].minorVersion;
     SIMBLFramework = [SIMBLManager sharedInstance];
-}
-
-- (void)setupDefaults {
+    
+    // Make sure default sources are in place
     NSArray *defaultRepos = @[@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks",
                               @"https://github.com/w0lfschild/myRepo/raw/master/urtweaks",
                               @"https://github.com/w0lfschild/macplugins/raw/master"];
@@ -83,14 +90,6 @@ NSArray *tabViews;
             [newArray addObject:item];
     [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
     [myPreferences setObject:newArray forKey:@"sources"];
-}
-
-// Startup
-- (instancetype)init {
-    myDelegate = self;
-    appStart = [NSDate date];
-    [self setupVariables];
-    [self setupDefaults];
     return self;
 }
 
@@ -114,7 +113,7 @@ NSArray *tabViews;
 //            while(true)
 //            {
 //                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    NSLog(@"checking for bundle updates...");
+                    NSLog(@"Checking for plugin updates...");
                     NSButton *lastView = selectedView;
                     [self selectView:_viewChanges];
                     [self selectView:lastView];
@@ -128,6 +127,8 @@ NSArray *tabViews;
 // Loading
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
     sourceItems = [NSArray arrayWithObjects:_sourcesURLS, _sourcesPlugins, _sourcesBundle, nil];
+    discoverItems = [NSArray arrayWithObjects:_sourcesURLS, _sourcesPlugins, nil];
+    
     [_sourcesPush setEnabled:true];
     [_sourcesPop setEnabled:false];
     myPreferences = [self getmyPrefs];
@@ -145,15 +146,14 @@ NSArray *tabViews;
     [_tblView registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
     
     [self setupEventListener];
-    
     [self.window makeKeyAndOrderFront:self];
-    
     [self setupSIMBLview];
     
     NSDate *methodFinish = [NSDate date];
     NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:appStart];
-    NSLog(@"executionTime = %f", executionTime);
+    NSLog(@"Launch time : %f Seconds", executionTime);
     
+    // Make sure we're in /Applications
     PFMoveToApplicationsFolderIfNecessary();
 }
 
@@ -170,17 +170,16 @@ NSArray *tabViews;
     [_window setTitle:@""];
     [_window setMovableByWindowBackground:YES];
     
-    if (osx_ver > 9)
-    {
+    if (osx_ver > 9) {
         [_window setTitlebarAppearsTransparent:true];
         _window.styleMask |= NSFullSizeContentViewWindowMask;
     }
     
     [self getBlacklistAPPList];
-
+    
+    // Add blurred background if NSVisualEffectView exists
     Class vibrantClass=NSClassFromString(@"NSVisualEffectView");
-    if (vibrantClass)
-    {
+    if (vibrantClass) {
         NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
         [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
         [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
@@ -192,7 +191,7 @@ NSArray *tabViews;
     [self.window.contentView setWantsLayer:YES];
 //    self.window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
     
-    tabViewButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAbout, _viewPreferences, nil];
+    tabViewButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAccount, _viewAbout, _viewPreferences, nil];
     for (NSButton *btn in tabViewButtons) {
         NSRect frame = [btn frame];
         frame.size.height = 1;        
@@ -207,7 +206,7 @@ NSArray *tabViews;
         [btn setAction:@selector(selectView:)];
     }
     
-    NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, _viewSIMBL.frame.origin.y - 1, 125, 1)];
+    NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, _viewAccount.frame.origin.y - 1, 125, 1)];
     [line setBoxType:NSBoxSeparator];
     [_window.contentView addSubview:line];
 //
@@ -222,7 +221,7 @@ NSArray *tabViews;
         [btn.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
     }
     
-    tabViews = [NSArray arrayWithObjects:_tabPlugins, _tabSources, _tabUpdates, _tabSIMBLInfo, _tabAbout, _tabPreferences, nil];
+    tabViews = [NSArray arrayWithObjects:_tabPlugins, _tabSources, _tabUpdates, _tabSIMBLInfo, _tabSources, _tabAbout, _tabPreferences, nil];
     
     
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
@@ -234,8 +233,7 @@ NSArray *tabViews;
     [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
     
     // Select tab view
-    if ([[myPreferences valueForKey:@"prefStartTab"] integerValue] >= 0)
-    {
+    if ([[myPreferences valueForKey:@"prefStartTab"] integerValue] >= 0) {
         NSInteger tab = [[myPreferences valueForKey:@"prefStartTab"] integerValue];
         [self selectView:[tabViewButtons objectAtIndex:tab]];
         [_prefStartTab selectItemAtIndex:tab];
@@ -244,15 +242,11 @@ NSArray *tabViews;
         [_prefStartTab selectItemAtIndex:0];
     }
     
-    if (![SIMBLFramework OSAX_installed])
-    {
-        if ([SIMBLFramework SIP_enabled])
-        {
+    if (![SIMBLFramework OSAX_installed]) {
+        if ([SIMBLFramework SIP_enabled]) {
             [_tabMain setSubviews:[NSArray arrayWithObject:_tabSIP]];
             [self showSIMBLWarning];
-        }
-        else
-        {
+        } else {
             [_tabMain setSubviews:[NSArray arrayWithObject:_tabSIMBL]];
             dispatch_queue_t myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(myQueue, ^{
@@ -369,8 +363,7 @@ NSArray *tabViews;
     if ([[myPreferences objectForKey:@"prefWindow"] boolValue])
         [_window setFrameAutosaveName:@"MainWindow"];
     
-    if ([[myPreferences objectForKey:@"prefTips"] boolValue])
-    {
+    if ([[myPreferences objectForKey:@"prefTips"] boolValue]) {
         NSToolTipManager *test = [NSToolTipManager sharedToolTipManager];
         [test setInitialToolTipDelay:0.1];
     }
@@ -421,7 +414,7 @@ NSArray *tabViews;
 }
 
 - (void)visitWebsite {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://w0lfschild.github.io/app_SIMBL.html"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://w0lfschild.github.io/app_mySIMBL.html"]];
 }
 
 - (void)setupEventListener {
@@ -434,8 +427,7 @@ NSArray *tabViews;
     NSString* _parasiteLOC = [NSString stringWithFormat:@"%@/Parasite/Extensions", [[_LOClibrary objectAtIndex:0] path]];
     
     NSMutableArray *paths = [NSMutableArray arrayWithObjects:_simblLOC, _simblUSR, _parasiteLOC, nil];
-    for (NSString *path in paths)
-    {
+    for (NSString *path in paths) {
         SGDirWatchdog *watchDog = [[SGDirWatchdog alloc] initWithPath:path
                                                                update:^{
                                                                    [_sharedMethods readPlugins:_tblView];
@@ -449,13 +441,11 @@ NSArray *tabViews;
     int selected = (int)[(NSPopUpButton*)sender indexOfSelectedItem];
     if (selected == 0)
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"SUEnableAutomaticChecks"];
-    if (selected == 1)
-    {
+    if (selected == 1) {
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"SUEnableAutomaticChecks"];
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"SUAutomaticallyUpdate"];
     }
-    if (selected == 2)
-    {
+    if (selected == 2) {
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"SUEnableAutomaticChecks"];
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"SUAutomaticallyUpdate"];
     }
@@ -489,8 +479,7 @@ NSArray *tabViews;
     NSButton *btn = sender;
     //    [myPreferences setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefWindow"];
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefWindow"];
-    if ([btn state])
-    {
+    if ([btn state]) {
         [[_window windowController] setShouldCascadeWindows:NO];      // Tell the controller to not cascade its windows.
         [_window setFrameAutosaveName:[_window representedFilename]];
     } else {
@@ -501,8 +490,7 @@ NSArray *tabViews;
 - (IBAction)toggleDonateButton:(id)sender {
     NSButton *btn = sender;
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:[btn state]] forKey:@"prefDonate"];
-    if ([btn state])
-    {
+    if ([btn state]) {
         [NSAnimationContext beginGrouping];
         [[NSAnimationContext currentContext] setDuration:1.0];
         [[_donateButton animator] setAlphaValue:0];
@@ -533,8 +521,7 @@ NSArray *tabViews;
 }
 
 - (IBAction)aboutInfo:(id)sender {
-    if ([sender isEqualTo:_showChanges])
-    {
+    if ([sender isEqualTo:_showChanges]) {
         [_changeLog setEditable:true];
         [_changeLog.textStorage setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
         [_changeLog selectAll:self];
@@ -549,8 +536,7 @@ NSArray *tabViews;
         [[clipView animator] setBoundsOrigin:newOrigin];
         [NSAnimationContext endGrouping];
     }
-    if ([sender isEqualTo:_showCredits])
-    {
+    if ([sender isEqualTo:_showCredits]) {
         [_changeLog setEditable:true];
         [_changeLog.textStorage setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"] documentAttributes:nil]];
         [_changeLog selectAll:self];
@@ -558,8 +544,7 @@ NSArray *tabViews;
         [_changeLog setSelectedRange:NSMakeRange(0,0)];
         [_changeLog setEditable:false];
     }
-    if ([sender isEqualTo:_showEULA])
-    {
+    if ([sender isEqualTo:_showEULA]) {
         NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
         NSAttributedString *newAttString = nil;
         newAttString = [[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"EULA" ofType:@"rtf"] documentAttributes:nil];
@@ -584,28 +569,61 @@ NSArray *tabViews;
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:[btn indexOfSelectedItem]] forKey:@"prefStartTab"];
 }
 
-- (IBAction)pushView:(id)sender {
-    long cur = [sourceItems indexOfObject:[_sourcesRoot.subviews objectAtIndex:0]];
-    if ([_sourcesAllTable selectedRow] > -1)
+- (IBAction)segmentDiscoverTogglePush:(id)sender
+{
+    NSArray *currView = sourceItems;
+    if (isdiscoverView) currView = discoverItems;
+    
+//    long cur = [currView indexOfObject:[_sourcesRoot.subviews objectAtIndex:0]];
+//    [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[currView objectAtIndex:0]];
+//    [self.window makeFirstResponder: [currView objectAtIndex:cur + 1]];
+    
+    NSInteger clickedSegment = [sender selectedSegment];
+    if (clickedSegment == 0)
     {
+        isdiscoverView = false;
+        [_sourcesPush setEnabled:true];
+        [_sourcesPop setEnabled:false];
+        [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:_sourcesURLS];
+    } else {
+        isdiscoverView = true;
+        [_sourcesPush setEnabled:true];
+        [_sourcesPop setEnabled:false];
+        [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:_discoverChanges];
+    }
+}
+
+
+- (IBAction)segmentNavPush:(id)sender
+{
+    NSInteger clickedSegment = [sender selectedSegment];
+    if (clickedSegment == 0)
+    {
+        [self popView:nil];
+    } else {
+        [self pushView:nil];
+    }
+}
+
+- (IBAction)pushView:(id)sender {
+    NSArray *currView = sourceItems;
+    if (isdiscoverView) currView = discoverItems;
+    
+    long cur = [currView indexOfObject:[_sourcesRoot.subviews objectAtIndex:0]];
+    if ([_sourcesAllTable selectedRow] > -1) {
         [_sourcesPop setEnabled:true];
 
-        if ((cur + 1) < [sourceItems count])
-        {
-            [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[sourceItems objectAtIndex:cur + 1]];
-            [self.window makeFirstResponder: [sourceItems objectAtIndex:cur + 1]];
+        if ((cur + 1) < [currView count]) {
+            [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[currView objectAtIndex:cur + 1]];
+            [self.window makeFirstResponder: [currView objectAtIndex:cur + 1]];
         }
         
-        if ((cur + 2) >= [sourceItems count])
-        {
+        if ((cur + 2) >= [currView count]) {
             [_sourcesPush setEnabled:false];
-        }
-        else
-        {
+        } else {
             [_sourcesPush setEnabled:true];
 //            dumpViews(_sourcesRoot, 0);
-            if (osx_ver > 9)
-            {
+            if (osx_ver > 9) {
                 [[[[[[[_sourcesRoot subviews] firstObject] subviews] firstObject] subviews] firstObject] reloadData];
             } else {
                 [[[[[[[_sourcesRoot subviews] firstObject] subviews] firstObject] subviews] lastObject] reloadData];
@@ -615,7 +633,10 @@ NSArray *tabViews;
 }
 
 - (IBAction)popView:(id)sender {
-    long cur = [sourceItems indexOfObject:[_sourcesRoot.subviews objectAtIndex:0]];
+    NSArray *currView = sourceItems;
+    if (isdiscoverView) currView = discoverItems;
+    
+    long cur = [currView indexOfObject:[_sourcesRoot.subviews objectAtIndex:0]];
     
     [_sourcesPush setEnabled:true];
     if ((cur - 1) <= 0)
@@ -623,11 +644,10 @@ NSArray *tabViews;
     else
         [_sourcesPop setEnabled:true];
         
-    if ((cur - 1) >= 0)
-    {
+    if ((cur - 1) >= 0) {
 //        dumpViews(_sourcesRoot, 0);
-        [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[sourceItems objectAtIndex:cur - 1]];
-        [self.window makeFirstResponder: [sourceItems objectAtIndex:cur - 1]];
+        [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[currView objectAtIndex:cur - 1]];
+        [self.window makeFirstResponder: [currView objectAtIndex:cur - 1]];
     }
 }
 
@@ -653,12 +673,9 @@ NSArray *tabViews;
     NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
     NSString *input = _addsourcesTextFiled.stringValue;
     NSArray *arr = [input componentsSeparatedByString:@"\n"];
-    for (NSString* item in arr)
-    {
-        if ([item length])
-        {
-            if ([newArray containsObject:item])
-            {
+    for (NSString* item in arr) {
+        if ([item length]) {
+            if ([newArray containsObject:item]) {
                 [newArray removeObject:item];
             } else {
                 [newArray addObject:item];
@@ -700,8 +717,7 @@ NSArray *tabViews;
     Boolean osaxUpdate = false;
     Boolean sipStatus = false;
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/Application Support/SIMBL/SIMBLAgent.app"])
-    {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/Application Support/SIMBL/SIMBLAgent.app"]) {
         agentUpdate = true;
     } else {
         key = [sim_m AGENT_versions];
@@ -710,14 +726,12 @@ NSArray *tabViews;
             agentUpdate = true;
     }
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/ScriptingAdditions/SIMBL.osax"])
-    {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/ScriptingAdditions/SIMBL.osax"]) {
         osaxUpdate = true;
     } else {
         key = [sim_m OSAX_versions];
         result = [comparator compareVersion:[key objectForKey:@"newestVersion"] toVersion:[key objectForKey:@"localVersion"]];
-        if (result == NSOrderedDescending)
-        {
+        if (result == NSOrderedDescending) {
             osaxUpdate = true;
             if ([sim_m SIP_enabled])
                 sipStatus = true;
@@ -727,16 +741,11 @@ NSArray *tabViews;
     if (sipStatus) { [self showSIPWarning]; }
     if (agentUpdate || osaxUpdate) { [self showSIMBLWarning]; }
     
-    if (agentUpdate && osaxUpdate)
-    {
+    if (agentUpdate && osaxUpdate) {
         [[simc accept] setAction:@selector(confirmSIMBLInstall)];
-    }
-    else if (agentUpdate)
-    {
+    } else if (agentUpdate) {
         [[simc accept] setAction:@selector(confirmAGENTInstall)];
-    }
-    else
-    {
+    } else {
         [[simc accept] setAction:@selector(confirmOSAXInstall)];
     }
 }
@@ -819,15 +828,12 @@ NSArray *tabViews;
         NSArray *blacklisted = [sharedDict objectForKey:@"SIMBLApplicationIdentifierBlacklist"];
         
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            
             CGRect frame = _blacklistScroll.frame;
             frame.size.height = 0;
             int count = 0;
-            for (NSString *app in sortedKeys)
-            {
+            for (NSString *app in sortedKeys) {
                 NSArray *myApp = [myDict valueForKey:app];
-                if ([myApp count] == 3)
-                {
+                if ([myApp count] == 3) {
                     CGRect buttonFrame = CGRectMake(10, (25 * count), 150, 22);
                     NSButton *newButton = [[NSButton alloc] initWithFrame:buttonFrame];
                     [newButton setButtonType:NSSwitchButton];
@@ -851,7 +857,6 @@ NSArray *tabViews;
             [_blacklistScroll.documentView setFrame:frame];
             [_blacklistScroll.contentView scrollToPoint:NSMakePoint(0, ((NSView*)_blacklistScroll.documentView).frame.size.height - _blacklistScroll.contentSize.height)];
             [_blacklistScroll setHasHorizontalScroller:NO];
-            
         });
     });
 }
@@ -895,9 +900,9 @@ NSArray *tabViews;
 - (IBAction)libValSafariToggle:(id)sender {
     SIMBLManager *sim_m = [SIMBLManager sharedInstance];
     if ([sender state] != 0) {
-        [sim_m remoValidation:@"com.apple.SafariTechnologyPreview"];
+        [sim_m remoValidation:@"com.apple.Safari"];
     } else {
-        [sim_m restValidation:@"com.apple.SafariTechnologyPreview"];
+        [sim_m restValidation:@"com.apple.Safari"];
     }
 }
 

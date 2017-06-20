@@ -19,11 +19,13 @@ extern NSMutableDictionary *needsUpdate;
 
 @implementation shareClass
 
-- (void)installBundles:(NSArray*)pathArray {
+- (void)installBundles:(NSArray*)pathArray
+{
     //    NSLog(@"%@", pathArray);
     NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
     NSString* libSupport = [[libDomain objectAtIndex:0] path];
-    for (NSString* path in pathArray) {
+    for (NSString* path in pathArray)
+    {
         if ([[path pathExtension] isEqualToString:@"bundle"])
         {
             NSArray* pathComp=[path pathComponents];
@@ -35,14 +37,16 @@ extern NSMutableDictionary *needsUpdate;
     }
 }
 
-- (void)replaceFile:(NSString*)start :(NSString*)end {
+- (void)replaceFile:(NSString*)start :(NSString*)end
+{
     NSError* error;
     if (![[NSFileManager defaultManager] fileExistsAtPath:[end stringByDeletingLastPathComponent]])
     {
         [[NSFileManager defaultManager] createDirectoryAtPath:[end stringByDeletingLastPathComponent] withIntermediateDirectories:true attributes:nil error:&error];
     }
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:end]) {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:end])
+    {
         //        NSLog(@"File Exists");
         [[NSFileManager defaultManager] replaceItemAtURL:[NSURL fileURLWithPath:end] withItemAtURL:[NSURL fileURLWithPath:start] backupItemName:nil options:NSFileManagerItemReplacementUsingNewMetadataOnly resultingItemURL:nil error:&error];
     } else {
@@ -52,13 +56,15 @@ extern NSMutableDictionary *needsUpdate;
     //    NSLog(@"%@", error);
 }
 
-- (void)readFolder:(NSString *)str :(NSMutableDictionary *)dict {
-    
+- (void)readFolder:(NSString *)str :(NSMutableDictionary *)dict
+{
     NSArray *appFolderContents = [[NSArray alloc] init];
     appFolderContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:str error:nil];
     
-    for (NSString* fileName in appFolderContents) {
-        if ([fileName hasSuffix:@".bundle"]) {
+    for (NSString* fileName in appFolderContents)
+    {
+        if ([fileName hasSuffix:@".bundle"])
+        {
             NSString* path=[str stringByAppendingPathComponent:fileName];
             NSString* name=[fileName stringByDeletingPathExtension];
             
@@ -70,20 +76,22 @@ extern NSMutableDictionary *needsUpdate;
             
             NSDictionary    *info = [[NSDictionary alloc] initWithContentsOfFile:plistPath];
             NSString* bundleIdentifier=[bundle bundleIdentifier];
-            if(![bundleIdentifier length])bundleIdentifier=@"(null)";
+            if (![bundleIdentifier length]) bundleIdentifier=@"(null)";
             
             NSString* bundleVersion=[info objectForKey:@"CFBundleShortVersionString"];
-            if(![bundleVersion length])bundleVersion=[info objectForKey:@"CFBundleVersion"];
+            if (![bundleVersion length]) bundleVersion=[info objectForKey:@"CFBundleVersion"];
             
             NSString* description=bundleIdentifier;
-            if([bundleVersion length]){
+            if ([bundleVersion length])
+            {
                 description=[NSString stringWithFormat:@"%@ - %@", bundleVersion, description];
             }
             
             NSArray *components = [path pathComponents];
             NSString* location= [components objectAtIndex:1];
             NSString* endcomp= [components objectAtIndex:[components count] - 2];
-            if([location length]){
+            if ([location length])
+            {
                 if ([endcomp rangeOfString:@"Disabled"].length)
                     description=[NSString stringWithFormat:@"%@ - %@ (Disabled)", description, location];
                 else
@@ -105,7 +113,8 @@ extern NSMutableDictionary *needsUpdate;
     }
 }
 
-- (void)readPlugins:(NSTableView *)pluginTable {
+- (void)readPlugins:(NSTableView *)pluginTable
+{
     pluginsArray = [[NSMutableArray alloc] init];
     confirmDelete = [[NSMutableArray alloc] init];
     NSMutableDictionary *myDict = [[NSMutableDictionary alloc] init];
@@ -148,7 +157,8 @@ extern NSMutableDictionary *needsUpdate;
     [pluginTable reloadData];
 }
 
-- (void)pluginInstall:(NSDictionary*)item :(NSString*)repo {
+- (void)pluginInstall:(NSDictionary*)item :(NSString*)repo
+{
     NSURL *installURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", repo, [item objectForKey:@"filename"]]];
     NSData *myData = [NSData dataWithContentsOfURL:installURL];
     NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
@@ -162,7 +172,8 @@ extern NSMutableDictionary *needsUpdate;
     [t readPlugins:nil];
 }
 
-- (void)pluginUpdate:(NSDictionary*)item :(NSString*)repo {
+- (void)pluginUpdate:(NSDictionary*)item :(NSString*)repo
+{
     NSURL *installURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", repo, [item objectForKey:@"filename"]]];
     NSData *myData = [NSData dataWithContentsOfURL:installURL];
     NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
@@ -176,7 +187,8 @@ extern NSMutableDictionary *needsUpdate;
     [t readPlugins:nil];
 }
 
-- (void)pluginDelete:(NSDictionary*)item {
+- (void)pluginDelete:(NSDictionary*)item
+{
     int pos = 0;
     bool found = false;
     for (NSDictionary* dict in pluginsArray)
@@ -199,7 +211,8 @@ extern NSMutableDictionary *needsUpdate;
     }
 }
 
-- (NSImage*)getbundleIcon:(NSDictionary*)plist {
+- (NSImage*)getbundleIcon:(NSDictionary*)plist
+{
     NSImage* result = nil;
     NSArray* targets = [[NSArray alloc] init];
     if ([plist objectForKey:@"targets"])
@@ -232,7 +245,8 @@ extern NSMutableDictionary *needsUpdate;
     return result;
 }
 
-- (void)checkforPluginUpdates :(NSTableView*)table {
+- (void)checkforPluginUpdates :(NSTableView*)table
+{
     [self readPlugins:nil];
     
     NSDictionary *plugins = [[NSDictionary alloc] initWithDictionary:[installedPluginDICT copy]];
@@ -254,7 +268,8 @@ extern NSMutableDictionary *needsUpdate;
         }
     }
     
-    for (NSString* key in plugins) {
+    for (NSString* key in plugins)
+    {
         id value = [plugins objectForKey:key];
         id bundleID = [value objectForKey:@"bundleId"];
         id localVersion = [value objectForKey:@"version"];

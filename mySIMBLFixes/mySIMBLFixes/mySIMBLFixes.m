@@ -23,10 +23,10 @@
 + (instancetype)sharedInstance
 {
     static mySIMBLFixes *plugin = nil;
-    @synchronized(self) {
-        if (!plugin) {
+    @synchronized(self)
+    {
+        if (!plugin)
             plugin = [[self alloc] init];
-        }
     }
     return plugin;
 }
@@ -37,16 +37,18 @@
  */
 + (void)load
 {
-    mySIMBLFixes *plugin = [mySIMBLFixes sharedInstance];
+//    mySIMBLFixes *plugin = [mySIMBLFixes sharedInstance];
     
     // Terminal
-    if ([[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.apple.Terminal"]) {
+    if ([[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.apple.Terminal"])
+    {
         BOOL addWin = true;
         for (NSObject *o in [NSApp windows])
             if ([[o className] isEqualToString:@"TTWindow"])
                 addWin = false;
         
-        if (addWin) {
+        if (addWin)
+        {
             CGEventFlags flags = kCGEventFlagMaskCommand;
             CGEventRef ev;
             CGEventSourceRef source = CGEventSourceCreate (kCGEventSourceStateCombinedSessionState);
@@ -68,12 +70,11 @@
     }
     
     // Archive Utility
-    if ([[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.apple.archiveutility"]) {
+    if ([[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.apple.archiveutility"])
         ZKSwizzle(wb_msf_BAHController, BAHController);
-    }
     
-    NSUInteger osx_ver = [[NSProcessInfo processInfo] operatingSystemVersion].minorVersion;
-    NSLog(@"%@ loaded into %@ on macOS 10.%ld", [self class], [[NSBundle mainBundle] bundleIdentifier], (long)osx_ver);
+//    NSUInteger osx_ver = [[NSProcessInfo processInfo] operatingSystemVersion].minorVersion;
+    NSLog(@"%@ loaded into %@ on macOS %@", [self class], [[NSBundle mainBundle] bundleIdentifier], [[NSProcessInfo processInfo] operatingSystemVersionString]);
 }
 
 
@@ -82,7 +83,8 @@
 @implementation wb_msf_BAHController
 
 // Why is this broken by mySIMBL loading?
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication
+{
     return YES;
 }
 

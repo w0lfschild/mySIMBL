@@ -11,7 +11,7 @@
 		FB09A4F71C4B64F80072C553 /* webicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4F61C4B64F80072C553 /* webicon.png */; };
 		FB0CF69F1C61D1E9002CF3DE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB0CF69E1C61D1E9002CF3DE /* AppDelegate.m */; };
 		FB0CF6A21C61D1E9002CF3DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB0CF6A11C61D1E9002CF3DE /* main.m */; };
-		FB0CF6A71C61D1E9002CF3DE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB0CF6A51C61D1E9002CF3DE /* MainMenu.xib */; };
+		FB1836441EF78E5A009CAEBC /* discoverTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1836431EF78E5A009CAEBC /* discoverTable.m */; };
 		FB24B09E1C952FF700443CA0 /* pluginTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB24B09D1C952FF700443CA0 /* pluginTable.m */; };
 		FB24B0A21C955D2C00443CA0 /* shareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = FB24B0A11C955D2C00443CA0 /* shareClass.m */; };
 		FB50D3461D4B0C7E004668C0 /* update.png in Resources */ = {isa = PBXBuildFile; fileRef = FB50D3451D4B0C7E004668C0 /* update.png */; };
@@ -75,8 +75,8 @@
 		FB0CF69D1C61D1E9002CF3DE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FB0CF69E1C61D1E9002CF3DE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		FB0CF6A11C61D1E9002CF3DE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		FB0CF6A61C61D1E9002CF3DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		FB0CF6A81C61D1E9002CF3DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FB1836431EF78E5A009CAEBC /* discoverTable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = discoverTable.m; sourceTree = "<group>"; };
 		FB24B09D1C952FF700443CA0 /* pluginTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pluginTable.m; sourceTree = "<group>"; };
 		FB24B0A11C955D2C00443CA0 /* shareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = shareClass.m; sourceTree = "<group>"; };
 		FB24B0A31C955EEC00443CA0 /* shareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shareClass.h; sourceTree = "<group>"; };
@@ -136,23 +136,14 @@
 		FB0CF69C1C61D1E9002CF3DE /* mySIMBLHelper */ = {
 			isa = PBXGroup;
 			children = (
-				FB0CF6A01C61D1E9002CF3DE /* Supporting Files */,
+				FBB793531C7AB7C5006BF301 /* dsa_pub.pem */,
+				FB0CF6A11C61D1E9002CF3DE /* main.m */,
 				FB0CF69D1C61D1E9002CF3DE /* AppDelegate.h */,
 				FB0CF69E1C61D1E9002CF3DE /* AppDelegate.m */,
 				FB0CF6A81C61D1E9002CF3DE /* Info.plist */,
 			);
 			name = mySIMBLHelper;
 			path = SIMBLHelper;
-			sourceTree = "<group>";
-		};
-		FB0CF6A01C61D1E9002CF3DE /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				FBB793531C7AB7C5006BF301 /* dsa_pub.pem */,
-				FB0CF6A51C61D1E9002CF3DE /* MainMenu.xib */,
-				FB0CF6A11C61D1E9002CF3DE /* main.m */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		FB57959C1C4DCFA2001A76AC /* Images */ = {
@@ -219,6 +210,7 @@
 			children = (
 				FB24B0A31C955EEC00443CA0 /* shareClass.h */,
 				FB24B0A11C955D2C00443CA0 /* shareClass.m */,
+				FB1836431EF78E5A009CAEBC /* discoverTable.m */,
 				FB24B09D1C952FF700443CA0 /* pluginTable.m */,
 				FBBF6AF51DFFA6B300BBCF28 /* updatesTable.m */,
 				FBA9EB331C965E9F00511BE3 /* sourcesTable.m */,
@@ -339,7 +331,7 @@
 		FB5F44AB1C41EA4000DE80B4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Wolfgang Baird";
 				TargetAttributes = {
 					FB0CF69A1C61D1E8002CF3DE = {
@@ -381,7 +373,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBB793541C7AB7C5006BF301 /* dsa_pub.pem in Resources */,
-				FB0CF6A71C61D1E9002CF3DE /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB24B09E1C952FF700443CA0 /* pluginTable.m in Sources */,
+				FB1836441EF78E5A009CAEBC /* discoverTable.m in Sources */,
 				FBA9EB341C965E9F00511BE3 /* sourcesTable.m in Sources */,
 				FB24B0A21C955D2C00443CA0 /* shareClass.m in Sources */,
 				FB7A4B741DF384B50071589B /* StartAtLoginController.m in Sources */,
@@ -455,14 +447,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FB0CF6A51C61D1E9002CF3DE /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FB0CF6A61C61D1E9002CF3DE /* Base */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
 		FB5F44BE1C41EA4000DE80B4 /* Appliaction.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -486,6 +470,7 @@
 				);
 				INFOPLIST_FILE = SIMBLHelper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../../Frameworks/DevMateKit @loader_path/../../../../../Frameworks $(PROJECT_DIR)/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = org.w0lf.mySIMBLAgent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -505,6 +490,7 @@
 				);
 				INFOPLIST_FILE = SIMBLHelper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../../Frameworks/DevMateKit @loader_path/../../../../../Frameworks $(PROJECT_DIR)/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = org.w0lf.mySIMBLAgent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -521,14 +507,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -568,14 +560,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
