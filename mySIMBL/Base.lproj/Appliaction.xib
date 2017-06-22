@@ -1121,7 +1121,7 @@ Would you like to install SIMBL now and start using plugins?</string>
                 <segmentedControl verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M1F-gq-yzA">
                     <rect key="frame" x="208" y="457" width="184" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="2fh-0R-uJl">
+                    <segmentedCell key="cell" enabled="NO" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="2fh-0R-uJl">
                         <font key="font" metaFont="system"/>
                         <segments>
                             <segment label="Sources" width="89"/>
