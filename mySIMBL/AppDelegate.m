@@ -9,6 +9,11 @@
 #import "AppDelegate.h"
 
 AppDelegate* myDelegate;
+
+NSMutableArray *allLocalPlugins;
+NSMutableArray *allReposPlugins;
+NSMutableArray *allRepos;
+
 NSMutableDictionary *myPreferences;
 NSMutableArray *pluginsArray;
 
@@ -19,7 +24,7 @@ NSMutableArray *confirmDelete;
 
 NSArray *sourceItems;
 NSArray *discoverItems;
-Boolean isdiscoverView = false;
+Boolean isdiscoverView = true;
 
 NSDate *appStart;
 SIMBLManager *SIMBLFramework;
@@ -51,19 +56,13 @@ NSArray *tabViews;
 - (NSString*) runCommand: (NSString*)command {
     NSTask *task = [[NSTask alloc] init];
     [task setLaunchPath:@"/bin/sh"];
-    
     NSArray *arguments = [NSArray arrayWithObjects:@"-c", [NSString stringWithFormat:@"%@", command], nil];
     [task setArguments:arguments];
-    
     NSPipe *pipe = [NSPipe pipe];
     [task setStandardOutput:pipe];
-    
     NSFileHandle *file = [pipe fileHandleForReading];
-    
     [task launch];
-    
     NSData *data = [file readDataToEndOfFile];
-    
     NSString *output = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     return output;
 }
@@ -84,6 +83,7 @@ NSArray *tabViews;
     NSArray *defaultRepos = @[@"https://github.com/w0lfschild/myRepo/raw/master/mytweaks",
                               @"https://github.com/w0lfschild/myRepo/raw/master/urtweaks",
                               @"https://github.com/w0lfschild/macplugins/raw/master"];
+    
     NSMutableArray *newArray = [NSMutableArray arrayWithArray:[myPreferences objectForKey:@"sources"]];
     for (NSString *item in defaultRepos)
         if (![[myPreferences objectForKey:@"sources"] containsObject:item])
@@ -108,7 +108,7 @@ NSArray *tabViews;
     [DevMateKit setupIssuesController:nil reportingUnhandledIssues:YES];
     
     // Loop looking for bundle updates
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 //        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
 //            while(true)
 //            {
@@ -121,20 +121,20 @@ NSArray *tabViews;
 //                [NSThread sleepForTimeInterval:300.0f];
 //            }
 //        });
-    });
+//    });
 }
 
 // Loading
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
     sourceItems = [NSArray arrayWithObjects:_sourcesURLS, _sourcesPlugins, _sourcesBundle, nil];
-    discoverItems = [NSArray arrayWithObjects:_sourcesURLS, _sourcesPlugins, nil];
+    discoverItems = [NSArray arrayWithObjects:_discoverChanges, _sourcesBundle, nil];
     
     [_sourcesPush setEnabled:true];
     [_sourcesPop setEnabled:false];
     myPreferences = [self getmyPrefs];
     _sharedMethods = [shareClass alloc];
     
-    [_sourcesRoot setSubviews:[[NSArray alloc] initWithObjects:_sourcesURLS, nil]];
+    [_sourcesRoot setSubviews:[[NSArray alloc] initWithObjects:_discoverChanges, nil]];
     
     [self setupWindow];
     [self setupPrefstab];
@@ -569,8 +569,7 @@ NSArray *tabViews;
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:[btn indexOfSelectedItem]] forKey:@"prefStartTab"];
 }
 
-- (IBAction)segmentDiscoverTogglePush:(id)sender
-{
+- (IBAction)segmentDiscoverTogglePush:(id)sender {
     NSArray *currView = sourceItems;
     if (isdiscoverView) currView = discoverItems;
     
@@ -593,9 +592,7 @@ NSArray *tabViews;
     }
 }
 
-
-- (IBAction)segmentNavPush:(id)sender
-{
+- (IBAction)segmentNavPush:(id)sender {
     NSInteger clickedSegment = [sender selectedSegment];
     if (clickedSegment == 0)
     {
@@ -654,7 +651,11 @@ NSArray *tabViews;
 - (IBAction)rootView:(id)sender {
     [_sourcesPush setEnabled:true];
     [_sourcesPop setEnabled:false];
-    [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:_sourcesURLS];
+    
+    NSView *currView = _sourcesURLS;
+    if (isdiscoverView) currView = _discoverChanges;
+    
+    [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:currView];
 }
 
 - (IBAction)selectView:(id)sender {
@@ -886,24 +887,6 @@ NSArray *tabViews;
 
 - (IBAction)uninstallSIMBL:(id)sender {
     [[SIMBLManager sharedInstance] SIMBL_remove];
-}
-
-- (IBAction)libValXcodeToggle:(id)sender {
-    SIMBLManager *sim_m = [SIMBLManager sharedInstance];
-    if ([sender state] != 0) {
-        [sim_m remoValidation:@"com.apple.dt.Xcode"];
-    } else {
-        [sim_m restValidation:@"com.apple.dt.Xcode"];
-    }
-}
-
-- (IBAction)libValSafariToggle:(id)sender {
-    SIMBLManager *sim_m = [SIMBLManager sharedInstance];
-    if ([sender state] != 0) {
-        [sim_m remoValidation:@"com.apple.Safari"];
-    } else {
-        [sim_m restValidation:@"com.apple.Safari"];
-    }
 }
 
 @end

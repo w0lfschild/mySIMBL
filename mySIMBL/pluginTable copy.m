@@ -8,8 +8,6 @@
 
 @import AppKit;
 #import "shareClass.h"
-#import "pluginData.h"
-#import "MSPlugin.h"
 
 extern NSMutableArray *confirmDelete;
 extern NSMutableArray *pluginsArray;
@@ -18,50 +16,35 @@ NSInteger previusRow = -1;
 @interface pluginTable : NSObject
 {
     shareClass *_sharedMethods;
-    pluginData *_pluginData;
 }
 @property (weak) IBOutlet NSTableView*  tblView;
-@property NSMutableArray *tableContent;
 @end
 
 @interface CustomTableCell : NSTableCellView <NSTableViewDataSource, NSTableViewDelegate>
 @property (weak) IBOutlet NSButton*     pluginDelete;
 @property (weak) IBOutlet NSButton*     pluginWeb;
-@property (weak) IBOutlet NSButton*     pluginUserLoc;
 @property (weak) IBOutlet NSButton*     pluginStatus;
 @property (weak) IBOutlet NSTextField*  pluginName;
 @property (weak) IBOutlet NSTextField*  pluginDescription;
 @property (weak) IBOutlet NSImageView*  pluginImage;
-@property (weak) IBOutlet NSString*     pluginID;
 @end
 
 @implementation pluginTable
 
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
-{
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     if (_sharedMethods == nil)
         _sharedMethods = [shareClass alloc];
-    
-    _pluginData = [pluginData sharedInstance];
-    [_pluginData fetch_local];
-    
-    NSSortDescriptor *sorter = [[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-    NSArray *dank = [[NSMutableArray alloc] initWithArray:[_pluginData.localPluginsDic allValues]];
-    _tableContent = [[dank sortedArrayUsingDescriptors:@[sorter]] copy];
-    
-    return _tableContent.count;
+//    [tableView setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleNone];
+    return [pluginsArray count];
 }
 
-- (NSDragOperation)tableView:(NSTableView*)tv validateDrop:(id <NSDraggingInfo>)info proposedRow:(int)row proposedDropOperation:(NSTableViewDropOperation)op
-{
+- (NSDragOperation)tableView:(NSTableView*)tv validateDrop:(id <NSDraggingInfo>)info proposedRow:(int)row proposedDropOperation:(NSTableViewDropOperation)op {
     return NSDragOperationCopy;
 }
 
-- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info row:(int)row dropOperation:(NSTableViewDropOperation)operation
-{
+- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info row:(int)row dropOperation:(NSTableViewDropOperation)operation {
     NSPasteboard *pboard = [info draggingPasteboard];
-    if ([[pboard types] containsObject:NSURLPboardType])
-    {
+    if ([[pboard types] containsObject:NSURLPboardType]) {
         NSArray* urls = [pboard readObjectsForClasses:@[[NSURL class]] options:nil];
         NSMutableArray* sorted = [[NSMutableArray alloc] init];
         for (NSURL* url in urls)
@@ -80,32 +63,75 @@ NSInteger previusRow = -1;
     return YES;
 }
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
-{
-    CustomTableCell *result = (CustomTableCell*)[tableView makeViewWithIdentifier:@"MyView" owner:self];
-    MSPlugin *aBundle = [_tableContent objectAtIndex:row];
+//-(NSColor*)inverseColor:(NSColor*)color
+//{
+//    CGFloat r,g,b,a;
+//    [color getRed:&r green:&g blue:&b alpha:&a];
+//    return [NSColor colorWithRed:1.-r green:1.-g blue:1.-b alpha:a];
+//}
+//
+//-(void)tableChange:(NSNotification *)aNotification
+//{
+//    id sender = [aNotification object];
+//    NSInteger selectedRow = [sender selectedRow];
+//    if (selectedRow != -1) {
+//        if (selectedRow != previusRow)
+//        {
+//            NSColor *aColor = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+//            if (aColor) {
+//                CustomTableCell *ctc = [sender viewAtColumn:0 row:selectedRow makeIfNecessary:YES];
+//                aColor = [self inverseColor:aColor];
+//                //            [ctc.pluginName setFont:[NSFont boldSystemFontOfSize:13]];
+//                [ctc.pluginName setTextColor:aColor];
+//                [ctc.pluginDescription setTextColor:aColor];
+//                if (previusRow != -1)
+//                {
+//                    CustomTableCell *ctc = [sender viewAtColumn:0 row:previusRow makeIfNecessary:YES];
+//                    //                [ctc.pluginName setFont:[NSFont systemFontOfSize:13]];
+//                    [ctc.pluginName setTextColor:[NSColor blackColor]];
+//                    [ctc.pluginDescription setTextColor:[NSColor grayColor]];
+//                }
+//                previusRow = selectedRow;
+//            }
+//            
+//        }
+//    }
+//    else {
+//        // No row was selected
+//    }
+//}
+//
+//- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+//{
+//    [self tableChange:aNotification];
+//}
+//
+//- (void)tableViewSelectionIsChanging:(NSNotification *)aNotification
+//{
+//    [self tableChange:aNotification];
+//}
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     
-    result.pluginName.stringValue = aBundle.localName;
-    if([aBundle.localPath length]) {
-        NSString *path = aBundle.localPath;
-//        NSArray *components = [path pathComponents];
-        if ([path rangeOfString:@"Disabled"].length) {
-            [result.pluginStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
-        } else {
-            [result.pluginStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
-        }
+    CustomTableCell *result = (CustomTableCell*)[tableView makeViewWithIdentifier:@"MyView" owner:self];
+    
+    NSDictionary* item = [pluginsArray objectAtIndex:row];
+    NSDictionary* info = [item objectForKey:@"bundleInfo"];
+    
+    result.pluginName.stringValue = [item objectForKey:@"name"];
+    if([[item objectForKey:@"path"] length]){
+        NSString *path = [item objectForKey:@"path"];
         NSArray *components = [path pathComponents];
-        if ([components[1] isEqualToString:@"Library"]) {
-            [result.pluginUserLoc setState:NSOffState];
-            [result.pluginUserLoc setImage:[NSImage imageNamed:@"NSUserGroup"]];
-        } else {
-            [result.pluginUserLoc setState:NSOnState];
-            [result.pluginUserLoc setImage:[NSImage imageNamed:@"NSUser"]];
-        }
+        if ([[components objectAtIndex:1] isEqualToString:@"Library"])
+            [result.pluginStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+        else
+            [result.pluginStatus setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
+        if ([path rangeOfString:@"Disabled"].length)
+            [result.pluginStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
     }
     
-    result.pluginDescription.stringValue = aBundle.localDescription;
-    result.pluginImage.image = [_pluginData fetch_icon:aBundle];
+    result.pluginDescription.stringValue = [item objectForKey:@"description"];
+    result.pluginImage.image = [_sharedMethods getbundleIcon:item];
     
     [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashEmpty"]];
     
@@ -117,7 +143,12 @@ NSInteger previusRow = -1;
     [result.pluginWeb setImage:[NSImage imageNamed:@"webicon.png"]];
     [[result.pluginWeb cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
     [result.pluginWeb setEnabled:true];
-    [result.pluginWeb setHidden:true];
+    [result.pluginWeb setHidden:false];
+    NSString* webURL = [info objectForKey:@"DevURL"];
+    if (![webURL length]) {
+        [result.pluginWeb setEnabled:false];
+        [result.pluginWeb setHidden:true];
+    }
     
     // Return the result
     return result;
@@ -137,42 +168,9 @@ NSInteger previusRow = -1;
     [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:[NSArray arrayWithObject:fileURL]];
 }
 
-- (IBAction)pluginLocToggle:(id)sender {
-    NSTableView *t = (NSTableView*)[[[sender superview] superview] superview];
-    long selected = [t rowForView:sender];
-    CustomTableCell *cell = (CustomTableCell*)[sender superview];
-    [cell.pluginUserLoc setNextState];
-    
-    NSDictionary* obj = [pluginsArray objectAtIndex:selected];
-    NSString* name = [obj objectForKey:@"name"];
-    NSString* path = [obj objectForKey:@"path"];
-    
-    NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
-    NSArray* usrDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
-    
-    NSString* libSupport = [[libDomain objectAtIndex:0] path];
-    NSString* usrSupport = [[usrDomain objectAtIndex:0] path];
-    
-    NSString* disPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)/%@.bundle", libSupport, name];
-    NSString* libPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins/%@.bundle", libSupport, name];
-    if (cell.pluginUserLoc.state == NSOffState) {
-        disPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)/%@.bundle", usrSupport, name];
-        libPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins/%@.bundle", usrSupport, name];
-    }
-    
-    if ([path rangeOfString:@"Disabled"].length)
-        [_sharedMethods replaceFile:path :disPath];
-    else
-        [_sharedMethods replaceFile:path :libPath];
-    
-    [_sharedMethods readPlugins:_tblView];
-}
-
 - (IBAction)pluginToggle:(id)sender {
     NSTableView *t = (NSTableView*)[[[sender superview] superview] superview];
     long selected = [t rowForView:sender];
-    CustomTableCell *cell = (CustomTableCell*)[sender superview];
-    
     NSDictionary* obj = [pluginsArray objectAtIndex:selected];
     NSString* name = [obj objectForKey:@"name"];
     NSString* path = [obj objectForKey:@"path"];
@@ -185,23 +183,24 @@ NSInteger previusRow = -1;
     
     NSString* disPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)/%@.bundle", libSupport, name];
     NSString* libPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins/%@.bundle", libSupport, name];
-    if (cell.pluginUserLoc.state) {
-        disPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)/%@.bundle", usrSupport, name];
-        libPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins/%@.bundle", usrSupport, name];
-    }
+    NSString* usrPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins/%@.bundle", usrSupport, name];
     
-    if ([[obj objectForKey:@"path"] isEqualToString:disPath])
+    if ([[obj objectForKey:@"path"] isEqualToString:disPath]) {
+        [_sharedMethods replaceFile:path :usrPath];
+    } else if ([[obj objectForKey:@"path"] isEqualToString:usrPath]) {
         [_sharedMethods replaceFile:path :libPath];
-    else
+    } else {
         [_sharedMethods replaceFile:path :disPath];
+    }
     
     [_sharedMethods readPlugins:_tblView];
 }
 
 - (IBAction)pluginDelete:(id)sender {
-    NSTableView *t = _tblView;
-    long selected = [t selectedRow];
-    if ([[confirmDelete objectAtIndex:selected] boolValue]) {
+    NSTableView *t = (NSTableView*)[[[sender superview] superview] superview];
+    long selected = [t rowForView:sender];
+    if ([[confirmDelete objectAtIndex:selected] boolValue])
+    {
         NSDictionary* obj = [pluginsArray objectAtIndex:selected];
         NSString* path = [obj objectForKey:@"path"];
         NSURL* url = [NSURL fileURLWithPath:path];
@@ -209,6 +208,7 @@ NSInteger previusRow = -1;
         NSError* error;
         [[NSFileManager defaultManager] trashItemAtURL:url resultingItemURL:&trash error:&error];
     }
+    [_sharedMethods readPlugins:_tblView];
     [confirmDelete setObject:[NSNumber numberWithBool:true] atIndexedSubscript:selected];
 }
 

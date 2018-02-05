@@ -14,28 +14,28 @@
 @interface bundlePage : NSView
 
 // Bundle Display
-@property IBOutlet NSTextField*  bundleName;
-@property IBOutlet NSTextView*  bundleDesc;
-@property IBOutlet NSImageView*  bundleImage;
+@property IBOutlet NSTextField*     bundleName;
+@property IBOutlet NSTextView*      bundleDesc;
+@property IBOutlet NSImageView*     bundleImage;
 
 // Bundle Infobox
-@property IBOutlet NSTextField*  bundleTarget;
-@property IBOutlet NSTextField*  bundleDate;
-@property IBOutlet NSTextField*  bundleVersion;
-@property IBOutlet NSTextField*  bundlePrice;
-@property IBOutlet NSTextField*  bundleSize;
-@property IBOutlet NSTextField*  bundleID;
-@property IBOutlet NSTextField*  bundleDev;
-@property IBOutlet NSTextField*  bundleCompat;
+@property IBOutlet NSTextField*     bundleTarget;
+@property IBOutlet NSTextField*     bundleDate;
+@property IBOutlet NSTextField*     bundleVersion;
+@property IBOutlet NSTextField*     bundlePrice;
+@property IBOutlet NSTextField*     bundleSize;
+@property IBOutlet NSTextField*     bundleID;
+@property IBOutlet NSTextField*     bundleDev;
+@property IBOutlet NSTextField*     bundleCompat;
 
 // Bundle Buttons
-@property IBOutlet NSButton*  bundleInstall;
-@property IBOutlet NSButton*  bundleDelete;
-@property IBOutlet NSButton*  bundleContact;
-@property IBOutlet NSButton*  bundleDonate;
+@property IBOutlet NSButton*        bundleInstall;
+@property IBOutlet NSButton*        bundleDelete;
+@property IBOutlet NSButton*        bundleContact;
+@property IBOutlet NSButton*        bundleDonate;
 
 // Bundle Webview
-@property IBOutlet WebView*  bundleWebView;
+@property IBOutlet WebView*         bundleWebView;
 
 @end
 

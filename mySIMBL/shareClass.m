@@ -34,6 +34,15 @@ extern NSMutableDictionary *needsUpdate;
             //        NSLog(@"\n%@\n%@", libPath, path);
             [self replaceFile:path :libPath];
         }
+        
+        if ([[path pathExtension] isEqualToString:@"app"])
+        {
+            NSArray* pathComp=[path pathComponents];
+            NSString* name=[pathComp objectAtIndex:[pathComp count] - 1];
+            NSString* libPath = [NSString stringWithFormat:@"/Applications/%@", name];
+            //        NSLog(@"\n%@\n%@", libPath, path);
+            [self replaceFile:path :libPath];
+        }
     }
 }
 
@@ -160,31 +169,54 @@ extern NSMutableDictionary *needsUpdate;
 - (void)pluginInstall:(NSDictionary*)item :(NSString*)repo
 {
     NSURL *installURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", repo, [item objectForKey:@"filename"]]];
-    NSData *myData = [NSData dataWithContentsOfURL:installURL];
-    NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
-    [myData writeToFile:temp atomically:YES];
-    NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
-    NSString* libSupport = [[libDomain objectAtIndex:0] path];
-    NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
-    NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
-    [task waitUntilExit];
-    shareClass* t = [[shareClass alloc] init];
-    [t readPlugins:nil];
+    
+    //SynchronousRequest to grab the data
+    NSURLRequest *request = [NSURLRequest requestWithURL:installURL];
+    NSError *error;
+    NSURLResponse *response;
+    
+    NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    if (!result) {
+        // Download failed
+        NSLog(@"Error");
+    } else {
+        // Install downloaded file
+        NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
+        [result writeToFile:temp atomically:YES];
+        NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
+        NSString* libSupport = [[libDomain objectAtIndex:0] path];
+        NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
+        NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
+        [task waitUntilExit];
+        shareClass* t = [[shareClass alloc] init];
+        [t readPlugins:nil];
+    }
 }
 
 - (void)pluginUpdate:(NSDictionary*)item :(NSString*)repo
 {
     NSURL *installURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", repo, [item objectForKey:@"filename"]]];
-    NSData *myData = [NSData dataWithContentsOfURL:installURL];
-    NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
-    [myData writeToFile:temp atomically:YES];
-    NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
-    NSString* libSupport = [[libDomain objectAtIndex:0] path];
-    NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
-    NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
-    [task waitUntilExit];
-    shareClass* t = [[shareClass alloc] init];
-    [t readPlugins:nil];
+    
+    //SynchronousRequest to grab the data
+    NSURLRequest *request = [NSURLRequest requestWithURL:installURL];
+    NSError *error;
+    NSURLResponse *response;
+    
+    NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    if (!result) {
+        // Download failed
+        NSLog(@"Error");
+    } else {
+        NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
+        [result writeToFile:temp atomically:YES];
+        NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
+        NSString* libSupport = [[libDomain objectAtIndex:0] path];
+        NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
+        NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
+        [task waitUntilExit];
+        shareClass* t = [[shareClass alloc] init];
+        [t readPlugins:nil];
+    }
 }
 
 - (void)pluginDelete:(NSDictionary*)item

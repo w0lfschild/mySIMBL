@@ -11,7 +11,8 @@
 		FB09A4F71C4B64F80072C553 /* webicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4F61C4B64F80072C553 /* webicon.png */; };
 		FB0CF69F1C61D1E9002CF3DE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB0CF69E1C61D1E9002CF3DE /* AppDelegate.m */; };
 		FB0CF6A21C61D1E9002CF3DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB0CF6A11C61D1E9002CF3DE /* main.m */; };
-		FB1836441EF78E5A009CAEBC /* discoverTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1836431EF78E5A009CAEBC /* discoverTable.m */; };
+		FB1836441EF78E5A009CAEBC /* discoverPluginTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1836431EF78E5A009CAEBC /* discoverPluginTable.m */; };
+		FB1D14EA1EFCE56C00ED5580 /* pluginData.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1D14E91EFCE56C00ED5580 /* pluginData.m */; };
 		FB24B09E1C952FF700443CA0 /* pluginTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB24B09D1C952FF700443CA0 /* pluginTable.m */; };
 		FB24B0A21C955D2C00443CA0 /* shareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = FB24B0A11C955D2C00443CA0 /* shareClass.m */; };
 		FB50D3461D4B0C7E004668C0 /* update.png in Resources */ = {isa = PBXBuildFile; fileRef = FB50D3451D4B0C7E004668C0 /* update.png */; };
@@ -33,6 +34,7 @@
 		FBA2E9841E28673300DB471D /* DevMateKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA2E9831E28673300DB471D /* DevMateKit.framework */; };
 		FBA2E9851E28680300DB471D /* DevMateKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBA2E9831E28673300DB471D /* DevMateKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FBA9EB341C965E9F00511BE3 /* sourcesTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA9EB331C965E9F00511BE3 /* sourcesTable.m */; };
+		FBB35F881EFCCBDE004ECE9C /* MSPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = FBB35F871EFCCBDE004ECE9C /* MSPlugin.m */; };
 		FBB793521C7AB7BC006BF301 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FBB793511C7AB7BC006BF301 /* dsa_pub.pem */; };
 		FBB793541C7AB7C5006BF301 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FBB793531C7AB7C5006BF301 /* dsa_pub.pem */; };
 		FBBF6AF61DFFA6B400BBCF28 /* updatesTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBF6AF51DFFA6B300BBCF28 /* updatesTable.m */; };
@@ -76,7 +78,9 @@
 		FB0CF69E1C61D1E9002CF3DE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		FB0CF6A11C61D1E9002CF3DE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FB0CF6A81C61D1E9002CF3DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FB1836431EF78E5A009CAEBC /* discoverTable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = discoverTable.m; sourceTree = "<group>"; };
+		FB1836431EF78E5A009CAEBC /* discoverPluginTable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = discoverPluginTable.m; sourceTree = "<group>"; };
+		FB1D14E81EFCE56C00ED5580 /* pluginData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pluginData.h; sourceTree = "<group>"; };
+		FB1D14E91EFCE56C00ED5580 /* pluginData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pluginData.m; sourceTree = "<group>"; };
 		FB24B09D1C952FF700443CA0 /* pluginTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pluginTable.m; sourceTree = "<group>"; };
 		FB24B0A11C955D2C00443CA0 /* shareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = shareClass.m; sourceTree = "<group>"; };
 		FB24B0A31C955EEC00443CA0 /* shareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shareClass.h; sourceTree = "<group>"; };
@@ -99,6 +103,8 @@
 		FBA2E9831E28673300DB471D /* DevMateKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DevMateKit.framework; path = Frameworks/DevMateKit.framework; sourceTree = "<group>"; };
 		FBA9EB331C965E9F00511BE3 /* sourcesTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = sourcesTable.m; sourceTree = "<group>"; };
 		FBABE8C21D552713009191FE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../GitHub/wb_mySIMBL/README.md; sourceTree = "<group>"; };
+		FBB35F861EFCCBDE004ECE9C /* MSPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSPlugin.h; sourceTree = "<group>"; };
+		FBB35F871EFCCBDE004ECE9C /* MSPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSPlugin.m; sourceTree = "<group>"; };
 		FBB793511C7AB7BC006BF301 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		FBB793531C7AB7C5006BF301 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		FBBF6AF51DFFA6B300BBCF28 /* updatesTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = updatesTable.m; sourceTree = "<group>"; };
@@ -146,6 +152,17 @@
 			path = SIMBLHelper;
 			sourceTree = "<group>";
 		};
+		FB1D14EB1EFCE57D00ED5580 /* Plugin Info */ = {
+			isa = PBXGroup;
+			children = (
+				FB1D14E81EFCE56C00ED5580 /* pluginData.h */,
+				FB1D14E91EFCE56C00ED5580 /* pluginData.m */,
+				FBB35F861EFCCBDE004ECE9C /* MSPlugin.h */,
+				FBB35F871EFCCBDE004ECE9C /* MSPlugin.m */,
+			);
+			name = "Plugin Info";
+			sourceTree = "<group>";
+		};
 		FB57959C1C4DCFA2001A76AC /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +203,7 @@
 				FBB793551C7AB7F1006BF301 /* Other */,
 				FB57959C1C4DCFA2001A76AC /* Images */,
 				FB5F44D41C4380BB00DE80B4 /* Resource */,
+				FB1D14EB1EFCE57D00ED5580 /* Plugin Info */,
 				FB790FEB1CA4AA8600BE3B59 /* Tables */,
 				FB7A4B711DF37E960071589B /* Info */,
 				FB5F44BE1C41EA4000DE80B4 /* Appliaction.xib */,
@@ -210,7 +228,7 @@
 			children = (
 				FB24B0A31C955EEC00443CA0 /* shareClass.h */,
 				FB24B0A11C955D2C00443CA0 /* shareClass.m */,
-				FB1836431EF78E5A009CAEBC /* discoverTable.m */,
+				FB1836431EF78E5A009CAEBC /* discoverPluginTable.m */,
 				FB24B09D1C952FF700443CA0 /* pluginTable.m */,
 				FBBF6AF51DFFA6B300BBCF28 /* updatesTable.m */,
 				FBA9EB331C965E9F00511BE3 /* sourcesTable.m */,
@@ -430,8 +448,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB24B09E1C952FF700443CA0 /* pluginTable.m in Sources */,
-				FB1836441EF78E5A009CAEBC /* discoverTable.m in Sources */,
+				FBB35F881EFCCBDE004ECE9C /* MSPlugin.m in Sources */,
+				FB1836441EF78E5A009CAEBC /* discoverPluginTable.m in Sources */,
 				FBA9EB341C965E9F00511BE3 /* sourcesTable.m in Sources */,
+				FB1D14EA1EFCE56C00ED5580 /* pluginData.m in Sources */,
 				FB24B0A21C955D2C00443CA0 /* shareClass.m in Sources */,
 				FB7A4B741DF384B50071589B /* StartAtLoginController.m in Sources */,
 				FB790FE81CA447AD00BE3B59 /* repopluginTable.m in Sources */,

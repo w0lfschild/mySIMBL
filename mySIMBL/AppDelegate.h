@@ -42,6 +42,7 @@
 @property IBOutlet NSTableView *tblView;
 @property IBOutlet NSTableView *sourcesAllTable;
 @property IBOutlet NSTableView *sourcesRepoTable;
+@property IBOutlet NSTableView *discoverChangesTable;
 
 // Add source
 @property IBOutlet NSButton *addsourcesAccept;
