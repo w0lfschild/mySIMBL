@@ -51,42 +51,49 @@ extern long selectedRow;
     NSDictionary* item;
 }
 
--(NSFont*)calcFontSizeToFitRect:(NSRect)r :(NSString*)string :(NSString*)currentFontName
-{
-    float targetWidth = r.size.width - 1;
-    float targetHeight = r.size.height - 1;
+-(NSFont*)calcFontSizeToFitRect:(NSRect)r :(NSString*)string :(NSString*)currentFontName {
+    float targetWidth = r.size.width - 4;
+    float targetHeight = r.size.height;
     
     // the strategy is to start with a small font size and go larger until I'm larger than one of the target sizes
     int i;
-    for (i=8; i<36; i++)
-    {
+    for (i=1; i<36; i++) {
         NSDictionary* attrs = [[NSDictionary alloc] initWithObjectsAndKeys:[NSFont fontWithName:currentFontName size:i], NSFontAttributeName, nil];
         NSSize strSize = [string sizeWithAttributes:attrs];
         if (strSize.width > targetWidth || strSize.height > targetHeight) break;
+//        if (strSize.width > targetWidth) break;
     }
     NSFont *result = [NSFont fontWithName:currentFontName size:i-1];
     return result;
 }
 
--(void)viewWillDraw
-{
+-(void)viewWillDraw {
     [self setWantsLayer:YES];
     self.layer.masksToBounds = YES;
 //    self.layer.borderWidth = 1.0f;
 //    [self.layer setBorderColor:[NSColor grayColor].CGColor];
     
-    NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", repoPackages]];
+    NSArray *allPlugins;
     
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
-    NSArray *allPlugins = [dict allValues];
-    
-//    NSArray *allPlugins = [[NSArray alloc] initWithContentsOfURL:dicURL];
-    
-    NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
-    NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
-    NSArray *sortedArray = [allPlugins sortedArrayUsingDescriptors:sortDescriptors];
-    
-    allPlugins = sortedArray;
+    if (![repoPackages isEqualToString:@""]) {
+        NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", repoPackages]];
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
+        allPlugins = [dict allValues];
+        
+        NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
+        NSArray *sortedArray = [allPlugins sortedArrayUsingDescriptors:sortDescriptors];
+        allPlugins = sortedArray;
+    } else {
+        NSMutableArray *sourceURLS = [[NSMutableArray alloc] initWithArray:[[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:@"sources"]];
+        NSMutableDictionary *comboDic = [[NSMutableDictionary alloc] init];
+        for (NSString *url in sourceURLS) {
+            NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", url]];
+            NSMutableDictionary *sourceDic = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
+            [comboDic addEntriesFromDictionary:sourceDic];
+        }
+        allPlugins = [comboDic allValues];
+    }
     
     item = [[NSMutableDictionary alloc] initWithDictionary:[allPlugins objectAtIndex:selectedRow]];
     
@@ -154,8 +161,7 @@ extern long selectedRow;
     
     
     installedPlugins = [[NSMutableDictionary alloc] init];
-    for (NSDictionary* dict in pluginsArray)
-    {
+    for (NSDictionary* dict in pluginsArray) {
         NSString* str = [dict objectForKey:@"bundleId"];
         [installedPlugins setObject:dict forKey:str];
     }
@@ -181,8 +187,7 @@ extern long selectedRow;
     [self.bundleDelete setTarget:self];
     [self.bundleDelete setAction:@selector(pluginDelete)];
     
-    if ([installedPlugins objectForKey:[item objectForKey:@"package"]])
-    {
+    if ([installedPlugins objectForKey:[item objectForKey:@"package"]]) {
         // Pack already exists
         [self.bundleDelete setEnabled:true];
         
@@ -212,7 +217,7 @@ extern long selectedRow;
     } else {
         // Package not installed
         [self.bundleInstall setEnabled:true];
-        self.bundleInstall.title = @"Install";
+        self.bundleInstall.title = @"Get";
         [self.bundleInstall setAction:@selector(pluginInstall)];
     }
     
@@ -253,19 +258,16 @@ extern long selectedRow;
         [super keyDown:theEvent];
 }
 
-- (void)contactDev
-{
+- (void)contactDev {
     NSURL *mailtoURL = [NSURL URLWithString:[NSString stringWithFormat:@"mailto:%@", [item objectForKey:@"contact"]]];
     [[NSWorkspace sharedWorkspace] openURL:mailtoURL];
 }
 
-- (void)donateDev
-{
+- (void)donateDev {
      [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[item objectForKey:@"donate"]]];
 }
 
-- (void)pluginInstall
-{
+- (void)pluginInstall {
     NSURL *installURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", repoPackages, [item objectForKey:@"filename"]]];
     NSData *myData = [NSData dataWithContentsOfURL:installURL];
     NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
@@ -283,8 +285,7 @@ extern long selectedRow;
     [t readPlugins:nil];
 }
 
-- (void)pluginUpdate
-{
+- (void)pluginUpdate {
     NSURL *installURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", repoPackages, [item objectForKey:@"filename"]]];
     NSData *myData = [NSData dataWithContentsOfURL:installURL];
     NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
@@ -302,22 +303,18 @@ extern long selectedRow;
     [t readPlugins:nil];
 }
 
-- (void)pluginFinder
-{
+- (void)pluginFinder {
     int pos = 0;
     bool found = false;
-    for (NSDictionary* dict in pluginsArray)
-    {
-        if ([[dict objectForKey:@"bundleId"] isEqualToString:[item objectForKey:@"package"]])
-        {
+    for (NSDictionary* dict in pluginsArray) {
+        if ([[dict objectForKey:@"bundleId"] isEqualToString:[item objectForKey:@"package"]]) {
             found = true;
             break;
         }
         pos += 1;
     }
     
-    if (found)
-    {
+    if (found) {
         NSDictionary* obj = [pluginsArray objectAtIndex:pos];
         NSString* path = [obj objectForKey:@"path"];
         NSURL* url = [NSURL fileURLWithPath:path];
@@ -325,22 +322,18 @@ extern long selectedRow;
     }
 }
 
-- (void)pluginDelete
-{    
+- (void)pluginDelete {
     int pos = 0;
     bool found = false;
-    for (NSDictionary* dict in pluginsArray)
-    {
-        if ([[dict objectForKey:@"bundleId"] isEqualToString:[item objectForKey:@"package"]])
-        {
+    for (NSDictionary* dict in pluginsArray) {
+        if ([[dict objectForKey:@"bundleId"] isEqualToString:[item objectForKey:@"package"]]) {
             found = true;
             break;
         }
         pos += 1;
     }
     
-    if (found)
-    {
+    if (found) {
         NSDictionary* obj = [pluginsArray objectAtIndex:pos];
         NSString* path = [obj objectForKey:@"path"];
         NSURL* url = [NSURL fileURLWithPath:path];

@@ -65,6 +65,7 @@
                 this_is_a_bundle.webDescriptionShort = [bundle objectForKey:@"descriptionShort"];
                 this_is_a_bundle.webCompatability = [bundle objectForKey:@"compat"];
                 this_is_a_bundle.webFileName = [bundle objectForKey:@"filename"];
+                this_is_a_bundle.webPlist = bundle;
                 
                 [self.repoPluginsDic setObject:this_is_a_bundle forKey:bundleIdentifier];
                 [sourceDic setObject:this_is_a_bundle forKey:bundleIdentifier];
@@ -143,46 +144,46 @@
     }
 }
 
-- (NSImage*)fetch_icon:(MSPlugin*)plugin
-{
+- (NSImage*)fetch_icon:(MSPlugin*)plugin {
     NSImage* result = nil;
     NSArray* targets = [[NSArray alloc] init];
-    
     targets = [plugin.localPlist objectForKey:@"SIMBLTargetApplications"];
-    
     NSString* iconPath = [NSString stringWithFormat:@"%@/Contents/icon.icns", plugin.localPath];
     NSString* iconFile = [plugin.localPlist objectForKey:@"CFBundleIconFile"];
     
     if ([iconFile length])
         iconPath = [NSString stringWithFormat:@"%@/Contents/Resources/%@.icns", plugin.localPath, iconFile];
     
-    if ([iconPath length])
-    {
+    if ([iconPath length]) {
         result = [[NSImage alloc] initWithContentsOfFile:iconPath];
         if (result) return result;
     }
     
-    for (NSDictionary* targetApp in targets)
-    {
+    NSData *defaultIcon = [[[NSWorkspace sharedWorkspace] iconForFile:@"/System/Library/CoreServices/loginwindow.app"] TIFFRepresentation];
+    for (NSDictionary* targetApp in targets) {
         iconPath = [targetApp objectForKey:@"BundleIdentifier"];
         iconPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:iconPath];
         
-        if ([iconPath length])
-        {
-            if ([[targetApp objectForKey:@"BundleIdentifier"] isEqualToString:@"com.apple.notificationcenterui"])
-            {
+        if ([iconPath length]) {
+            if ([[targetApp objectForKey:@"BundleIdentifier"] isEqualToString:@"com.apple.notificationcenterui"]) {
                 result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Notifications.icns"];
                 if (result) return result;
             }
             
-            if ([[targetApp objectForKey:@"BundleIdentifier"] isEqualToString:@"com.apple.systemuiserver"])
-            {
+            if ([[targetApp objectForKey:@"BundleIdentifier"] isEqualToString:@"com.apple.systemuiserver"]) {
                 result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/Setup Assistant.app/Contents/Resources/Assistant.icns"];
                 if (result) return result;
             }
             
+            if ([[targetApp objectForKey:@"BundleIdentifier"] isEqualToString:@"com.apple.loginwindow"]) {
+                result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/GroupIcon.icns"];
+                if (result) return result;
+            }
+            
             result = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
-            if (result) return result;
+            NSData *appIcon = [result TIFFRepresentation];
+            if (![defaultIcon isEqualToData:appIcon])
+                return result;
         }
     }
     

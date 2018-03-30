@@ -22,7 +22,10 @@ FOUNDATION_EXPORT const unsigned char SIMBLManagerVersionString[];
 }
 
 + (SIMBLManager *)sharedInstance;
+- (Boolean)AMFI_enabled;
 - (Boolean)SIP_enabled;
+
+- (Boolean)AMFI_toggle;
 
 - (Boolean)SIMBL_install;
 - (void)SIMBL_injectAll;
@@ -48,18 +51,23 @@ FOUNDATION_EXPORT const unsigned char SIMBLManagerVersionString[];
 
 @interface sip_c : NSWindowController
 
-@property (assign) IBOutlet NSButton *confirm;
+@property (weak) IBOutlet NSButton *confirm;
 
 - (IBAction)iconfirm:(id)sender;
+- (IBAction)confirmQuit:(id)sender;
+- (void)displayInWindow:(NSWindow*)window;
 
 @end
 
 @interface sim_c : NSWindowController
 
-@property (assign) IBOutlet NSButton *cancel;
-@property (assign) IBOutlet NSButton *accept;
-
+@property (weak) IBOutlet NSButton *cancel;
+@property (weak) IBOutlet NSButton *accept;
+@property IBOutlet NSTextField *tv;
+    
 - (IBAction)install:(id)sender;
 - (IBAction)cancel:(id)sender;
-
+- (void)displayInWindow:(NSWindow*)window;
+    
 @end
+

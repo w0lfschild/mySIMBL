@@ -181,15 +181,42 @@ extern NSMutableDictionary *needsUpdate;
         NSLog(@"Error");
     } else {
         // Install downloaded file
+        
         NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
         [result writeToFile:temp atomically:YES];
         NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
+        NSArray* usrDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
         NSString* libSupport = [[libDomain objectAtIndex:0] path];
-        NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
-        NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
+        NSString* usrSupport = [[usrDomain objectAtIndex:0] path];
+        
+        NSArray *domains = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport],
+                            [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)", libSupport],
+                            [NSString stringWithFormat:@"%@/SIMBL/Plugins", usrSupport],
+                            [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)", usrSupport],
+                            nil];
+        
+        NSString *installPath = domains[0];
+        
+        for (NSString *path in domains) {
+            NSString *possibleBundle = [NSString stringWithFormat:@"%@/%@.bundle", path, [item objectForKey:@"name"]];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:possibleBundle])
+                installPath = path;
+        }
+        
+        NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", installPath]];
         [task waitUntilExit];
         shareClass* t = [[shareClass alloc] init];
         [t readPlugins:nil];
+        
+//        NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
+//        [result writeToFile:temp atomically:YES];
+//        NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
+//        NSString* libSupport = [[libDomain objectAtIndex:0] path];
+//        NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
+//        NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
+//        [task waitUntilExit];
+//        shareClass* t = [[shareClass alloc] init];
+//        [t readPlugins:nil];
     }
 }
 
@@ -210,21 +237,37 @@ extern NSMutableDictionary *needsUpdate;
         NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];
         [result writeToFile:temp atomically:YES];
         NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
+        NSArray* usrDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
         NSString* libSupport = [[libDomain objectAtIndex:0] path];
-        NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
-        NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", libPathENB]];
+        NSString* usrSupport = [[usrDomain objectAtIndex:0] path];
+
+        NSArray *domains = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport],
+                            [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)", libSupport],
+                            [NSString stringWithFormat:@"%@/SIMBL/Plugins", usrSupport],
+                            [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)", usrSupport],
+                            nil];
+        
+        NSString *installPath = domains[0];
+        
+        for (NSString *path in domains) {
+            NSString *possibleBundle = [NSString stringWithFormat:@"%@/%@.bundle", path, [item objectForKey:@"name"]];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:possibleBundle])
+                installPath = path;
+        }
+        
+//        NSString* libPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", libSupport];
+        
+        NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", installPath]];
         [task waitUntilExit];
         shareClass* t = [[shareClass alloc] init];
         [t readPlugins:nil];
     }
 }
 
-- (void)pluginDelete:(NSDictionary*)item
-{
+- (void)pluginDelete:(NSDictionary*)item {
     int pos = 0;
     bool found = false;
-    for (NSDictionary* dict in pluginsArray)
-    {
+    for (NSDictionary* dict in pluginsArray) {
         if ([[dict objectForKey:@"bundleId"] isEqualToString:[item objectForKey:@"package"]])
         {
             found = true;
@@ -232,8 +275,8 @@ extern NSMutableDictionary *needsUpdate;
         }
         pos += 1;
     }
-    if (found)
-    {
+    
+    if (found) {
         NSDictionary* obj = [pluginsArray objectAtIndex:pos];
         NSString* path = [obj objectForKey:@"path"];
         NSURL* url = [NSURL fileURLWithPath:path];
@@ -243,12 +286,10 @@ extern NSMutableDictionary *needsUpdate;
     }
 }
 
-- (NSImage*)getbundleIcon:(NSDictionary*)plist
-{
+- (NSImage*)getbundleIcon:(NSDictionary*)plist {
     NSImage* result = nil;
     NSArray* targets = [[NSArray alloc] init];
-    if ([plist objectForKey:@"targets"])
-    {
+    if ([plist objectForKey:@"targets"]) {
         targets = [plist objectForKey:@"targets"];
     } else {
         NSDictionary* info = [plist objectForKey:@"bundleInfo"];
@@ -256,19 +297,45 @@ extern NSMutableDictionary *needsUpdate;
     }
     
     NSString* iconPath = [NSString stringWithFormat:@"%@/Contents/icon.icns", [plist objectForKey:@"path"]];
-    if ([iconPath length])
-    {
+    if ([iconPath length]) {
         result = [[NSImage alloc] initWithContentsOfFile:iconPath];
         if (result) return result;
     }
     
-    for (NSDictionary* targetApp in targets)
-    {
+//    for (NSDictionary* targetApp in targets) {
+//        iconPath = [targetApp objectForKey:@"BundleIdentifier"];
+//        iconPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:iconPath];
+//        if ([iconPath length]) {
+//            result = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
+//            if (result) return result;
+//        }
+//    }
+    
+    for (NSDictionary* targetApp in targets) {
         iconPath = [targetApp objectForKey:@"BundleIdentifier"];
         iconPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:iconPath];
-        if ([iconPath length])
-        {
+
+        if ([iconPath length]) {
+            if ([[targetApp objectForKey:@"BundleIdentifier"] isEqualToString:@"com.apple.notificationcenterui"]) {
+                result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Notifications.icns"];
+                if (result) return result;
+            }
+
+            if ([[targetApp objectForKey:@"BundleIdentifier"] isEqualToString:@"com.apple.systemuiserver"]) {
+                result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/Setup Assistant.app/Contents/Resources/Assistant.icns"];
+                if (result) return result;
+            }
+
+            if ([[targetApp objectForKey:@"BundleIdentifier"] isEqualToString:@"com.apple.loginwindow"]) {
+                result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/GroupIcon.icns"];
+                if (result) return result;
+            }
+
             result = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
+            NSData *imgDataOne = [result TIFFRepresentation];
+            NSData *imgDataTwo = [[[NSWorkspace sharedWorkspace] iconForFile:@"/System/Library/CoreServices/loginwindow.app"] TIFFRepresentation];
+            if ([imgDataOne isEqualToData:imgDataTwo])
+                result = [[NSImage alloc] initWithContentsOfFile:@"/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/KEXT.icns"];
             if (result) return result;
         }
     }
@@ -277,22 +344,18 @@ extern NSMutableDictionary *needsUpdate;
     return result;
 }
 
-- (void)checkforPluginUpdates :(NSTableView*)table
-{
+- (void)checkforPluginUpdates :(NSTableView*)table {
     [self readPlugins:nil];
     
     NSDictionary *plugins = [[NSDictionary alloc] initWithDictionary:[installedPluginDICT copy]];
     NSArray *sourceURLS = [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:@"sources"];
     
     NSMutableDictionary *sourceDICTS = [[NSMutableDictionary alloc] init];
-    for (NSString *source in sourceURLS)
-    {
+    for (NSString *source in sourceURLS) {
         NSURL* data = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", source]];
         NSMutableDictionary* dic = [[NSMutableDictionary alloc] initWithContentsOfURL:data];
-        if (dic != nil)
-        {
-            for (NSString *key in dic)
-            {
+        if (dic != nil) {
+            for (NSString *key in dic) {
                 NSMutableDictionary *bundle = [dic objectForKey:key];
                 [bundle setObject:source forKey:@"sourceURL"];
             }
@@ -300,13 +363,11 @@ extern NSMutableDictionary *needsUpdate;
         }
     }
     
-    for (NSString* key in plugins)
-    {
+    for (NSString* key in plugins) {
         id value = [plugins objectForKey:key];
         id bundleID = [value objectForKey:@"bundleId"];
         id localVersion = [value objectForKey:@"version"];
-        if ([sourceDICTS objectForKey:bundleID])
-        {
+        if ([sourceDICTS objectForKey:bundleID]) {
             NSDictionary *bundleInfo = [[NSDictionary alloc] initWithDictionary:[sourceDICTS objectForKey:bundleID]];
             id updateVersion = [bundleInfo objectForKey:@"version"];
             id <SUVersionComparison> comparator = [SUStandardVersionComparator defaultComparator];

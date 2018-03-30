@@ -15,7 +15,13 @@
 
 extern AppDelegate *myDelegate;
 extern NSString *repoPackages;
+extern long selectedRow;
+
 long myselectedRow;
+
+NSArray *allPlugins;
+NSArray *filteredPlugins;
+NSString *textFilter;
 
 @interface discoverPluginTable : NSTableView
 {
@@ -23,7 +29,7 @@ long myselectedRow;
 }
 @end
 
-@interface discoverPluginTableCell : NSTableCellView <NSTableViewDataSource, NSTableViewDelegate>
+@interface discoverPluginTableCell : NSTableCellView <NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate>
 @property (weak) IBOutlet NSTextField*  bundleName;
 @property (weak) IBOutlet NSTextField*  bundleDescription;
 @property (weak) IBOutlet NSTextField*  bundleInfo;
@@ -33,27 +39,55 @@ long myselectedRow;
 @property (weak) IBOutlet NSImageView*  bundleIndicator;
 @end
 
-@implementation discoverPluginTable
-{
-    NSArray *allPlugins;
-}
+@implementation discoverPluginTable {
     
+}
+
+- (void)controlTextDidChange:(NSNotification *)obj{
+    NSSearchField *view = obj.object;
+//    NSLog(@"%@", view.stringValue);
+    
+    if (view.stringValue.length>0) {
+//        NSString* filter = @"%K CONTAINS %@";
+//        NSPredicate* predicate = [NSPredicate predicateWithFormat:filter, @"SELF", @"a"];
+//        NSArray* filteredData = [data filteredArrayUsingPredicate:predicate];
+        textFilter = view.stringValue;
+        
+//        NSArray *array = [NSArray arrayWithObject:[NSMutableDictionary dictionaryWithObject:@"filter string" forKey:@"name"]];   // you can also do same for Name key...
+        filteredPlugins = [allPlugins filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(name CONTAINS[cd] %@)", view.stringValue]];
+
+//        NSPredicate *filterPredicate = [NSPredicate predicateWithFormat:@"self CONTAINS %@", view.stringValue];
+//        filteredPlugins = [allPlugins filteredArrayUsingPredicate:filterPredicate];
+    }
+    else {
+        textFilter = @"";
+        filteredPlugins = allPlugins.copy;
+    }
+    
+    [self reloadData];
+}
+
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     if (_sharedMethods == nil)
     _sharedMethods = [shareClass alloc];
-    
-    NSMutableArray *sourceURLS = [[NSMutableArray alloc] initWithArray:[[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:@"sources"]];
-    NSMutableDictionary *comboDic = [[NSMutableDictionary alloc] init];
-    for (NSString *url in sourceURLS) {
-        NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", url]];
-        NSMutableDictionary *sourceDic = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
-        [comboDic addEntriesFromDictionary:sourceDic];
-    }
-    
+
     pluginData *taco = [pluginData sharedInstance];
-    [taco fetch_repos];
     
-    allPlugins = [comboDic allValues];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableArray *sourceURLS = [[NSMutableArray alloc] initWithArray:[[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:@"sources"]];
+        NSMutableDictionary *comboDic = [[NSMutableDictionary alloc] init];
+        for (NSString *url in sourceURLS) {
+            NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", url]];
+            NSMutableDictionary *sourceDic = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
+            [comboDic addEntriesFromDictionary:sourceDic];
+        }
+        
+        [taco fetch_repos];
+        
+        allPlugins = [comboDic allValues];
+        filteredPlugins = allPlugins.copy;
+    });
         
     //    allPlugins = [[NSArray alloc] initWithContentsOfURL:dicURL];
     
@@ -72,12 +106,12 @@ long myselectedRow;
     
     NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
-    NSArray *sortedArray = [allPlugins sortedArrayUsingDescriptors:sortDescriptors];
+    NSArray *sortedArray = [filteredPlugins sortedArrayUsingDescriptors:sortDescriptors];
     
-    allPlugins = sortedArray;
+    filteredPlugins = sortedArray;
     
-//    return [allPlugins count];
-    return taco.repoPluginsDic.allKeys.count;
+    return filteredPlugins.count;
+//    return taco.repoPluginsDic.allKeys.count;
 }
     
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
@@ -87,6 +121,12 @@ long myselectedRow;
     
     NSArray *values = [[pluginData sharedInstance].repoPluginsDic allValues];
     
+    if (textFilter != nil && textFilter.length > 0) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"webName CONTAINS[cd] %@", textFilter];
+        values = [values filteredArrayUsingPredicate:predicate];
+//        NSLog(@"%@", values);
+    }
+        
     NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"webName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
     NSArray *sortedArray = [values sortedArrayUsingDescriptors:sortDescriptors];
@@ -105,6 +145,7 @@ long myselectedRow;
     NSString *bInfo = [NSString stringWithFormat:@"%@ - %@", item.webVersion, item.bundleID];
     result.bundleInfo.stringValue = bInfo;
     result.bundleDescription.toolTip = item.webDescription;
+        
     result.bundleImage.image = [_sharedMethods getbundleIcon:item.webPlist];
     [result.bundleImage.cell setImageScaling:NSImageScaleProportionallyUpOrDown];
 
@@ -173,8 +214,33 @@ long myselectedRow;
 {
     id sender = [aNotification object];
     myselectedRow = [sender selectedRow];
+    
+    NSArray *values = [[pluginData sharedInstance].repoPluginsDic allValues];
+    if (textFilter != nil && textFilter.length > 0) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"webName CONTAINS[cd] %@", textFilter];
+        values = [values filteredArrayUsingPredicate:predicate];
+    }
+    NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"webName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
+    NSArray *sortedArray = [values sortedArrayUsingDescriptors:sortDescriptors];
+    MSPlugin *item = [sortedArray objectAtIndex:myselectedRow];
+    
+//    NSLog(@"%@", item.webName);
+    
+    int index = 0;
+    for (NSDictionary *dic in allPlugins) {
+        if ([[dic valueForKey:@"package"] isEqualToString:[item.webPlist valueForKey:@"package"]]) {
+            repoPackages = @"";
+            selectedRow = index;
+        }
+        index++;
+    }
+    
     if (myselectedRow != -1) {
-        discoverPluginTableCell *ctc = [sender viewAtColumn:0 row:myselectedRow makeIfNecessary:YES];
+//        NSLog(@"%lu", (unsigned long)[allPlugins indexOfObjectIdenticalTo:item.webPlist]);
+//        NSLog(@"%@ : %@", allPlugins[0], item.webPlist);
+//        discoverPluginTableCell *ctc = [sender viewAtColumn:0 row:myselectedRow makeIfNecessary:YES];
+        
 //        NSString *selectedID = ctc.bundleInfo;
 //        sourceTableCell *ctc = [sender viewAtColumn:0 row:myselectedRow makeIfNecessary:YES];
 //        repoPackages = ;

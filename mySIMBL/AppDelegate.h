@@ -25,6 +25,11 @@
 @property IBOutlet NSWindow *srcWin;
 @property IBOutlet SUUpdater *updater;
 
+// ADs URL
+@property (readwrite, nonatomic) NSString* adURL;
+@property (readwrite, nonatomic) NSArray* adArray;
+@property (readwrite, nonatomic) NSInteger lastAD;
+
 // Tab views
 @property IBOutlet NSView *tabMain;
 @property IBOutlet NSView *tabAbout;
@@ -72,9 +77,11 @@
 @property IBOutlet NSButton *viewUpdateCounter;
 @property IBOutlet NSButton *viewAccount;
 @property IBOutlet NSButton *viewSIMBL;
-@property IBOutlet NSButton *feedbackButton;
-@property IBOutlet NSButton *donateButton;
-@property IBOutlet NSButton *reportButton;
+@property IBOutlet NSButton *buttonFeedback;
+@property IBOutlet NSButton *buttonDonate;
+@property IBOutlet NSButton *buttonReport;
+@property IBOutlet NSButton *buttonAdvert;
+
 
 // About view
 @property IBOutlet NSTextField      *appName;
@@ -99,14 +106,13 @@
 @property IBOutlet NSPopUpButton    *prefStartTab;
 
 // SIMBL View
-@property IBOutlet NSButton         *libValXcode;
-@property IBOutlet NSButton         *libValSafari;
 @property IBOutlet NSTextField      *SIMBLAgentText;
 @property IBOutlet NSTextField      *SIMBLOSAXText;
 @property IBOutlet NSButton         *SIMBLAgentToggle;
 @property IBOutlet NSButton         *SIMBLTogggle;
 @property IBOutlet NSPopUpButton    *SIMBLLogging;
 @property IBOutlet NSButton         *SIPStatus;
+@property IBOutlet NSButton         *AMFIStatus;
 @property IBOutlet NSScrollView     *blacklistScroll;
 
 - (void)setBadge :(NSString*)toValue;

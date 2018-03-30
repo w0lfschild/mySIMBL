@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Update SIMBL.osax and remove possible old or alternate version
+# Update mySIMBL Agent and remove possible old or alternate version
 
 function nukeFiles() {
     if [[ -e "$1" ]]; then

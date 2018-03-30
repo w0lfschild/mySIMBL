@@ -22,11 +22,14 @@ NSInteger previusRow = -1;
 }
 @property (weak) IBOutlet NSTableView*  tblView;
 @property NSMutableArray *tableContent;
+
+@property (weak) IBOutlet NSButton*     pluginDelete;
+@property (weak) IBOutlet NSButton*     pluginFinder;
+@property (weak) IBOutlet NSButton*     pluginWeb;
+
 @end
 
 @interface CustomTableCell : NSTableCellView <NSTableViewDataSource, NSTableViewDelegate>
-@property (weak) IBOutlet NSButton*     pluginDelete;
-@property (weak) IBOutlet NSButton*     pluginWeb;
 @property (weak) IBOutlet NSButton*     pluginUserLoc;
 @property (weak) IBOutlet NSButton*     pluginStatus;
 @property (weak) IBOutlet NSTextField*  pluginName;
@@ -107,34 +110,24 @@ NSInteger previusRow = -1;
     result.pluginDescription.stringValue = aBundle.localDescription;
     result.pluginImage.image = [_pluginData fetch_icon:aBundle];
     
-    [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashEmpty"]];
-    
-    if ([[confirmDelete objectAtIndex:row] boolValue])
-        [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashFull"]];
-    else
-        [result.pluginDelete setImage:[NSImage imageNamed:@"NSTrashEmpty"]];
-    
-    [result.pluginWeb setImage:[NSImage imageNamed:@"webicon.png"]];
-    [[result.pluginWeb cell] setImageScaling:NSImageScaleProportionallyUpOrDown];
-    [result.pluginWeb setEnabled:true];
-    [result.pluginWeb setHidden:true];
-    
     // Return the result
     return result;
 }
 
 - (IBAction)pluginWebpage:(id)sender {
-    NSTableView *t = (NSTableView*)[[[sender superview] superview] superview];
-    NSDictionary* obj = [pluginsArray objectAtIndex:[t rowForView:sender]];
-    NSString* webURL = [[obj objectForKey:@"bundleInfo"] objectForKey:@"DevURL"];
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:webURL]];
+    if (_tblView.selectedRow >= 0) {
+        NSDictionary* obj = [pluginsArray objectAtIndex:_tblView.selectedRow];
+        NSString* webURL = [[obj objectForKey:@"bundleInfo"] objectForKey:@"DevURL"];
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:webURL]];
+    }
 }
 
 - (IBAction)pluginFinder:(id)sender {
-    NSTableView *t = (NSTableView*)[[[sender superview] superview] superview];
-    NSDictionary* obj = [pluginsArray objectAtIndex:[t rowForView:sender]];
-    NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:[obj valueForKey:@"path"]];
-    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:[NSArray arrayWithObject:fileURL]];
+    if (_tblView.selectedRow >= 0) {
+        NSDictionary* obj = [pluginsArray objectAtIndex:_tblView.selectedRow];
+        NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:[obj valueForKey:@"path"]];
+        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:[NSArray arrayWithObject:fileURL]];
+    }
 }
 
 - (IBAction)pluginLocToggle:(id)sender {
@@ -199,17 +192,41 @@ NSInteger previusRow = -1;
 }
 
 - (IBAction)pluginDelete:(id)sender {
-    NSTableView *t = _tblView;
-    long selected = [t selectedRow];
-    if ([[confirmDelete objectAtIndex:selected] boolValue]) {
-        NSDictionary* obj = [pluginsArray objectAtIndex:selected];
+    if (_tblView.selectedRow >= 0) {
+        NSDictionary* obj = [pluginsArray objectAtIndex:_tblView.selectedRow];
         NSString* path = [obj objectForKey:@"path"];
         NSURL* url = [NSURL fileURLWithPath:path];
         NSURL* trash;
         NSError* error;
         [[NSFileManager defaultManager] trashItemAtURL:url resultingItemURL:&trash error:&error];
+        [_sharedMethods readPlugins:_tblView];
     }
-    [confirmDelete setObject:[NSNumber numberWithBool:true] atIndexedSubscript:selected];
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
+    [self tableChange:aNotification];
+}
+
+- (void)tableViewSelectionIsChanging:(NSNotification *)aNotification {
+    [self tableChange:aNotification];
+}
+
+-(void)tableChange:(NSNotification *)aNotification {
+    if (_tblView.selectedRow >= 0) {
+        NSDictionary* obj = [pluginsArray objectAtIndex:_tblView.selectedRow];
+        NSString* webURL = [[obj objectForKey:@"bundleInfo"] objectForKey:@"DevURL"];
+        if (webURL != nil) {
+            [_pluginWeb setEnabled:true];
+        } else {
+            [_pluginWeb setEnabled:false];
+        }
+        [_pluginFinder setEnabled:true];
+        [_pluginDelete setEnabled:true];
+    } else {
+        [_pluginWeb setEnabled:false];
+        [_pluginFinder setEnabled:false];
+        [_pluginDelete setEnabled:false];
+    }
 }
 
 @end

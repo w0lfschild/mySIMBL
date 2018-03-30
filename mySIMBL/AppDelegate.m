@@ -136,6 +136,8 @@ NSArray *tabViews;
     
     [_sourcesRoot setSubviews:[[NSArray alloc] initWithObjects:_discoverChanges, nil]];
     
+    [self updateAdButton];
+    [self tabs_sideBar];
     [self setupWindow];
     [self setupPrefstab];
     [_sharedMethods readPlugins:_tblView];
@@ -146,8 +148,10 @@ NSArray *tabViews;
     [_tblView registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
     
     [self setupEventListener];
-    [self.window makeKeyAndOrderFront:self];
+    [_window makeKeyAndOrderFront:self];
     [self setupSIMBLview];
+    
+    [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(keepThoseAdsFresh) userInfo:nil repeats:YES];
     
     NSDate *methodFinish = [NSDate date];
     NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:appStart];
@@ -166,6 +170,73 @@ NSArray *tabViews;
     return [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
 }
 
+
+- (void)tabs_sideBar {
+    NSInteger height = _viewPlugins.frame.size.height;
+    
+    tabViewButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAccount, _viewAbout, _viewPreferences, nil];
+    NSArray *topButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAccount, _viewAbout, _viewPreferences, nil];
+    NSUInteger yLoc = _window.frame.size.height - 44 - height;
+    for (NSButton *btn in topButtons) {
+        NSRect newFrame = [btn frame];
+        newFrame.origin.x = 0;
+        newFrame.origin.y = yLoc;
+        yLoc -= (height - 1);
+        [btn setFrame:newFrame];
+        
+        if (!(btn.tag == 1234)) {
+            NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, 0, btn.frame.size.width, 1)];
+            [line setBoxType:NSBoxSeparator];
+            [btn addSubview:line];
+            
+            NSBox *btm = [[NSBox alloc] initWithFrame:CGRectMake(0, btn.frame.size.height - 1, btn.frame.size.width, 1)];
+            [btm setBoxType:NSBoxSeparator];
+            [btn addSubview:btm];
+            
+            [btn setTag:1234];
+        }
+        
+        [btn setWantsLayer:YES];
+        [btn setTarget:self];
+    }
+    
+    [_viewUpdateCounter setFrameOrigin:CGPointMake(_viewChanges.frame.origin.x + 85, _viewChanges.frame.origin.y + 3)];
+    
+    for (NSButton *btn in tabViewButtons)
+        [btn setAction:@selector(selectView:)];
+    
+    NSArray *bottomButtons = [NSArray arrayWithObjects:_buttonDonate, _buttonAdvert, _buttonFeedback, _buttonReport, nil];
+    NSMutableArray *visibleButons = [[NSMutableArray alloc] init];
+    for (NSButton *btn in bottomButtons)
+        if (![btn isHidden])
+            [visibleButons addObject:btn];
+    bottomButtons = [visibleButons copy];
+    
+    yLoc = ([bottomButtons count] - 1) * (height - 1);
+    for (NSButton *btn in bottomButtons) {
+        NSRect newFrame = [btn frame];
+        newFrame.origin.x = 0;
+        newFrame.origin.y = yLoc;
+        yLoc -= (height - 1);
+        [btn setFrame:newFrame];
+        
+        if (!(btn.tag == 1234)) {
+            NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, 0, btn.frame.size.width, 1)];
+            [line setBoxType:NSBoxSeparator];
+            [btn addSubview:line];
+            
+            NSBox *btm = [[NSBox alloc] initWithFrame:CGRectMake(0, btn.frame.size.height - 1, btn.frame.size.width, 1)];
+            [btm setBoxType:NSBoxSeparator];
+            [btn addSubview:btm];
+            
+            [btn setTag:1234];
+        }
+        
+        [btn setWantsLayer:YES];
+    }
+}
+
+
 - (void)setupWindow {
     [_window setTitle:@""];
     [_window setMovableByWindowBackground:YES];
@@ -175,6 +246,7 @@ NSArray *tabViews;
         _window.styleMask |= NSFullSizeContentViewWindowMask;
     }
     
+    [self simbl_blacklist];
     [self getBlacklistAPPList];
     
     // Add blurred background if NSVisualEffectView exists
@@ -183,43 +255,44 @@ NSArray *tabViews;
         NSVisualEffectView *vibrant=[[vibrantClass alloc] initWithFrame:[[_window contentView] bounds]];
         [vibrant setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
         [vibrant setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
+        [vibrant setState:NSVisualEffectStateActive];
         [[_window contentView] addSubview:vibrant positioned:NSWindowBelow relativeTo:nil];
     } else {
         [_window setBackgroundColor:[NSColor whiteColor]];
     }
     
-    [self.window.contentView setWantsLayer:YES];
-//    self.window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
+    [_window.contentView setWantsLayer:YES];
+//    _window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantDark];
     
-    tabViewButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAccount, _viewAbout, _viewPreferences, nil];
-    for (NSButton *btn in tabViewButtons) {
-        NSRect frame = [btn frame];
-        frame.size.height = 1;        
-        frame.origin.y += 30;
-        
-        NSBox *line = [[NSBox alloc] initWithFrame:frame];
-        [line setBoxType:NSBoxSeparator];
-        [_window.contentView addSubview:line];
-        
-        [btn setWantsLayer:YES];
-        [btn setTarget:self];
-        [btn setAction:@selector(selectView:)];
-    }
-    
-    NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, _viewAccount.frame.origin.y - 1, 125, 1)];
-    [line setBoxType:NSBoxSeparator];
-    [_window.contentView addSubview:line];
+//    tabViewButtons = [NSArray arrayWithObjects:_viewPlugins, _viewSources, _viewChanges, _viewSIMBL, _viewAccount, _viewAbout, _viewPreferences, nil];
+//    for (NSButton *btn in tabViewButtons) {
+//        NSRect frame = [btn frame];
+//        frame.size.height = 1;
+//        frame.origin.y += 30;
 //
-    NSBox *vert = [[NSBox alloc] initWithFrame:CGRectMake(125, 0, 1, 500)];
+//        NSBox *line = [[NSBox alloc] initWithFrame:frame];
+//        [line setBoxType:NSBoxSeparator];
+//        [_window.contentView addSubview:line];
+//
+//        [btn setWantsLayer:YES];
+//        [btn setTarget:self];
+//        [btn setAction:@selector(selectView:)];
+//    }
+//
+//    NSBox *line = [[NSBox alloc] initWithFrame:CGRectMake(0, _viewAccount.frame.origin.y - 1, 125, 1)];
+//    [line setBoxType:NSBoxSeparator];
+//    [_window.contentView addSubview:line];
+////
+    NSBox *vert = [[NSBox alloc] initWithFrame:CGRectMake(124, 0, 1, 500)];
     [vert setBoxType:NSBoxSeparator];
     [_window.contentView addSubview:vert];
-    
-    NSArray *bottomButtons = [NSArray arrayWithObjects:_feedbackButton, _donateButton, _reportButton, nil];
-    
-    for (NSButton *btn in bottomButtons) {
-        [btn setWantsLayer:YES];
-        [btn.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
-    }
+//
+//    NSArray *bottomButtons = [NSArray arrayWithObjects:_buttonFeedback, _buttonDonate, _buttonReport, nil];
+//
+//    for (NSButton *btn in bottomButtons) {
+//        [btn setWantsLayer:YES];
+//        [btn.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
+//    }
     
     tabViews = [NSArray arrayWithObjects:_tabPlugins, _tabSources, _tabUpdates, _tabSIMBLInfo, _tabSources, _tabAbout, _tabPreferences, nil];
     
@@ -264,21 +337,21 @@ NSArray *tabViews;
 - (void)showSIPWarning {
     if (!sipc) { sipc = [[sip_c alloc] initWithWindowNibName:@"sip_c"]; }
     CGRect dlframe = [[sipc window] frame];
-    CGRect apframe = [self.window frame];
+    CGRect apframe = [_window frame];
     int xloc = NSMidX(apframe) - (dlframe.size.width / 2);
     int yloc = NSMidY(apframe) - (dlframe.size.height / 2);
     dlframe = CGRectMake(xloc, yloc, dlframe.size.width, dlframe.size.height);
     [[sipc confirm] setTarget:self];
     [[sipc confirm] setAction:@selector(closeWarning)];
     [[sipc window] setFrame:dlframe display:true];
-    [self.window setLevel:NSFloatingWindowLevel];
-    [self.window addChildWindow:[sipc window] ordered:NSWindowAbove];
+    [_window setLevel:NSFloatingWindowLevel];
+    [_window addChildWindow:[sipc window] ordered:NSWindowAbove];
 }
 
 - (void)showSIMBLWarning {
     if (!simc) { simc = [[sim_c alloc] initWithWindowNibName:@"sim_c"]; }
     CGRect dlframe = [[simc window] frame];
-    CGRect apframe = [self.window frame];
+    CGRect apframe = [_window frame];
     int xloc = NSMidX(apframe) - (dlframe.size.width / 2);
     int yloc = NSMidY(apframe) - (dlframe.size.height / 2);
     dlframe = CGRectMake(xloc, yloc, dlframe.size.width, dlframe.size.height);
@@ -287,29 +360,29 @@ NSArray *tabViews;
     [[simc accept] setTarget:self];
     [[simc accept] setAction:@selector(confirmSIMBLInstall)];
     [[simc window] setFrame:dlframe display:true];
-    [self.window setLevel:NSFloatingWindowLevel];
-    [self.window addChildWindow:[simc window] ordered:NSWindowAbove];
+    [_window setLevel:NSFloatingWindowLevel];
+    [_window addChildWindow:[simc window] ordered:NSWindowAbove];
 }
 
 - (void)confirmOSAXInstall {
     [self closeWarning];
     [SIMBLFramework OSAX_install];
     [SIMBLFramework SIMBL_injectAll];
-    [self.window setLevel:NSNormalWindowLevel];
+    [_window setLevel:NSNormalWindowLevel];
 }
 
 - (void)confirmAGENTInstall {
     [self closeWarning];
     [SIMBLFramework AGENT_install];
     [SIMBLFramework SIMBL_injectAll];
-    [self.window setLevel:NSNormalWindowLevel];
+    [_window setLevel:NSNormalWindowLevel];
 }
 
 - (void)confirmSIMBLInstall {
     [self closeWarning];
     [SIMBLFramework SIMBL_install];
     [SIMBLFramework SIMBL_injectAll];
-    [self.window setLevel:NSNormalWindowLevel];
+    [_window setLevel:NSNormalWindowLevel];
 }
 
 - (void)closeWarning {
@@ -318,17 +391,17 @@ NSArray *tabViews;
 }
 
 - (void)addLoginItem {
-    StartAtLoginController *loginController = [[StartAtLoginController alloc] initWithIdentifier:@"org.w0lf.mySIMBLAgent"];
+    StartAtLoginController *loginController = [[StartAtLoginController alloc] initWithIdentifier:@"org.w0lf.mySIMBLHelper"];
     BOOL startsAtLogin = [loginController startAtLogin];
     if (!startsAtLogin)
         loginController.startAtLogin = YES;
 }
 
 - (void)launchHelper {
-    for (NSRunningApplication *run in [NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.mySIMBLAgent"])
+    for (NSRunningApplication *run in [NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.mySIMBLHelper"])
         [run terminate];
-    NSString *path = [NSString stringWithFormat:@"%@/Contents/Library/LoginItems/mySIMBLAgent.app", [[NSBundle mainBundle] bundlePath]];
-    //    NSString *path = [[NSBundle mainBundle] pathForResource:@"mySIMBLAgent" ofType:@"app"];
+    NSString *path = [NSString stringWithFormat:@"%@/Contents/Library/LoginItems/mySIMBLHelper.app", [[NSBundle mainBundle] bundlePath]];
+    //    NSString *path = [[NSBundle mainBundle] pathForResource:@"mySIMBLHelper" ofType:@"app"];
     [[NSWorkspace sharedWorkspace] launchApplication:path];
 }
 
@@ -368,14 +441,14 @@ NSArray *tabViews;
         [test setInitialToolTipDelay:0.1];
     }
     
-    [_donateButton.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
+//    [_buttonDonate.layer setBackgroundColor:[NSColor colorWithCalibratedRed:0.438f green:0.121f blue:0.199f alpha:0.258f].CGColor];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SUAutomaticallyUpdate"]) {
         [_prefUpdateAuto selectItemAtIndex:2];
-        [self.updater checkForUpdatesInBackground];
+        [_updater checkForUpdatesInBackground];
     } else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SUEnableAutomaticChecks"]) {
         [_prefUpdateAuto selectItemAtIndex:1];
-        [self.updater checkForUpdatesInBackground];
+        [_updater checkForUpdatesInBackground];
     } else {
         [_prefUpdateAuto selectItemAtIndex:0];
     }
@@ -493,14 +566,14 @@ NSArray *tabViews;
     if ([btn state]) {
         [NSAnimationContext beginGrouping];
         [[NSAnimationContext currentContext] setDuration:1.0];
-        [[_donateButton animator] setAlphaValue:0];
-        [[_donateButton animator] setHidden:true];
+        [[_buttonDonate animator] setAlphaValue:0];
+        [[_buttonDonate animator] setHidden:true];
         [NSAnimationContext endGrouping];
     } else {
         [NSAnimationContext beginGrouping];
         [[NSAnimationContext currentContext] setDuration:1.0];
-        [[_donateButton animator] setAlphaValue:1];
-        [[_donateButton animator] setHidden:false];
+        [[_buttonDonate animator] setAlphaValue:1];
+        [[_buttonDonate animator] setHidden:false];
         [NSAnimationContext endGrouping];
     }
 }
@@ -575,7 +648,7 @@ NSArray *tabViews;
     
 //    long cur = [currView indexOfObject:[_sourcesRoot.subviews objectAtIndex:0]];
 //    [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[currView objectAtIndex:0]];
-//    [self.window makeFirstResponder: [currView objectAtIndex:cur + 1]];
+//    [_window makeFirstResponder: [currView objectAtIndex:cur + 1]];
     
     NSInteger clickedSegment = [sender selectedSegment];
     if (clickedSegment == 0)
@@ -612,7 +685,7 @@ NSArray *tabViews;
 
         if ((cur + 1) < [currView count]) {
             [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[currView objectAtIndex:cur + 1]];
-            [self.window makeFirstResponder: [currView objectAtIndex:cur + 1]];
+            [_window makeFirstResponder: [currView objectAtIndex:cur + 1]];
         }
         
         if ((cur + 2) >= [currView count]) {
@@ -644,7 +717,7 @@ NSArray *tabViews;
     if ((cur - 1) >= 0) {
 //        dumpViews(_sourcesRoot, 0);
         [[_sourcesRoot animator] replaceSubview:[_sourcesRoot.subviews objectAtIndex:0] with:[currView objectAtIndex:cur - 1]];
-        [self.window makeFirstResponder: [currView objectAtIndex:cur - 1]];
+        [_window makeFirstResponder: [currView objectAtIndex:cur - 1]];
     }
 }
 
@@ -684,7 +757,6 @@ NSArray *tabViews;
         }
     }
     
-    
     [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"sources"];
     [myPreferences setObject:newArray forKey:@"sources"];
     [_srcWin close];
@@ -704,8 +776,8 @@ NSArray *tabViews;
     newFrame.size.width = _srcWin.frame.size.width;
     newFrame.size.height = _srcWin.frame.size.height;
     [_srcWin setFrame:newFrame display:true];
-    NSWindowController *vc = [[NSWindowController alloc] initWithWindow:_srcWin];
-    [vc showWindow:nil];
+    [_window addChildWindow:_srcWin ordered:NSWindowAbove];
+    [_srcWin makeKeyAndOrderFront:self];
 }
 
 - (void)checkSIMBL {
@@ -765,42 +837,62 @@ NSArray *tabViews;
     return proposedMaximumPosition;
 }
 
+- (IBAction)toggleAMFI:(id)sender {
+    SIMBLManager *sim_m = [SIMBLManager sharedInstance];
+    [sim_m AMFI_toggle];
+    NSImage *on = [NSImage imageNamed:NSImageNameStatusAvailable];
+    NSImage *off = [NSImage imageNamed:NSImageNameStatusUnavailable];
+    if (_AMFIStatus.image == on)
+        [_AMFIStatus setImage:off];
+    else
+        [_AMFIStatus setImage:on];
+}
+
 - (void)setupSIMBLview {
     SIMBLManager *sim_m = [SIMBLManager sharedInstance];
+    NSImage *on = [NSImage imageNamed:NSImageNameStatusAvailable];
+    NSImage *off = [NSImage imageNamed:NSImageNameStatusUnavailable];
+    NSImage *err = [NSImage imageNamed:NSImageNameStatusPartiallyAvailable];
+    
     if ([[sim_m OSAX_versions] objectForKey:@"localVersion"])
-        [self.SIMBLTogggle setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+        [_SIMBLTogggle setImage:on];
     else
-        [self.SIMBLTogggle setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+        [_SIMBLTogggle setImage:off];
     
-    if ([sim_m SIP_enabled])
-        [self.SIPStatus setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+    if (![sim_m SIP_enabled])
+        [_SIPStatus setImage:on];
     else
-        [self.SIPStatus setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+        [_SIPStatus setImage:off];
     
-    dispatch_queue_t bgQueue = dispatch_queue_create("bgQueue", NULL);
-    dispatch_async(bgQueue, ^{
-        //your code here
-        Boolean xcodeState = ![sim_m lib_ValidationSatus:@"com.apple.dt.Xcode"];
-        Boolean safariState = ![sim_m lib_ValidationSatus:@"com.apple.SafariTechnologyPreview"];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // Update the UI
-            [self.libValXcode setState:xcodeState];
-            [self.libValSafari setState:safariState];
-        });
-    });
+    if (![sim_m AMFI_enabled])
+        [_AMFIStatus setImage:on];
+    else
+        [_AMFIStatus setImage:off];
     
     if ([[sim_m AGENT_versions] objectForKey:@"localVersion"]) {
         if ([NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.SIMBLAgent"])
-            [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+            [_SIMBLAgentToggle setImage:on];
         else
-            [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
+            [_SIMBLAgentToggle setImage:err];
     } else {
-        [self.SIMBLAgentToggle setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+        [_SIMBLAgentToggle setImage:off];
     }
     
     [_SIMBLAgentText setStringValue:[NSString stringWithFormat:@"- Version %@", [[sim_m AGENT_versions] objectForKey:@"localVersion"]]];
     [_SIMBLOSAXText setStringValue:[NSString stringWithFormat:@"- Version %@", [[sim_m OSAX_versions] objectForKey:@"localVersion"]]];
+}
+
+- (void)simbl_blacklist {
+    NSString *plist = @"Library/Preferences/org.w0lf.SIMBLAgent.plist";
+    NSMutableDictionary *SIMBLPrefs = [NSMutableDictionary dictionaryWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:plist]];
+    NSArray *blacklist = [SIMBLPrefs objectForKey:@"SIMBLApplicationIdentifierBlacklist"];
+    NSArray *alwaysBlaklisted = @[@"org.w0lf.mySIMBL", @"org.w0lf.cDock-GUI"];
+    NSMutableArray *newlist = [[NSMutableArray alloc] initWithArray:blacklist];
+    for (NSString *app in alwaysBlaklisted)
+        if (![blacklist containsObject:app])
+            [newlist addObject:app];
+    [SIMBLPrefs setObject:newlist forKey:@"SIMBLApplicationIdentifierBlacklist"];
+    [SIMBLPrefs writeToFile:[NSHomeDirectory() stringByAppendingPathComponent:plist] atomically:YES];
 }
 
 - (void)getBlacklistAPPList {
@@ -881,12 +973,110 @@ NSArray *tabViews;
     [sharedPrefs synchronize];
 }
 
-- (void)setBadge :(NSString*)toValue {
+- (void)setBadge:(NSString*)toValue {
     [_viewUpdateCounter setTitle:toValue];
 }
 
 - (IBAction)uninstallSIMBL:(id)sender {
     [[SIMBLManager sharedInstance] SIMBL_remove];
+}
+
+- (IBAction)visit_ad:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:_adURL]];
+}
+
+- (void)keepThoseAdsFresh {
+    if (_adArray != nil) {
+        if (!_buttonAdvert.hidden) {
+            NSInteger arraySize = _adArray.count;
+            NSInteger displayNum = (NSInteger)arc4random_uniform((int)[_adArray count]);
+            if (displayNum == _lastAD) {
+                displayNum++;
+                if (displayNum >= arraySize)
+                    displayNum -= 2;
+                if (displayNum < 0)
+                    displayNum = 0;
+            }
+            _lastAD = displayNum;
+            NSDictionary *dic = [_adArray objectAtIndex:displayNum];
+            NSString *name = [dic objectForKey:@"name"];
+            name = [NSString stringWithFormat:@"%@", name];
+            NSString *url = [dic objectForKey:@"homepage"];
+            [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context){
+                [context setDuration:1.25];
+                [[_buttonAdvert animator] setTitle:name];
+            } completionHandler:^{
+            }];
+            if (url)
+                _adURL = url;
+            else
+                _adURL = @"https://github.com/w0lfschild/mySIMBL";
+        }
+    }
+}
+
+- (void)updateAdButton {
+    // Local ads
+    NSArray *dict = [[NSArray alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ads" ofType:@"plist"]];
+    NSInteger displayNum = (NSInteger)arc4random_uniform((int)[dict count]);
+    NSDictionary *dic = [dict objectAtIndex:displayNum];
+    NSString *name = [dic objectForKey:@"name"];
+    name = [NSString stringWithFormat:@"%@", name];
+    NSString *url = [dic objectForKey:@"homepage"];
+    
+    [_buttonAdvert setTitle:name];
+    if (url)
+        _adURL = url;
+    else
+        _adURL = @"https://github.com/w0lfschild/mySIMBL";
+    
+    _adArray = dict;
+    _lastAD = displayNum;
+    
+    // Check web for new ads
+    dispatch_queue_t queue = dispatch_queue_create("com.yourdomain.yourappname", NULL);
+    dispatch_async(queue, ^{
+        //code to be executed in the background
+        
+        NSURL *installURL = [NSURL URLWithString:@"https://github.com/w0lfschild/app_updates/raw/master/cDock/ads.plist"];
+        NSURLRequest *request = [NSURLRequest requestWithURL:installURL];
+        NSError *error;
+        NSURLResponse *response;
+        NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        
+        if (!result) {
+            // Download failed
+            NSLog(@"mySIMBL : Error");
+        } else {
+            NSPropertyListFormat format;
+            NSError *err;
+            NSArray *dict = (NSArray*)[NSPropertyListSerialization propertyListWithData:result
+                                                                                options:NSPropertyListMutableContainersAndLeaves
+                                                                                 format:&format
+                                                                                  error:&err];
+            NSLog(@"mySIMBL : %@", dict);
+            if (dict) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //code to be executed on the main thread when background task is finished
+                    
+                    NSInteger displayNum = (NSInteger)arc4random_uniform((int)[dict count]);
+                    NSDictionary *dic = [dict objectAtIndex:displayNum];
+                    NSString *name = [dic objectForKey:@"name"];
+                    name = [NSString stringWithFormat:@"%@", name];
+                    NSString *url = [dic objectForKey:@"homepage"];
+                    
+                    [_buttonAdvert setTitle:name];
+                    if (url)
+                        _adURL = url;
+                    else
+                        _adURL = @"https://github.com/w0lfschild/mySIMBL";
+                    
+                    _adArray = dict;
+                    _lastAD = displayNum;
+                });
+            }
+        }
+    });
 }
 
 @end

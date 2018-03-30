@@ -1,0 +1,4 @@
+<appname> needs to update some components on your system. If these components are not installed, <appname> may fail to function properly or not work at all.
+
+Updating requires an administrator password.
+
