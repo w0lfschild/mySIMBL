@@ -23,8 +23,7 @@ NSArray *allPlugins;
 NSArray *filteredPlugins;
 NSString *textFilter;
 
-@interface discoverPluginTable : NSTableView
-{
+@interface discoverPluginTable : NSTableView {
     shareClass *_sharedMethods;
 }
 @end
@@ -116,15 +115,11 @@ NSString *textFilter;
     
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     discoverPluginTableCell *result = (discoverPluginTableCell*)[tableView makeViewWithIdentifier:@"dptView" owner:self];
-    
-//    NSDictionary* item = [[NSMutableDictionary alloc] initWithDictionary:[allPlugins objectAtIndex:row]];
-    
     NSArray *values = [[pluginData sharedInstance].repoPluginsDic allValues];
     
     if (textFilter != nil && textFilter.length > 0) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"webName CONTAINS[cd] %@", textFilter];
         values = [values filteredArrayUsingPredicate:predicate];
-//        NSLog(@"%@", values);
     }
         
     NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"webName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
@@ -155,66 +150,16 @@ NSString *textFilter;
         if ([dank.bundlePath rangeOfString:@"/Library/Application Support/SIMBL/Plugins"].length != 0)
             result.bundleImageInstalled.hidden = false;
     return result;
-    
-//    result.bundleName.stringValue = [item objectForKey:@"name"];
-//    NSString *shortDescription = @"";
-//    if ([item objectForKey:@"descriptionShort"] != nil) {
-//        if (![[item objectForKey:@"descriptionShort"] isEqualToString:@""])
-//        shortDescription = [item objectForKey:@"descriptionShort"];
-//    }
-//    if ([shortDescription isEqualToString:@""])
-//    shortDescription = [item objectForKey:@"description"];
-//    result.bundleDescription.stringValue = shortDescription;
-//    NSString *bInfo = [NSString stringWithFormat:@"%@ - %@", [item objectForKey:@"version"], [item objectForKey:@"package"]];
-//    result.bundleInfo.stringValue = bInfo;
-//    result.bundleDescription.toolTip = [item objectForKey:@"description"];
-//    result.bundleImage.image = [_sharedMethods getbundleIcon:item];
-//    [result.bundleImage.cell setImageScaling:NSImageScaleProportionallyUpOrDown];
-//
-//    NSBundle *dank = [NSBundle bundleWithIdentifier:[item objectForKey:@"package"]];
-//    result.bundleImageInstalled.hidden = true;
-//    if (dank.bundlePath.length)
-//    if ([dank.bundlePath rangeOfString:@"/Library/Application Support/SIMBL/Plugins"].length != 0)
-//    result.bundleImageInstalled.hidden = false;
-//    return result;
 }
     
-- (void)keyDown:(NSEvent *)theEvent
-{
-    NSString*   const   character   =   [theEvent charactersIgnoringModifiers];
-    unichar     const   code        =   [character characterAtIndex:0];
-    bool                specKey     =   false;
-    switch (code)
-    {
-        case NSLeftArrowFunctionKey:
-        {
-            [myDelegate popView:nil];
-            specKey = true;
-            break;
-        }
-        case NSRightArrowFunctionKey:
-        {
-            [myDelegate pushView:nil];
-            specKey = true;
-            break;
-        }
-        case NSCarriageReturnCharacter:
-        {
-            [myDelegate pushView:nil];
-            specKey = true;
-            break;
-        }
-    }
-    
-    if (!specKey)
-    [super keyDown:theEvent];
+- (void)keyDown:(NSEvent *)theEvent {
+    Boolean result = [[shareClass sharedInstance] keypressed:theEvent];
+    if (!result) [super keyDown:theEvent];
 }
     
--(void)tableChange:(NSNotification *)aNotification
-{
+-(void)tableChange:(NSNotification *)aNotification {
     id sender = [aNotification object];
     myselectedRow = [sender selectedRow];
-    
     NSArray *values = [[pluginData sharedInstance].repoPluginsDic allValues];
     if (textFilter != nil && textFilter.length > 0) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"webName CONTAINS[cd] %@", textFilter];
@@ -224,45 +169,7 @@ NSString *textFilter;
     NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
     NSArray *sortedArray = [values sortedArrayUsingDescriptors:sortDescriptors];
     MSPlugin *item = [sortedArray objectAtIndex:myselectedRow];
-    
-//    NSLog(@"%@", item.webName);
-    
-    int index = 0;
-    for (NSDictionary *dic in allPlugins) {
-        if ([[dic valueForKey:@"package"] isEqualToString:[item.webPlist valueForKey:@"package"]]) {
-            repoPackages = @"";
-            selectedRow = index;
-        }
-        index++;
-    }
-    
-    if (myselectedRow != -1) {
-//        NSLog(@"%lu", (unsigned long)[allPlugins indexOfObjectIdenticalTo:item.webPlist]);
-//        NSLog(@"%@ : %@", allPlugins[0], item.webPlist);
-//        discoverPluginTableCell *ctc = [sender viewAtColumn:0 row:myselectedRow makeIfNecessary:YES];
-        
-//        NSString *selectedID = ctc.bundleInfo;
-//        sourceTableCell *ctc = [sender viewAtColumn:0 row:myselectedRow makeIfNecessary:YES];
-//        repoPackages = ;
-//        if (myselectedRow != previusRow)
-//        {
-//            NSColor *aColor = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-//            if (aColor) {
-//                aColor = [self inverseColor:aColor];
-//                [ctc.sourceName setTextColor:aColor];
-//                [ctc.sourceDescription setTextColor:aColor];
-//                if (previusRow != -1)
-//                {
-//                    [ctc.sourceName setTextColor:[NSColor blackColor]];
-//                    [ctc.sourceDescription setTextColor:[NSColor grayColor]];
-//                }
-//                previusRow = myselectedRow;
-//            }
-//        }
-    }
-    else {
-        // No row was selected
-    }
+    [pluginData sharedInstance].currentPlugin = item;
 }
     
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification

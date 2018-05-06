@@ -11,23 +11,34 @@
 #import "shareClass.h"
 #import "AppDelegate.h"
 
-extern AppDelegate* myDelegate;
+extern AppDelegate *myDelegate;
 extern NSMutableArray *pluginsArray;
 extern NSMutableArray *confirmDelete;
 extern NSMutableDictionary *installedPluginDICT;
 extern NSMutableDictionary *needsUpdate;
 
+
 @implementation shareClass
 
-- (void)installBundles:(NSArray*)pathArray
-{
++ (shareClass*) sharedInstance {
+    static shareClass* pData = nil;
+    if (pData == nil)
+        pData = [[shareClass alloc] init];
+    return pData;
+}
+
+- (instancetype)init {
+    if (self = [super init]) {
+    }
+    return self;
+}
+
+- (void)installBundles:(NSArray*)pathArray {
     //    NSLog(@"%@", pathArray);
     NSArray* libDomain = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask];
     NSString* libSupport = [[libDomain objectAtIndex:0] path];
-    for (NSString* path in pathArray)
-    {
-        if ([[path pathExtension] isEqualToString:@"bundle"])
-        {
+    for (NSString* path in pathArray) {
+        if ([[path pathExtension] isEqualToString:@"bundle"]) {
             NSArray* pathComp=[path pathComponents];
             NSString* name=[pathComp objectAtIndex:[pathComp count] - 1];
             NSString* libPath = [NSString stringWithFormat:@"%@/SIMBL/Plugins/%@", libSupport, name];
@@ -35,8 +46,7 @@ extern NSMutableDictionary *needsUpdate;
             [self replaceFile:path :libPath];
         }
         
-        if ([[path pathExtension] isEqualToString:@"app"])
-        {
+        if ([[path pathExtension] isEqualToString:@"app"]) {
             NSArray* pathComp=[path pathComponents];
             NSString* name=[pathComp objectAtIndex:[pathComp count] - 1];
             NSString* libPath = [NSString stringWithFormat:@"/Applications/%@", name];
@@ -46,16 +56,13 @@ extern NSMutableDictionary *needsUpdate;
     }
 }
 
-- (void)replaceFile:(NSString*)start :(NSString*)end
-{
+- (void)replaceFile:(NSString*)start :(NSString*)end {
     NSError* error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[end stringByDeletingLastPathComponent]])
-    {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[end stringByDeletingLastPathComponent]]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:[end stringByDeletingLastPathComponent] withIntermediateDirectories:true attributes:nil error:&error];
     }
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:end])
-    {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:end]) {
         //        NSLog(@"File Exists");
         [[NSFileManager defaultManager] replaceItemAtURL:[NSURL fileURLWithPath:end] withItemAtURL:[NSURL fileURLWithPath:start] backupItemName:nil options:NSFileManagerItemReplacementUsingNewMetadataOnly resultingItemURL:nil error:&error];
     } else {
@@ -65,15 +72,12 @@ extern NSMutableDictionary *needsUpdate;
     //    NSLog(@"%@", error);
 }
 
-- (void)readFolder:(NSString *)str :(NSMutableDictionary *)dict
-{
+- (void)readFolder:(NSString *)str :(NSMutableDictionary *)dict {
     NSArray *appFolderContents = [[NSArray alloc] init];
     appFolderContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:str error:nil];
     
-    for (NSString* fileName in appFolderContents)
-    {
-        if ([fileName hasSuffix:@".bundle"])
-        {
+    for (NSString* fileName in appFolderContents) {
+        if ([fileName hasSuffix:@".bundle"]) {
             NSString* path=[str stringByAppendingPathComponent:fileName];
             NSString* name=[fileName stringByDeletingPathExtension];
             
@@ -389,5 +393,30 @@ extern NSMutableDictionary *needsUpdate;
     });
 }
 
+- (Boolean)keypressed:(NSEvent *)theEvent {
+    NSString*   const   character   =   [theEvent charactersIgnoringModifiers];
+    unichar     const   code        =   [character characterAtIndex:0];
+    bool                specKey     =   false;
+    
+    switch (code) {
+        case NSLeftArrowFunctionKey: {
+            [myDelegate popView:nil];
+            specKey = true;
+            break;
+        }
+        case NSRightArrowFunctionKey: {
+            [myDelegate pushView:nil];
+            specKey = true;
+            break;
+        }
+        case NSCarriageReturnCharacter: {
+            [myDelegate pushView:nil];
+            specKey = true;
+            break;
+        }
+    }
+    
+    return specKey;
+}
 
 @end

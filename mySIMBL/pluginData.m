@@ -10,8 +10,7 @@
 
 @implementation pluginData
 
-+ (pluginData*) sharedInstance
-{
++ (pluginData*) sharedInstance {
     static pluginData* pData = nil;
     
     if (pData == nil)
@@ -20,32 +19,27 @@
     return pData;
 }
 
-- (instancetype)init
-{
-    if (self = [super init])
-    {
+- (instancetype)init {
+    if (self = [super init]) {
         _sourceListDic = [[NSMutableDictionary alloc] init];
         _repoPluginsDic = [[NSMutableDictionary alloc] init];
         _localPluginsDic = [[NSMutableDictionary alloc] init];
+        _currentPlugin = [[MSPlugin alloc] init];
     }
     return self;
 }
 
-- (void)fetch_repos
-{
+- (void)fetch_repos {
     _sourceListDic = [[NSMutableDictionary alloc] init];
     _repoPluginsDic = [[NSMutableDictionary alloc] init];
     NSMutableArray *sourceURLS = [[NSMutableArray alloc] initWithArray:[[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:@"sources"]];
-    for (NSString *source in sourceURLS)
-    {
+    for (NSString *source in sourceURLS) {
         NSURL* data = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", source]];
         NSMutableDictionary* repoPackages = [[NSMutableDictionary alloc] initWithContentsOfURL:data];
-        if (repoPackages != nil)
-        {
+        if (repoPackages != nil) {
             NSMutableDictionary *sourceDic = [[NSMutableDictionary alloc] init];
             [sourceDic setObject:repoPackages forKey:@"raw_repoPackages"];
-            for (NSString *bundleIdentifier in [repoPackages allKeys])
-            {
+            for (NSString *bundleIdentifier in [repoPackages allKeys]) {
                 NSMutableDictionary *bundle = [repoPackages objectForKey:bundleIdentifier];
                 [bundle setObject:source forKey:@"sourceURL"];
                 
@@ -76,8 +70,7 @@
     }
 }
 
-- (void)fetch_local
-{
+- (void)fetch_local {
     self.localPluginsDic = [[NSMutableDictionary alloc] init];
     NSFileManager *f = [NSFileManager defaultManager];
     NSString* libSupport = [[[f URLsForDirectory:NSApplicationSupportDirectory inDomains:NSLocalDomainMask] firstObject] path];
@@ -87,14 +80,11 @@
     NSString* usrPathENB = [NSString stringWithFormat:@"%@/SIMBL/Plugins", usrSupport];
     NSString* usrPathDIS = [NSString stringWithFormat:@"%@/SIMBL/Plugins (Disabled)", usrSupport];
     NSArray *folders = [NSArray arrayWithObjects:libPathENB, libPathDIS, usrPathENB, usrPathDIS, nil];
-    for (NSString *str in folders)
-    {
+    for (NSString *str in folders) {
         NSArray *appFolderContents = [[NSArray alloc] init];
         appFolderContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:str error:nil];
-        for (NSString* fileName in appFolderContents)
-        {
-            if ([fileName hasSuffix:@".bundle"])
-            {
+        for (NSString* fileName in appFolderContents) {
+            if ([fileName hasSuffix:@".bundle"]) {
                 NSString *path = [str stringByAppendingPathComponent:fileName];
                 NSString *name = [fileName stringByDeletingPathExtension];
                 

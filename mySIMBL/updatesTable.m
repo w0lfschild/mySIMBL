@@ -58,8 +58,7 @@ extern NSMutableDictionary *needsUpdate;
 }
 
 - (IBAction)updateAll:(id)sender {
-    for (NSString* key in [needsUpdate allKeys])
-    {
+    for (NSString* key in [needsUpdate allKeys]) {
         NSDictionary *installDict = [needsUpdate objectForKey:key];
         [_sharedMethods pluginInstall:installDict :[installDict objectForKey:@"sourceURL"]];
     }

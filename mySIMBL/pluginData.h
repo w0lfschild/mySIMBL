@@ -15,6 +15,8 @@
 @property NSMutableDictionary *sourceListDic;
 @property NSMutableDictionary *repoPluginsDic;
 @property NSMutableDictionary *localPluginsDic;
+@property MSPlugin *currentPlugin;
+
 
 + (pluginData*) sharedInstance;
 - (void)fetch_repos;

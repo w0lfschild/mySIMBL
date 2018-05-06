@@ -10,6 +10,7 @@
 @import WebKit;
 #import "shareClass.h"
 #import "AppDelegate.h"
+#import "pluginData.h"
 
 @interface bundlePage : NSView
 
@@ -44,8 +45,7 @@ extern NSString *repoPackages;
 extern NSMutableArray *pluginsArray;
 extern long selectedRow;
 
-@implementation bundlePage
-{
+@implementation bundlePage {
     bool doOnce;
     NSMutableDictionary* installedPlugins;
     NSDictionary* item;
@@ -74,28 +74,34 @@ extern long selectedRow;
 //    [self.layer setBorderColor:[NSColor grayColor].CGColor];
     
     NSArray *allPlugins;
+    MSPlugin *plugin = [pluginData sharedInstance].currentPlugin;
     
-    if (![repoPackages isEqualToString:@""]) {
-        NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", repoPackages]];
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
-        allPlugins = [dict allValues];
-        
-        NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
-        NSArray *sortedArray = [allPlugins sortedArrayUsingDescriptors:sortDescriptors];
-        allPlugins = sortedArray;
+    if (plugin != nil) {
+        item = plugin.webPlist;
+        repoPackages = plugin.webRepository;
     } else {
-        NSMutableArray *sourceURLS = [[NSMutableArray alloc] initWithArray:[[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:@"sources"]];
-        NSMutableDictionary *comboDic = [[NSMutableDictionary alloc] init];
-        for (NSString *url in sourceURLS) {
-            NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", url]];
-            NSMutableDictionary *sourceDic = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
-            [comboDic addEntriesFromDictionary:sourceDic];
+        if (![repoPackages isEqualToString:@""]) {
+            NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", repoPackages]];
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
+            allPlugins = [dict allValues];
+            
+            NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+            NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
+            NSArray *sortedArray = [allPlugins sortedArrayUsingDescriptors:sortDescriptors];
+            allPlugins = sortedArray;
+        } else {
+            NSMutableArray *sourceURLS = [[NSMutableArray alloc] initWithArray:[[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:@"sources"]];
+            NSMutableDictionary *comboDic = [[NSMutableDictionary alloc] init];
+            for (NSString *url in sourceURLS) {
+                NSURL *dicURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/packages_v2.plist", url]];
+                NSMutableDictionary *sourceDic = [[NSMutableDictionary alloc] initWithContentsOfURL:dicURL];
+                [comboDic addEntriesFromDictionary:sourceDic];
+            }
+            allPlugins = [comboDic allValues];
         }
-        allPlugins = [comboDic allValues];
+        
+        item = [[NSMutableDictionary alloc] initWithDictionary:[allPlugins objectAtIndex:selectedRow]];
     }
-    
-    item = [[NSMutableDictionary alloc] initWithDictionary:[allPlugins objectAtIndex:selectedRow]];
     
     NSString* newString;
     
@@ -140,8 +146,7 @@ extern long selectedRow;
     self.bundleCompat.stringValue = newString;
     
     
-    if ([[item objectForKey:@"webpage"] length])
-    {
+    if ([[item objectForKey:@"webpage"] length]) {
         if (!doOnce)
         {
             doOnce = true;
@@ -158,7 +163,6 @@ extern long selectedRow;
 //        [[self.bundleWebView mainFrame] loadRequest:request];
         [[self.bundleWebView mainFrame] loadHTMLString:nil baseURL:nil];
     }
-    
     
     installedPlugins = [[NSMutableDictionary alloc] init];
     for (NSDictionary* dict in pluginsArray) {
@@ -226,8 +230,7 @@ extern long selectedRow;
     [self.bundleImage.cell setImageScaling:NSImageScaleProportionallyUpOrDown];
 }
 
-- (void)keyDown:(NSEvent *)theEvent
-{
+- (void)keyDown:(NSEvent *)theEvent {
     NSString*   const   character   =   [theEvent charactersIgnoringModifiers];
     unichar     const   code        =   [character characterAtIndex:0];
     bool                specKey     =   false;
@@ -267,7 +270,7 @@ extern long selectedRow;
      [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[item objectForKey:@"donate"]]];
 }
 
-- (void)pluginInstall {
+- (void)pluginInstall {    
     NSURL *installURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", repoPackages, [item objectForKey:@"filename"]]];
     NSData *myData = [NSData dataWithContentsOfURL:installURL];
     NSString *temp = [NSString stringWithFormat:@"/tmp/%@_%@", [item objectForKey:@"package"], [item objectForKey:@"version"]];

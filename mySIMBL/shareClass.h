@@ -8,6 +8,8 @@
 
 @interface shareClass : NSObject
 
++ (shareClass*) sharedInstance;
+
 - (void)checkforPluginUpdates:(NSTableView*)table;
 
 - (void)readPlugins:(NSTableView *)pluginTable;
@@ -19,5 +21,7 @@
 - (void)pluginDelete:(NSDictionary*)item;
 
 - (NSImage*)getbundleIcon:(NSDictionary*)plist;
+
+- (Boolean)keypressed:(NSEvent *)theEvent;
 
 @end

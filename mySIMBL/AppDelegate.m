@@ -850,32 +850,29 @@ NSArray *tabViews;
 
 - (void)setupSIMBLview {
     SIMBLManager *sim_m = [SIMBLManager sharedInstance];
-    NSImage *on = [NSImage imageNamed:NSImageNameStatusAvailable];
-    NSImage *off = [NSImage imageNamed:NSImageNameStatusUnavailable];
-    NSImage *err = [NSImage imageNamed:NSImageNameStatusPartiallyAvailable];
     
     if ([[sim_m OSAX_versions] objectForKey:@"localVersion"])
-        [_SIMBLTogggle setImage:on];
+        [_SIMBLTogggle setState:NSOnState];
     else
-        [_SIMBLTogggle setImage:off];
+        [_SIMBLTogggle setState:NSOffState];
     
     if (![sim_m SIP_enabled])
-        [_SIPStatus setImage:on];
+        [_SIPStatus setState:NSOnState];
     else
-        [_SIPStatus setImage:off];
+        [_SIPStatus setState:NSOffState];
     
     if (![sim_m AMFI_enabled])
-        [_AMFIStatus setImage:on];
+        [_AMFIStatus  setState:NSOnState];
     else
-        [_AMFIStatus setImage:off];
+        [_AMFIStatus  setState:NSOffState];
     
     if ([[sim_m AGENT_versions] objectForKey:@"localVersion"]) {
         if ([NSRunningApplication runningApplicationsWithBundleIdentifier:@"org.w0lf.SIMBLAgent"])
-            [_SIMBLAgentToggle setImage:on];
+            [_SIMBLAgentToggle  setState:NSOnState];
         else
-            [_SIMBLAgentToggle setImage:err];
+            [_SIMBLAgentToggle  setState:NSControlStateValueMixed];
     } else {
-        [_SIMBLAgentToggle setImage:off];
+        [_SIMBLAgentToggle  setState:NSOffState];
     }
     
     [_SIMBLAgentText setStringValue:[NSString stringWithFormat:@"- Version %@", [[sim_m AGENT_versions] objectForKey:@"localVersion"]]];
@@ -1038,7 +1035,7 @@ NSArray *tabViews;
     dispatch_async(queue, ^{
         //code to be executed in the background
         
-        NSURL *installURL = [NSURL URLWithString:@"https://github.com/w0lfschild/app_updates/raw/master/cDock/ads.plist"];
+        NSURL *installURL = [NSURL URLWithString:@"https://github.com/w0lfschild/app_updates/raw/master/mySIMBL/ads.plist"];
         NSURLRequest *request = [NSURLRequest requestWithURL:installURL];
         NSError *error;
         NSURLResponse *response;

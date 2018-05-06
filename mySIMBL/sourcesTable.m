@@ -87,53 +87,24 @@ NSArray *sourceURLS;
     return [NSColor colorWithRed:1.-r green:1.-g blue:1.-b alpha:a];
 }
 
-- (void)keyDown:(NSEvent *)theEvent
-{
-    NSString*   const   character   =   [theEvent charactersIgnoringModifiers];
-    unichar     const   code        =   [character characterAtIndex:0];
-    bool                specKey     =   false;
-    switch (code)
-    {
-        case NSLeftArrowFunctionKey:
-        {
-            [myDelegate popView:nil];
-            specKey = true;
-            break;
-        }
-        case NSRightArrowFunctionKey:
-        {
-            [myDelegate pushView:nil];
-            specKey = true;
-            break;
-        }
-        case NSCarriageReturnCharacter:
-        {
-            [myDelegate pushView:nil];
-            specKey = true;
-            break;
-        }
-    }
-    
-    if (!specKey)
-        [super keyDown:theEvent];
+- (void)keyDown:(NSEvent *)theEvent {
+    Boolean result = [[shareClass sharedInstance] keypressed:theEvent];
+    if (!result) [super keyDown:theEvent];
 }
 
--(void)tableChange:(NSNotification *)aNotification
-{
+-(void)tableChange:(NSNotification *)aNotification {
     id sender = [aNotification object];
     NSInteger selectedRow = [sender selectedRow];
     if (selectedRow != -1) {
         sourceTableCell *ctc = [sender viewAtColumn:0 row:selectedRow makeIfNecessary:YES];
         repoPackages = [sourceURLS objectAtIndex:selectedRow];
-        if (selectedRow != previusRow)
-        {
+        if (selectedRow != previusRow) {
             NSColor *aColor = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
             if (aColor) {
                 aColor = [self inverseColor:aColor];
                 [ctc.sourceName setTextColor:aColor];
                 [ctc.sourceDescription setTextColor:aColor];
-                if (previusRow != -1)
-                {
+                if (previusRow != -1) {
                     [ctc.sourceName setTextColor:[NSColor blackColor]];
                     [ctc.sourceDescription setTextColor:[NSColor grayColor]];
                 }
