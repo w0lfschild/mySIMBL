@@ -149,7 +149,7 @@
         if (result) return result;
     }
     
-    NSData *defaultIcon = [[[NSWorkspace sharedWorkspace] iconForFile:@"/System/Library/CoreServices/loginwindow.app"] TIFFRepresentation];
+//    NSData *defaultIcon = [[[NSWorkspace sharedWorkspace] iconForFile:@"/System/Library/CoreServices/loginwindow.app"] TIFFRepresentation];
     for (NSDictionary* targetApp in targets) {
         iconPath = [targetApp objectForKey:@"BundleIdentifier"];
         iconPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:iconPath];
@@ -171,9 +171,10 @@
             }
             
             result = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
-            NSData *appIcon = [result TIFFRepresentation];
-            if (![defaultIcon isEqualToData:appIcon])
-                return result;
+//            NSData *appIcon = [result TIFFRepresentation];
+//            if (![defaultIcon isEqualToData:appIcon])
+//                return result;
+            if (result) return result;
         }
     }
     
