@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#define SIMBL_OSAX  @"/Library/ScriptingAdditions/SIMBL.osax"
+
 AppDelegate* myDelegate;
 
 NSMutableArray *allLocalPlugins;
@@ -799,7 +801,7 @@ NSArray *tabViews;
             agentUpdate = true;
     }
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/ScriptingAdditions/SIMBL.osax"]) {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:SIMBL_OSAX]) {
         osaxUpdate = true;
     } else {
         key = [sim_m OSAX_versions];
