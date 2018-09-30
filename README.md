@@ -11,7 +11,7 @@ mySIMBL is an open-source plugin manager for macOS. It lets you discover, instal
 - Download the [latest release](https://github.com/w0lfschild/app_updates/raw/master/mySIMBL/mySIMBL_master.zip)
 - Unzip the download if your browser does not do so automatically
 - Open mySIMBL
-    - mySIMBL will ask to be moved to /Applications
+    - mySIMBL will ask to be moved to `/Applications`
     - mySIMBL may ask to install or update SIMBL
     - You may be required to [disable System Integrity Protection](https://apple.stackexchange.com/questions/208478/how-do-i-disable-system-integrity-protection-sip-aka-rootless-on-os-x-10-11), mySIMBL will inform you but cannot automate this process
 - Start installing and using plugins
@@ -40,7 +40,7 @@ mySIMBL is an open-source plugin manager for macOS. It lets you discover, instal
 - Head over to the [mySIMBL plugin repository](https://github.com/w0lfschild/macplugins)
 - Fork the project
 - Add your compiled and zipped plugin to the bundles folder
-- Edit packages_v2.plist to include your submission
+- Edit `packages_v2.plist` to include your submission
 - Submit a pull request
 
 ## Troubleshooting
