@@ -19,16 +19,16 @@ mySIMBL is an open-source plugin manager for macOS. It lets you discover, instal
 ## Requirements
 
 - mySIMBL supports macOS 10.9 and above
-- plugins may have different application and system requirements
+- Plugins may have different application and system requirements
 
-## Features
+## Feature
 
-- Repositories to find, download and update plugins
+- Repositories to find, download, and update plugins
 - Drag and drop plugins onto mySIMBL to install them
 - Open bundles with mySIMBL to install them
-- Delete plugins (Trash can)
+- Delete plugins (Trash Can)
 - Show plugins in Finder (Magnifying Glass)
-- Enable/Disable plugins (Colored Circle Icon)
+- Enable/Disable plugins (Colored Circle Indicator)
 - Show plugin developer page (Globe Icon)
 - Detect existing plugins
 - Update plugins with ease
@@ -49,7 +49,7 @@ Having problems? Submit an issue here: [submit](https://github.com/w0lfschild/my
 
 ## Uninstall SIMBL
 
-Select `SIMBL` from the sidebar, then click `unistall SIMBL`. Log out and back in for changes to fully apply.
+Select `SIMBL` from the sidebar, then click `uninstall SIMBL`. Log out and back in for changes to fully apply.
 
 ## Developement
 
