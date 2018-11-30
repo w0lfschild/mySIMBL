@@ -839,13 +839,21 @@ NSArray *tabViews;
 
 - (IBAction)toggleAMFI:(id)sender {
     SIMBLManager *sim_m = [SIMBLManager sharedInstance];
+    BOOL amfiStatus = [sim_m AMFI_enabled];
+    
     [sim_m AMFI_toggle];
+    
     NSImage *on = [NSImage imageNamed:NSImageNameStatusAvailable];
     NSImage *off = [NSImage imageNamed:NSImageNameStatusUnavailable];
-    if (_AMFIStatus.image == on)
-        [_AMFIStatus setImage:off];
-    else
-        [_AMFIStatus setImage:on];
+    
+    /* if actually toggled, change image */
+    if (!amfiStatus)
+    {
+        if (_AMFIStatus.image == on)
+            [_AMFIStatus setImage:off];
+        else
+            [_AMFIStatus setImage:on];
+    }
 }
 
 - (void)setupSIMBLview {
