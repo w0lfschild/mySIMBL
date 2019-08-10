@@ -2,11 +2,11 @@ mySIMBL is an open-source plugin manager for macOS. It lets you discover, instal
 
 ## Notes
 
-- This product has been discontinued, replaced by MacForge
+- This product has been discontinued, replaced by [MacForge](https://github.com/w0lfschild/MacForge)
 - mySIMBL supports macOS 10.10 through 10.14
 - Use on 10.14 requires System Integrity Protection remain off as well as Apple Mobile File Integrity
 - Plugins may have different application and system requirements
-- [![Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mySIMBL/Lobby)
+- [![Gitter](https://badges.gitter.im/MacEnhance/MacForge.svg)](https://gitter.im/MacEnhance/MacForge?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ![Banner](web/banner.png)
 
