@@ -9,7 +9,12 @@
 @import Foundation;
 @import AppKit;
 @import SIMBLManager;
-#import <DevMateKit/DevMateKit.h>
+
+@import Sparkle;
+@import AppCenter;
+@import AppCenterAnalytics;
+@import AppCenterCrashes;
+
 #import "SGDirWatchdog.h"
 #import "PFMoveApplication.h"
 #import "StartAtLoginController.h"

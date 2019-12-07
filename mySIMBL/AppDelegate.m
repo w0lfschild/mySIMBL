@@ -67,11 +67,6 @@ NSArray *tabViews;
     return output;
 }
 
-// Show DevMate feedback
-- (IBAction)showFeedbackDialog:(id)sender {
-    [DevMateKit showFeedbackDialog:nil inMode:DMFeedbackDefaultMode];
-}
-
 // Startup
 - (instancetype)init {
     myDelegate = self;
@@ -104,8 +99,8 @@ NSArray *tabViews;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    [DevMateKit sendTrackingReport:nil delegate:nil];
-    [DevMateKit setupIssuesController:nil reportingUnhandledIssues:YES];
+//    [DevMateKit sendTrackingReport:nil delegate:nil];
+//    [DevMateKit setupIssuesController:nil reportingUnhandledIssues:YES];
     
     // Loop looking for bundle updates
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -124,10 +119,110 @@ NSArray *tabViews;
 //    });
 }
 
++ (void)restartMacForge {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/Applications/MacForge.app"]) {
+        float seconds = 3.0;
+        NSTask *task = [[NSTask alloc] init];
+        NSMutableArray *args = [NSMutableArray array];
+        [args addObject:@"-c"];
+        [args addObject:[NSString stringWithFormat:@"sleep %f; open /Applications/MacForge.app", seconds]];
+        [task setLaunchPath:@"/bin/sh"];
+        [task setArguments:args];
+        [task launch];
+        [NSApp terminate:nil];
+    }
+}
+
++ (Boolean)installItem:(NSString*)filePath {
+    NSFileManager *FileManager = [NSFileManager defaultManager];
+    
+    // Set install location to /Applications
+    NSString *installPath = [NSString stringWithFormat:@"/Applications/%@", filePath.lastPathComponent];
+    
+    // Logging
+    NSLog(@"%@ - %@", filePath, installPath);
+    NSError *err;
+    
+    // Remove item if it already exists
+    if ([FileManager fileExistsAtPath:installPath])
+        [FileManager removeItemAtPath:installPath error:&err];
+    if (err) NSLog(@"%@", err);
+    
+    // Install the item
+    if ([FileManager isReadableFileAtPath:filePath])
+        [FileManager copyItemAtPath:filePath toPath:installPath error:&err];
+    if (err) NSLog(@"%@", err);
+    
+    return true;
+}
+
+- (Boolean)installMacForge {
+    Boolean success = false;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Set installation URL
+        NSURL *installURL = [NSURL URLWithString:@"https://github.com/w0lfschild/app_updates/blob/master/MacForge/MacForge.zip?raw=true"];
+        
+        // SynchronousRequest to grab the data
+        NSURLRequest *request = [NSURLRequest requestWithURL:installURL];
+        NSError *error;
+        NSURLResponse *response;
+        
+        // Try to download file
+        NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        if (!result) {
+            // Download failed
+            NSLog(@"Error : %@", error);
+        } else {
+            // Downloaded zip file
+            NSString *temp = @"/tmp/macforge_download";
+            [result writeToFile:temp atomically:YES];
+            
+            // Create folder to unzip contents to
+            NSString *unzipDir = @"/tmp/macenhance_extracted/macforge";
+            BOOL isDir;
+            if(![[NSFileManager defaultManager] fileExistsAtPath:unzipDir isDirectory:&isDir])
+                if(![[NSFileManager defaultManager] createDirectoryAtPath:unzipDir withIntermediateDirectories:YES attributes:nil error:NULL])
+                    NSLog(@"Error: Create folder failed %@", unzipDir);
+            
+            // Unzip download
+            NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip" arguments:@[@"-o", temp, @"-d", unzipDir]];
+            [task waitUntilExit];
+            if ([task terminationStatus] == 0) {
+                // presumably the only case where we've successfully installed
+                // ???
+                //                success = true;
+            }
+            
+            // Try to install the contents
+            [AppDelegate installItem:[NSString stringWithFormat:@"%@/MacForge.app", unzipDir]];
+            [AppDelegate restartMacForge];
+        }
+        
+        //This is your completion handler
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+        });
+    });
+    
+    return success;
+}
+
 // Loading
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
+    [MSAppCenter start:@"facd4ae1-241f-4686-8f38-6febe8fa46ce" withServices:@[
+      [MSAnalytics class],
+      [MSCrashes class]
+    ]];
+    
     sourceItems = [NSArray arrayWithObjects:_sourcesURLS, _sourcesPlugins, _sourcesBundle, nil];
     discoverItems = [NSArray arrayWithObjects:_discoverChanges, _sourcesBundle, nil];
+    
+    
+    // Install MacForge 👌
+//    [self installMacForge];
+    //
+    
     
     [_sourcesPush setEnabled:true];
     [_sourcesPop setEnabled:false];
@@ -302,7 +397,10 @@ NSArray *tabViews;
     [_appVersion setStringValue:[NSString stringWithFormat:@"Version %@ (%@)",
                                  [infoDict objectForKey:@"CFBundleShortVersionString"],
                                  [infoDict objectForKey:@"CFBundleVersion"]]];
-    [_appCopyright setStringValue:@"Copyright © 2015 - 2017 Wolfgang Baird"];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy"];
+    NSString * currentYEAR = [formatter stringFromDate:[NSDate date]];
+    [_appCopyright setStringValue:[NSString stringWithFormat:@"Copyright © 2015 - %@ macEnhance", currentYEAR]];
     [[_changeLog textStorage] setAttributedString:[[NSAttributedString alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"Changelog" ofType:@"rtf"] documentAttributes:nil]];
     
     // Select tab view
@@ -463,7 +561,7 @@ NSArray *tabViews;
     [_sourceButton setAction:@selector(visitSource)];
     [_gitButton setAction:@selector(visitGithub)];
     [_webButton setAction:@selector(visitWebsite)];
-    [_emailButton setAction:@selector(sendEmail)];
+    [_emailButton setAction:@selector(sendEmail:)];
 }
 
 - (IBAction)donate:(id)sender {
@@ -474,8 +572,8 @@ NSArray *tabViews;
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/w0lfschild/mySIMBL/issues/new"]];
 }
 
-- (void)sendEmail {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"mailto:aguywithlonghair@gmail.com"]];
+- (IBAction)sendEmail:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"mailto:support@macenhance.com"]];
 }
 
 - (void)visitGithub {
@@ -487,7 +585,7 @@ NSArray *tabViews;
 }
 
 - (void)visitWebsite {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://w0lfschild.github.io/app_mySIMBL.html"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://www.macenhance.com/macforge"]];
 }
 
 - (void)setupEventListener {

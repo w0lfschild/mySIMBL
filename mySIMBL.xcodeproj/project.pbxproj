@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B17D689D83425341DBF5E44C /* Pods_mySIMBLHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34EC6B534C461FA4628F667B /* Pods_mySIMBLHelper.framework */; };
+		D6B86F2607BF190FEF014DF6 /* Pods_mySIMBL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375BE952FF211079A3E357AC /* Pods_mySIMBL.framework */; };
 		FB09A4F51C4B5FEF0072C553 /* Changelog.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4F41C4B5FEF0072C553 /* Changelog.rtf */; };
 		FB09A4F71C4B64F80072C553 /* webicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB09A4F61C4B64F80072C553 /* webicon.png */; };
 		FB0CF69F1C61D1E9002CF3DE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB0CF69E1C61D1E9002CF3DE /* AppDelegate.m */; };
@@ -15,6 +17,9 @@
 		FB1D14EA1EFCE56C00ED5580 /* pluginData.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1D14E91EFCE56C00ED5580 /* pluginData.m */; };
 		FB24B09E1C952FF700443CA0 /* pluginTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB24B09D1C952FF700443CA0 /* pluginTable.m */; };
 		FB24B0A21C955D2C00443CA0 /* shareClass.m in Sources */ = {isa = PBXBuildFile; fileRef = FB24B0A11C955D2C00443CA0 /* shareClass.m */; };
+		FB4189E723973C4500A56EC9 /* MacForgeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB4189E523973C4500A56EC9 /* MacForgeKit.framework */; };
+		FB4189E823973CB500A56EC9 /* MacForgeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB4189E523973C4500A56EC9 /* MacForgeKit.framework */; };
+		FB4189E923973CB500A56EC9 /* MacForgeKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB4189E523973C4500A56EC9 /* MacForgeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FB50D3461D4B0C7E004668C0 /* update.png in Resources */ = {isa = PBXBuildFile; fileRef = FB50D3451D4B0C7E004668C0 /* update.png */; };
 		FB53F94B1D359BB700B07C67 /* SIMBLManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB53F94A1D359BB700B07C67 /* SIMBLManager.framework */; };
 		FB53F94C1D39BBD700B07C67 /* SIMBLManager.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB53F94A1D359BB700B07C67 /* SIMBLManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -25,20 +30,16 @@
 		FB66391E1E0501C90060AE31 /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = FB66391D1E0501C90060AE31 /* checkmark.png */; };
 		FB6639201E05BA750060AE31 /* STPrivilegedTask_LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = FB66391F1E05BA750060AE31 /* STPrivilegedTask_LICENSE.txt */; };
 		FB6639221E05BAB10060AE31 /* SGDirWatchDog_LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = FB6639211E05BAB10060AE31 /* SGDirWatchDog_LICENSE.txt */; };
-		FB6A77B61E3031150045BC22 /* DevMateKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA2E9831E28673300DB471D /* DevMateKit.framework */; };
 		FB790FE81CA447AD00BE3B59 /* repopluginTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB790FE71CA447AD00BE3B59 /* repopluginTable.m */; };
 		FB790FED1CA4BC0900BE3B59 /* bundlePage.m in Sources */ = {isa = PBXBuildFile; fileRef = FB790FEC1CA4BC0900BE3B59 /* bundlePage.m */; };
 		FB7A4B741DF384B50071589B /* StartAtLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB7A4B731DF384B50071589B /* StartAtLoginController.m */; };
 		FB7C75A41D067A4F001407DC /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = FB7C75A31D067A4F001407DC /* icon.icns */; };
 		FB9BF36A1CA6801F00A63718 /* loading_mini.gif in Resources */ = {isa = PBXBuildFile; fileRef = FB9BF3691CA6801F00A63718 /* loading_mini.gif */; };
-		FBA2E9841E28673300DB471D /* DevMateKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA2E9831E28673300DB471D /* DevMateKit.framework */; };
-		FBA2E9851E28680300DB471D /* DevMateKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FBA2E9831E28673300DB471D /* DevMateKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FBA9EB341C965E9F00511BE3 /* sourcesTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA9EB331C965E9F00511BE3 /* sourcesTable.m */; };
 		FBB35F881EFCCBDE004ECE9C /* MSPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = FBB35F871EFCCBDE004ECE9C /* MSPlugin.m */; };
 		FBB793521C7AB7BC006BF301 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FBB793511C7AB7BC006BF301 /* dsa_pub.pem */; };
 		FBB793541C7AB7C5006BF301 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FBB793531C7AB7C5006BF301 /* dsa_pub.pem */; };
 		FBBF6AF61DFFA6B400BBCF28 /* updatesTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FBBF6AF51DFFA6B300BBCF28 /* updatesTable.m */; };
-		FBC43DD01CCC3A4000AAD4E5 /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC43DCF1CCC3A4000AAD4E5 /* PFMoveApplication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		FBC54D6F1C4C33030021517C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6D1C4C33030021517C /* Credits.rtf */; };
 		FBC54D701C4C33030021517C /* EULA.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FBC54D6E1C4C33030021517C /* EULA.rtf */; };
 		FBEC2F311C4C7164008237A6 /* github.png in Resources */ = {isa = PBXBuildFile; fileRef = FBEC2F2F1C4C7164008237A6 /* github.png */; };
@@ -52,7 +53,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FBA2E9851E28680300DB471D /* DevMateKit.framework in CopyFiles */,
+				FB4189E923973CB500A56EC9 /* MacForgeKit.framework in CopyFiles */,
 				FB53F94C1D39BBD700B07C67 /* SIMBLManager.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -72,6 +73,12 @@
 
 /* Begin PBXFileReference section */
 		0948AF3821B15B0A0067A111 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		34EC6B534C461FA4628F667B /* Pods_mySIMBLHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mySIMBLHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		375BE952FF211079A3E357AC /* Pods_mySIMBL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mySIMBL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5ECA527FF49691126B23E78E /* Pods-mySIMBLHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mySIMBLHelper.release.xcconfig"; path = "Target Support Files/Pods-mySIMBLHelper/Pods-mySIMBLHelper.release.xcconfig"; sourceTree = "<group>"; };
+		9EA8320E4B3752DC5260B2F3 /* Pods-mySIMBL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mySIMBL.debug.xcconfig"; path = "Target Support Files/Pods-mySIMBL/Pods-mySIMBL.debug.xcconfig"; sourceTree = "<group>"; };
+		E4E3D76D32EE199F4171D7AD /* Pods-mySIMBL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mySIMBL.release.xcconfig"; path = "Target Support Files/Pods-mySIMBL/Pods-mySIMBL.release.xcconfig"; sourceTree = "<group>"; };
+		EBF675C4B17EAACF66398D25 /* Pods-mySIMBLHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mySIMBLHelper.debug.xcconfig"; path = "Target Support Files/Pods-mySIMBLHelper/Pods-mySIMBLHelper.debug.xcconfig"; sourceTree = "<group>"; };
 		FB09A4F41C4B5FEF0072C553 /* Changelog.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Changelog.rtf; sourceTree = "<group>"; };
 		FB09A4F61C4B64F80072C553 /* webicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = webicon.png; sourceTree = "<group>"; };
 		FB0CF69B1C61D1E8002CF3DE /* mySIMBLHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mySIMBLHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +92,7 @@
 		FB24B09D1C952FF700443CA0 /* pluginTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pluginTable.m; sourceTree = "<group>"; };
 		FB24B0A11C955D2C00443CA0 /* shareClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = shareClass.m; sourceTree = "<group>"; };
 		FB24B0A31C955EEC00443CA0 /* shareClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shareClass.h; sourceTree = "<group>"; };
+		FB4189E523973C4500A56EC9 /* MacForgeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacForgeKit.framework; path = Frameworks/MacForgeKit.framework; sourceTree = "<group>"; };
 		FB50D3451D4B0C7E004668C0 /* update.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = update.png; sourceTree = "<group>"; };
 		FB53F94A1D359BB700B07C67 /* SIMBLManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SIMBLManager.framework; path = Frameworks/SIMBLManager.framework; sourceTree = "<group>"; };
 		FB5F44B31C41EA4000DE80B4 /* mySIMBL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mySIMBL.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,7 +109,6 @@
 		FB7A4B731DF384B50071589B /* StartAtLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartAtLoginController.m; sourceTree = "<group>"; };
 		FB7C75A31D067A4F001407DC /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		FB9BF3691CA6801F00A63718 /* loading_mini.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_mini.gif; sourceTree = "<group>"; };
-		FBA2E9831E28673300DB471D /* DevMateKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DevMateKit.framework; path = Frameworks/DevMateKit.framework; sourceTree = "<group>"; };
 		FBA9EB331C965E9F00511BE3 /* sourcesTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = sourcesTable.m; sourceTree = "<group>"; };
 		FBB35F861EFCCBDE004ECE9C /* MSPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSPlugin.h; sourceTree = "<group>"; };
 		FBB35F871EFCCBDE004ECE9C /* MSPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSPlugin.m; sourceTree = "<group>"; };
@@ -109,8 +116,6 @@
 		FBB793531C7AB7C5006BF301 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		FBBF6AF51DFFA6B300BBCF28 /* updatesTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = updatesTable.m; sourceTree = "<group>"; };
 		FBC194B31CDE576C0025D361 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FBC43DCE1CCC3A4000AAD4E5 /* PFMoveApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFMoveApplication.h; sourceTree = "<group>"; };
-		FBC43DCF1CCC3A4000AAD4E5 /* PFMoveApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFMoveApplication.m; sourceTree = "<group>"; };
 		FBC54D6D1C4C33030021517C /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		FBC54D6E1C4C33030021517C /* EULA.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = EULA.rtf; sourceTree = "<group>"; };
 		FBEC2F2F1C4C7164008237A6 /* github.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = github.png; sourceTree = "<group>"; };
@@ -123,7 +128,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB6A77B61E3031150045BC22 /* DevMateKit.framework in Frameworks */,
+				FB4189E723973C4500A56EC9 /* MacForgeKit.framework in Frameworks */,
+				B17D689D83425341DBF5E44C /* Pods_mySIMBLHelper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,14 +137,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FBA2E9841E28673300DB471D /* DevMateKit.framework in Frameworks */,
+				FB4189E823973CB500A56EC9 /* MacForgeKit.framework in Frameworks */,
 				FB53F94B1D359BB700B07C67 /* SIMBLManager.framework in Frameworks */,
+				D6B86F2607BF190FEF014DF6 /* Pods_mySIMBL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EF56738DB774656C27A7F62F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9EA8320E4B3752DC5260B2F3 /* Pods-mySIMBL.debug.xcconfig */,
+				E4E3D76D32EE199F4171D7AD /* Pods-mySIMBL.release.xcconfig */,
+				EBF675C4B17EAACF66398D25 /* Pods-mySIMBLHelper.debug.xcconfig */,
+				5ECA527FF49691126B23E78E /* Pods-mySIMBLHelper.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		FB0CF69C1C61D1E9002CF3DE /* mySIMBLHelper */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +202,7 @@
 				FB5F44B51C41EA4000DE80B4 /* mySIMBL */,
 				FB0CF69C1C61D1E9002CF3DE /* mySIMBLHelper */,
 				FB5F44B41C41EA4000DE80B4 /* Products */,
+				EF56738DB774656C27A7F62F /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -262,7 +281,6 @@
 			children = (
 				FB7A4B751DF384BB0071589B /* StartAtLoginController */,
 				FBF7207E1CF0D130008D61B4 /* SGDirWatchdog */,
-				FBC54D881C4C452F0021517C /* LetsMove */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -279,19 +297,12 @@
 		FBBF6AF31DFF9EE800BBCF28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FBA2E9831E28673300DB471D /* DevMateKit.framework */,
+				FB4189E523973C4500A56EC9 /* MacForgeKit.framework */,
 				FB53F94A1D359BB700B07C67 /* SIMBLManager.framework */,
+				375BE952FF211079A3E357AC /* Pods_mySIMBL.framework */,
+				34EC6B534C461FA4628F667B /* Pods_mySIMBLHelper.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		FBC54D881C4C452F0021517C /* LetsMove */ = {
-			isa = PBXGroup;
-			children = (
-				FBC43DCE1CCC3A4000AAD4E5 /* PFMoveApplication.h */,
-				FBC43DCF1CCC3A4000AAD4E5 /* PFMoveApplication.m */,
-			);
-			name = LetsMove;
 			sourceTree = "<group>";
 		};
 		FBF7207E1CF0D130008D61B4 /* SGDirWatchdog */ = {
@@ -310,9 +321,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FB0CF6A91C61D1E9002CF3DE /* Build configuration list for PBXNativeTarget "mySIMBLHelper" */;
 			buildPhases = (
+				860B39354F74F11E68BD6123 /* [CP] Check Pods Manifest.lock */,
 				FB0CF6971C61D1E8002CF3DE /* Sources */,
 				FB0CF6981C61D1E8002CF3DE /* Frameworks */,
 				FB0CF6991C61D1E8002CF3DE /* Resources */,
+				09C0751860A0955FBEA79236 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -327,12 +340,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FB5F44C41C41EA4000DE80B4 /* Build configuration list for PBXNativeTarget "mySIMBL" */;
 			buildPhases = (
+				E6AC74D2B295C17CC8F7F502 /* [CP] Check Pods Manifest.lock */,
 				FB5F44AF1C41EA4000DE80B4 /* Sources */,
 				FB5F44B11C41EA4000DE80B4 /* Resources */,
 				FB62D0221CF146DB0070E0D6 /* Copy LoginItem */,
 				FB57D2F21C4BAF8B0077F91C /* CopyFiles */,
 				FB5F44B01C41EA4000DE80B4 /* Frameworks */,
 				FB09A4F31C4B5B920072C553 /* ShellScript */,
+				14C5FD0DE9540A5967B0DAB4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -349,30 +364,29 @@
 		FB5F44AB1C41EA4000DE80B4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Wolfgang Baird";
 				TargetAttributes = {
 					FB0CF69A1C61D1E8002CF3DE = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = EX596BNL45;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					FB5F44B21C41EA4000DE80B4 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = EX596BNL45;
 						DevelopmentTeamName = "wolfgang baird";
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = FB5F44AE1C41EA4000DE80B4 /* Build configuration list for PBXProject "mySIMBL" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
-				English,
 			);
 			mainGroup = FB5F44AA1C41EA4000DE80B4;
 			productRefGroup = FB5F44B41C41EA4000DE80B4 /* Products */;
@@ -417,6 +431,91 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		09C0751860A0955FBEA79236 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-mySIMBLHelper/Pods-mySIMBLHelper-frameworks.sh",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-mySIMBLHelper/Pods-mySIMBLHelper-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		14C5FD0DE9540A5967B0DAB4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-mySIMBL/Pods-mySIMBL-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/LetsMove/LetsMove.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LetsMove.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Sparkle.framework.dSYM",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-mySIMBL/Pods-mySIMBL-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		860B39354F74F11E68BD6123 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-mySIMBLHelper-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E6AC74D2B295C17CC8F7F502 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-mySIMBL-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		FB09A4F31C4B5B920072C553 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -460,7 +559,6 @@
 				FBBF6AF61DFFA6B400BBCF28 /* updatesTable.m in Sources */,
 				FBF7207C1CF0D128008D61B4 /* SGDirWatchdog.m in Sources */,
 				FB5F44B81C41EA4000DE80B4 /* AppDelegate.m in Sources */,
-				FBC43DD01CCC3A4000AAD4E5 /* PFMoveApplication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,14 +578,17 @@
 /* Begin XCBuildConfiguration section */
 		FB0CF6AA1C61D1E9002CF3DE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBF675C4B17EAACF66398D25 /* Pods-mySIMBLHelper.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = EX596BNL45;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = SIMBLHelper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../../Frameworks/DevMateKit @loader_path/../../../../../Frameworks $(PROJECT_DIR)/Frameworks";
@@ -496,19 +597,23 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
 		FB0CF6AB1C61D1E9002CF3DE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5ECA527FF49691126B23E78E /* Pods-mySIMBLHelper.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = EX596BNL45;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = SIMBLHelper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../../../Frameworks/DevMateKit @loader_path/../../../../../Frameworks $(PROJECT_DIR)/Frameworks";
@@ -517,6 +622,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -533,12 +639,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -586,12 +694,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -622,12 +732,15 @@
 		};
 		FB5F44C51C41EA4000DE80B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9EA8320E4B3752DC5260B2F3 /* Pods-mySIMBL.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 72;
 				DEVELOPMENT_TEAM = EX596BNL45;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -637,6 +750,7 @@
 				INFOPLIST_FILE = mySIMBL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks $SRCROOT/mySIMBL";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MARKETING_VERSION = 0.8.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.w0lf.mySIMBL;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -646,12 +760,15 @@
 		};
 		FB5F44C61C41EA4000DE80B4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E4E3D76D32EE199F4171D7AD /* Pods-mySIMBL.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 72;
 				DEVELOPMENT_TEAM = EX596BNL45;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -661,6 +778,7 @@
 				INFOPLIST_FILE = mySIMBL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks $SRCROOT/mySIMBL";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MARKETING_VERSION = 0.8.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.w0lf.mySIMBL;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

@@ -7,8 +7,9 @@
 //
 
 @import SIMBLManager;
+@import Sparkle;
+
 #import "AppDelegate.h"
-#import <DevMateKit/DevMateKit.h>
 
 AppDelegate* this;
 

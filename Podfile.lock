@@ -1,0 +1,31 @@
+PODS:
+  - AppCenter (2.5.1):
+    - AppCenter/Analytics (= 2.5.1)
+    - AppCenter/Crashes (= 2.5.1)
+  - AppCenter/Analytics (2.5.1):
+    - AppCenter/Core
+  - AppCenter/Core (2.5.1)
+  - AppCenter/Crashes (2.5.1):
+    - AppCenter/Core
+  - LetsMove (1.24)
+  - Sparkle (1.22.0)
+
+DEPENDENCIES:
+  - AppCenter
+  - LetsMove
+  - Sparkle
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AppCenter
+    - LetsMove
+    - Sparkle
+
+SPEC CHECKSUMS:
+  AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
+  LetsMove: fefe56bc7bc7fb7d37049e28a14f297961229fc5
+  Sparkle: 593ac2e677c07bcb6c3b22d621240e7cbedaab57
+
+PODFILE CHECKSUM: 54a47bb39898bb72ac4a742cc4aa9d98afed67b2
+
+COCOAPODS: 1.7.3

@@ -1,0 +1,6 @@
+framework module MacForgeKit {
+  umbrella header "MacForgeKit.h"
+
+  export *
+  module * { export * }
+}
