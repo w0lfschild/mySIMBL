@@ -1,14 +1,15 @@
 ## mySIMBL 🧩
 
-**This product has been discontinued, replaced by [MacForge](https://github.com/w0lfschild/MacForge)**
-mySIMBL is an open-source plugin manager for macOS. It lets you discover, install and manage plugins to improve the user experience of macOS without the need for manually cloning or copying files.
+**This product has been discontinued, replaced by [MacForge](https://github.com/w0lfschild/MacForge)** which supports macOS High Sierra (10.13.x) and later.
+
+mySIMBL is an open-source plugin manager for macOS. It lets you discover, install, and manage plugins, to improve the user experience of macOS without the need for manually cloning or copying files.
 
 [![Discord](https://discordapp.com/api/guilds/608740492561219617/widget.png?style=banner2)](https://discordapp.com/channels/608740492561219617/608740492640911378)
 
 ## Notes
 
-- mySIMBL supports macOS 10.10 through 10.13
-- Use on 10.14 requires System Integrity Protection remain off as well as Apple Mobile File Integrity
+- mySIMBL supports macOS Yosemite (10.10) through High Siera (10.13)
+- Use on Mojave (10.14) requires System Integrity Protection remain off as well as Apple Mobile File Integrity
 - Plugins may have different application and system requirements
 
 ![Banner](web/banner.png)
@@ -17,7 +18,7 @@ mySIMBL is an open-source plugin manager for macOS. It lets you discover, instal
 
 ## Installation
 
-- Download the [latest release](https://github.com/w0lfschild/app_updates/raw/master/MacForge/MacForge.zip)
+- Download [0.7.2, the final release of mySIMBL](https://github.com/w0lfschild/app_updates/raw/master/mySIMBL/mySIMBL_0.7.2.zip)
 - Unzip the download if your browser does not do so automatically
 - Launch `mySIMBL.app`
     - `mySIMBL` will ask to be moved to `/Applications`
